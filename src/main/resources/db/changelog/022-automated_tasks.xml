@@ -1,0 +1,30 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, mariadb, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="022-automated_tasks" author="mkunert">
+
+        <addColumn tableName="task">
+            <column name="base_repository_url" type="varchar(255)" />
+        </addColumn>
+
+        <addColumn tableName="user_task">
+            <column name="started_at" type="timestamp" />
+        </addColumn>
+
+        <addColumn tableName="user">
+            <column name="github_username" type="varchar(255)" />
+        </addColumn>
+
+        <addColumn tableName="training">
+            <column name="trainers_github_usernames" type="varchar(1000)" />
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

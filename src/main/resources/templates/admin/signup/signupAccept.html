@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Zapis na szkolenie</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2 class="mb-2">Akceptacja zapisu na szkolenie</h2>
+
+    <form th:action="@{'/admin/zapisy/' + ${dto.signupId} + '/akceptacja'}" method="post" th:object="${dto}">
+
+        <div class="form-row mt-2">
+            <div class="col">
+                <label>Imię</label>
+                <input class="form-control" type="text" placeholder="Imię" th:field="*{firstName}"/>
+            </div>
+            <div class="col">
+                <label>Nazwisko</label>
+                <input class="form-control" type="text" placeholder="Nazwisko" th:field="*{lastName}"/>
+            </div>
+        </div>
+
+        <div class="form-row mt-2">
+            <div class="col">
+                <label>Telefon</label>
+                <input class="form-control" type="text" placeholder="Telefon" th:field="*{phoneNumber}"/>
+            </div>
+            <div class="col">
+                <label>Email</label>
+                <input class="form-control" type="text" placeholder="Email" th:field="*{email}"/>
+            </div>
+        </div>
+
+        <div class="form-row mt-2">
+            <div class="col">
+                <label>Adres</label>
+                <input class="form-control" type="text" th:field="*{address}"/>
+            </div>
+            <div class="col">
+                <label>Kod pocztowy</label>
+                <input class="form-control" type="text" th:field="*{postalCode}"/>
+            </div>
+            <div class="col">
+                <label>Miejscowość</label>
+                <input class="form-control" type="text" th:field="*{city}"/>
+            </div>
+        </div>
+
+        <div class="form-row mt-2">
+            <div class="col-3">
+                <label></label>
+                <div class="form-check">
+                    <input class="form-check-input" id="advancePaymentToDefault" type="checkbox"
+                           th:field="*{advancePaymentToDefault}"/>
+                    <label class="form-check-label" for="advancePaymentToDefault">Wartość domyślna</label>
+                </div>
+            </div>
+            <div class="col-3">
+                <label for="advancePaymentTo">Do kiedy płatność zadatku</label>
+                <input class="form-control" id="advancePaymentTo" disabled type="text" th:field="*{advancePaymentTo}"/>
+            </div>
+            <div class="col">
+                <label></label>
+                <p>Domyślnie będzie obliczany dodając 2 dni robocze do aktualnej daty. Zanim użytkownik podpisze umowę
+                    data ta
+                    jest automatycznie przeliczana w przód. Jeśli data zadatku zrówna się z datą rozpoczęcia zbierania
+                    pełnych opłat to nie będzie widoczna na umowie.</p>
+            </div>
+        </div>
+
+        <div class="form-row mt-2">
+            <div class="col-3">
+                <label></label>
+                <div class="form-check">
+                    <input class="form-check-input" id="fullPaymentFromDefault" type="checkbox"
+                           th:field="*{advancePaymentToDefault}"/>
+                    <label class="form-check-label" for="fullPaymentFromDefault">Wartość domyślna</label>
+                </div>
+            </div>
+            <div class="col-3">
+                <label for="advancePaymentTo">Od kiedy płatność pełna</label>
+                <input class="form-control" id="fullPaymentFrom" disabled type="text" th:field="*{fullPaymentFrom}"/>
+            </div>
+            <div class="col">
+                <label></label>
+                <p>Domyśna wartość pochodzi z ustawień szkolenia. Jeśli już minęła to nie będzie pokazywana na
+                    umowie.</p>
+            </div>
+        </div>
+
+        <div class="form-row mt-2">
+            <div class="col-3">
+                <label></label>
+                <div class="form-check">
+                    <input class="form-check-input" id="fullPaymentToDefault" type="checkbox"
+                           th:field="*{advancePaymentToDefault}"/>
+                    <label class="form-check-label" for="fullPaymentToDefault">Wartość domyślna</label>
+                </div>
+            </div>
+            <div class="col-3">
+                <label for="advancePaymentTo">Do kiedy płatność pełna</label>
+                <input class="form-control" id="fullPaymentTo" disabled type="text" th:field="*{fullPaymentTo}"/>
+            </div>
+            <div class="col">
+                <label></label>
+                <p>Domyśna wartość pochodzi z ustawień szkolenia. Jeśli już minęła to będą się wyświetlały 3 dni od
+                    aktualnej daty</p>
+            </div>
+        </div>
+
+        <div class="form-row mt-2">
+            <div class="col">
+                <label>Zadatek</label>
+                <input class="form-control" type="text" th:field="*{deposit}"/>
+            </div>
+        </div>
+
+        <div class="form-row mt-2">
+            <div class="col">
+                <label>Cena</label>
+                <input class="form-control" type="text" th:field="*{price}"/>
+            </div>
+        </div>
+
+        <div class="form-row mt-2">
+            <div class="col">
+                <label for="customPaymentInfo">Indywidualny sposób płatności (np raty). Zostaw puste jeśli nie dotyczy.
+                    Wypełnienie nadpisze wszystkie pola związane z płatnością.</label>
+                <textarea id="customPaymentInfo" class="form-control" th:field="*{customPaymentInfo}"></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">
+            Akceptuj
+        </button>
+    </form>
+
+    <script type="text/javascript" th:inline="javascript">
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var advancePaymentToDefaultInput = document.getElementById('advancePaymentTo');
+                var fullPaymentFromInput = document.getElementById('fullPaymentFrom');
+                var fullPaymentToInput = document.getElementById('fullPaymentTo');
+                var advancePaymentToDefaultCheckbox = document.getElementById('advancePaymentToDefault');
+                var fullPaymentFromCheckbox = document.getElementById('fullPaymentFromDefault');
+                var fullPaymentToDefaultCheckbox = document.getElementById('fullPaymentToDefault');
+                advancePaymentToDefaultCheckbox.addEventListener('change', function (event) {
+                    advancePaymentToDefaultInput.disabled = event.target.checked;
+                });
+                fullPaymentFromCheckbox.addEventListener('change', function (event) {
+                    fullPaymentFromInput.disabled = event.target.checked;
+                });
+                fullPaymentToDefaultCheckbox.addEventListener('change', function (event) {
+                    fullPaymentToInput.disabled = event.target.checked;
+                });
+            }, false);
+        })();
+    </script>
+
+</div>
+
+</body>
+</html>

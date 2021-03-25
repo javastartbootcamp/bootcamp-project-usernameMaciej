@@ -1,0 +1,17 @@
+id;email;activated;password;first_name;last_name;address;postal_code;city;auth_key;github_username
+1;marcin@byom.de;true;{noop}tajnehaslo;Marcin;Kunert;Szkolna 12/1;10-000;Warszawa;a;marcinkunert
+2;slawek@byom.de;true;{noop}tajnehaslo;Sławek;Ludwiczak;Szkolna 12/1;10-000;Warszawa;;
+3;javastart1@byom.de;true;{noop}asdf;Jan;Kowalski;Szkolna 12/1;10-000;Warszawa;;
+4;javastart2@byom.de;true;{noop}asdf;Danuta;Nowak;Szkolna 12/1;10-000;Warszawa;;
+5;javastart3@byom.de;true;{noop}asdf;Franek;Kimono;Szkolna 12/1;10-000;Warszawa;;
+6;javastart4@byom.de;true;{noop}asdf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;
+7;javastart6@byom.de;true;{noop}asdf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;
+8;javastart7@byom.de;true;{noop}asdf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;
+9;javastart8@byom.de;true;{noop}asdf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;
+10;javastart9@byom.de;true;{noop}asdf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;
+11;javastart10@byom.de;true;{noop}asdf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;
+12;javastart11@byom.de;true;{noop}asdf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;
+13;javastart12@byom.de;true;{noop}asdf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;
+14;javastart13@byom.de;true;{noop}asdf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;
+15;javastart14@byom.de;true;{noop}asdf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;
+16;javastart15@byom.de;true;{noop}asTermin na oddanie zadaniadf;Zosia;Kalus;Szkolna 12/1;10-000;Warszawa;;

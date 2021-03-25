@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Edycja zadania w szablonie lekcji</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <a th:href="|/admin/zadania/${taskId}/edytuj|">
+        <i class="fas fa-edit"></i>
+        Edytuj definicję zadania (treść, rozwiązanie)
+    </a>
+
+    <h3>Edycja zadania w lekcji</h3>
+
+    <form method="post" th:action="@{'/admin/szablony/lekcje/zadania/edytuj'}" th:object="${dto}">
+        <input type="hidden" th:field="*{lessonTaskId}"/>
+        <input type="hidden" th:field="*{templateLessonId}"/>
+        <input type="hidden" th:field="*{templateId}"/>
+
+        <div class="form-row">
+            <label for="number">Numer</label>
+            <input type="number" id="number" class="form-control" th:field="*{number}"/>
+        </div>
+        <div class="form-row ml-4">
+            <input type="checkbox" id="mandatory"  class="form-check-input" th:field="*{mandatory}"/>
+            <label for="mandatory" class="form-check-label">Czy obowiązkowe</label>
+        </div>
+
+        <h3>Do kiedy oddać</h3>
+        <div class="form-row">
+            <div class="col">
+                <label for="deadlineDays">Dni po spotaniu</label>
+                <input type="number" id="deadlineDays" class="form-control" th:field="*{deadlineDays}"/>
+            </div>
+            <div class="col">
+                <label for="deadlineHour">Godzina</label>
+                <input type="time" id="deadlineHour" class="form-control" th:field="*{deadlineHour}"/>
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            Zapisz zmiany
+        </button>
+
+    </form>
+
+</div>
+
+
+</body>
+</html>

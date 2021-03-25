@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title th:text="|Szablon szkolenia ${template.name}|"></title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3 th:text="|Szablon ${template.name}|"></h3>
+
+    <h4>
+        Lekcje
+        <a th:href="|/admin/szablony/${template.id}/lekcje/dodaj|"><i class="fa fa-plus"></i></a>
+    </h4>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Numer</th>
+            <th>Tytuł</th>
+            <th>Liczba ćwiczeń</th>
+            <th>Liczba zadań</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="templateLesson: ${template.lessons}" class="clickable-row"
+            th:data-href="'/admin/szablony/' + ${template.id} + '/lekcje/' + ${templateLesson.id}">
+            <td th:text="${templateLesson.number}"></td>
+            <td th:text="${templateLesson.lesson.title}"></td>
+            <td th:text="${templateLesson.lesson.lessonExercises.size()}"></td>
+            <td th:text="${templateLesson.lesson.lessonTasks.size()}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+
+</div>
+
+</body>
+</html>

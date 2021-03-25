@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <title>Logowanie do konta | Bootcamp JavaStart</title>
+    <meta property="og:title" content="Logowanie do konta | Bootcamp JavaStart" />
+    <meta name="twitter:title" content="Logowanie do konta | Bootcamp JavaStart" />
+
+    <meta name="description" content="Logowanie do konta. Zaloguj się w celu uzyskania dostępu do treści dostępnych tylko dla użytkowników." />
+    <meta property="og:description" content="Logowanie do konta. Zaloguj się w celu uzyskania dostępu do treści dostępnych tylko dla użytkowników." />
+    <meta name="twitter:description" content="Logowanie do konta. Zaloguj się w celu uzyskania dostępu do treści dostępnych tylko dla użytkowników." />
+
+    <meta property="og:url" th:content="|${currentDomain}/login|"/>
+    <link rel="canonical" th:href="|${currentDomain}/login|"/>
+</head>
+<body>
+<div layout:fragment="content" class="container my-2">
+
+    <form th:action="@{/login}" method="post" class="text-center border border-light p-5">
+
+        <div th:if="${param.error}" class="alert alert-danger" role="alert">
+            Błąd logowania. Upewnij się, że podane dane są poprawne.
+        </div>
+
+        <h1 class="h2 mb-4">Logowanie</h1>
+
+        <!-- Email -->
+        <input type="email" name="username" class="form-control mb-4" placeholder="E-mail">
+
+        <!-- Password -->
+        <input type="password" name="password" class="form-control mb-4" placeholder="Password">
+
+        <div class="d-flex justify-content-between">
+            <div>
+                <!-- Remember me -->
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember" name="remember-me">
+                    <label class="custom-control-label" for="defaultLoginFormRemember">Zapamiętaj mnie</label>
+                </div>
+            </div>
+            <div>
+                <!-- Forgot password -->
+                <a href="/reset-hasla">Nie pamiętasz hasła?</a>
+            </div>
+        </div>
+
+        <!-- Sign in button -->
+        <button class="btn btn-primary btn-block mt-4" type="submit">Zaloguj</button>
+
+    </form>
+
+</div>
+</body>
+</html>

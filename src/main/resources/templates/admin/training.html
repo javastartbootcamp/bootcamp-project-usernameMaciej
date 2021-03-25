@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title th:text="|Szkolenie ${training.code}|">Szkolenie</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <div class="row" style="justify-content: space-between">
+        <h4 th:text="${training.code} + ': ' + ${training.description.title}"></h4>
+        <div>
+            <a th:href="'/admin/szkolenia/dodaj?copyFromId=' + ${training.id}"><i class="fa fa-copy"></i>Kopiuj szkolenie</a>
+            <span> </span>
+            <a th:href="'/admin/szkolenia/' + ${training.id} +'/edytuj'"><i class="fa fa-edit"></i>Edytuj szkolenie</a>
+        </div>
+    </div>
+
+    <a th:href="'/admin/szkolenia/' + ${training.id} +'/lekcje'" class="btn btn-primary btn-md mb-3 waves-effect waves-light">Przejdź do listy lekcji</a>
+
+    <a th:href="'/admin/szkolenia/' + ${training.id} +'/zadania'" class="btn btn-primary btn-md mb-3 waves-effect waves-light">Przejdź do zadań</a>
+
+    <h4>Zapisani uczestnicy (<span th:text="${signups.size()}"></span>) <a th:href="'/admin/zapisy/dodaj?trainingId='+${training.id}"><i class="fa fa-plus pr-2" aria-hidden="true"></i></a></h4>
+    <div style="display: flex; flex-direction: row; justify-content: space-between">
+    <a th:if="${#httpServletRequest.getParameter('odrzucone') == null}" th:href="'/admin/szkolenia/'+${training.id}+'?odrzucone=true'">
+        <i class="fa fa-filter"></i>
+        Pokazuj odrzucone zapisy
+    </a>
+    <a th:if="${#httpServletRequest.getParameter('odrzucone') != null}" th:href="'/admin/szkolenia/'+${training.id}">
+        <i class="fa fa-filter"></i>
+        Nie pokazuj odrzuconych zapisów
+    </a>
+
+    <a th:href="'mailto:?bcc=' + ${concatenatedUserMails}">
+        <i class="fa fa-mail-bulk"></i>
+        Mail do wszystkich
+    </a>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>L.P.</th>
+            <th>Imię i nazwisko</th>
+            <th>Email</th>
+            <th>Data zapisu</th>
+            <th>Aktualny status</th>
+            <th>Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="signup,i: ${signups}">
+            <td th:text="${i.index+1}"></td>
+            <td>
+                <a th:href="|/admin/uzytkownicy/${signup.user.id}|" th:text="${signup.user.firstName} + ' ' + ${signup.user.lastName}"></a>
+            </td>
+            <td>
+                <a th:href="|mailto:${signup.user.email}|" th:text="${signup.user.email}"></a>
+            </td>
+            <td th:text="${#temporals.format(signup.signupDate, 'dd-MM-yyyy HH:mm')}"></td>
+            <td th:text="${signup.status.text}"></td>
+            <td>
+                <a th:href="|/admin/zapisy/${signup.id}|" title="Zapis"><i class="fab fa-lg fa-wpforms"></i></a>
+                <a th:href="|/admin/oceny?userId=${signup.user.id}&trainingId=${training.id}|" title="Oceny zadań"><i class="far fa-lg fa-check-square"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <label for="dates">Daty szkolenia</label>
+    <div class="row">
+        <div class="col-md-auto mb-4">
+            <span id="multi-date-picker"></span>
+        </div>
+        <div class="col">
+            <textarea th:text="${training.dates}" id="dates" class="form-control mb-4" rows="8" readonly></textarea>
+            <p>Liczba spotkań: <span id="days-count">0</span></p>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:inline="javascript">
+        (function ($) {
+            $(document).ready(function ($) {
+                var datePicker = $('#multi-date-picker');
+                var datesString = /*[[${training.dates}]]*/ '';
+                var firstDate = new Date();
+                if (datesString) {
+                    var dates = datesString.split(', ');
+                    $('#days-count').html(dates.length);
+                    firstDate = dates[0];
+                }
+                datePicker.multiDatesPicker({
+                    addDates: dates,
+                    defaultDate: firstDate,
+                    mode: 'disabled'
+                });
+            });
+        })(jQuery);
+    </script>
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+
+</div>
+
+
+</body>
+</html>

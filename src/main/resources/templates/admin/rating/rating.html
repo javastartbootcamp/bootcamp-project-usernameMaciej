@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title th:text="|Oceny ${user.firstName} ${user.lastName}|"></title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3 th:text="|${user.firstName} ${user.lastName}|"></h3>
+
+    <a th:href="|/admin/szkolenia/${training.id}|">Przejdź do szkolenia</a> <br/>
+
+    <p th:text="|Aktualnie zdobyte punkty: ${trainingResult.points}/${trainingResult.maxPoints} (${trainingResult.percentage}%)|"></p>
+
+    <form method="post" th:action="@{/admin/oceny}" th:object="${tasksWithRatings}">
+
+        <input type="hidden" th:field="*{trainingId}"/>
+        <input type="hidden" th:field="*{userId}"/>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Max</th>
+                <th>Obowiązkowe</th>
+                <th>Punkty</th>
+                <th>Link do rozwiązania</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item, stat: *{tasksWithRating}">
+                <input type="hidden" th:field="*{tasksWithRating[__${stat.index}__].userTaskId}"/>
+                <td>
+                    <a th:href="|/admin/zadania/${item.taskId}|" th:text="${item.taskName}"></a>
+                </td>
+                <td th:text="${item.maxPoints}"></td>
+                <td th:text="${item.mandatory ? 'Tak' : 'Nie'}"></td>
+                <td>
+                    <input type="number" step="0.1" size="5" style="width: 50px"
+                           th:field="*{tasksWithRating[__${stat.index}__].points}"/>
+                </td>
+                <td>
+                    <input type="url" size="50" th:field="*{tasksWithRating[__${stat.index}__].solutionUrl}"/>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-primary">Zapisz</button>
+    </form>
+
+</div>
+
+
+</body>
+</html>

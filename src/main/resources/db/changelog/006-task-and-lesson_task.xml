@@ -1,0 +1,46 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, mariadb, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="006-task-and-lesson_task" author="mkunert">
+
+        <addColumn tableName="task">
+            <column name="tags" type="varchar(1000)"/>
+            <column name="sort_order" type="bigint"/>
+        </addColumn>
+
+        <createTable tableName="lesson_task">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="lesson_id" type="bigint" />
+            <column name="task_id" type="bigint" />
+            <column name="deadline" type="datetime"/>
+            <column name="is_mandatory" type="boolean" defaultValueBoolean="true"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="lesson_task"
+                                 baseColumnNames="task_id"
+                                 constraintName="fk_lesson_task__task_id"
+                                 referencedTableName="task"
+                                 referencedColumnNames="id" />
+
+        <addForeignKeyConstraint baseTableName="lesson_task"
+                                 baseColumnNames="lesson_id"
+                                 constraintName="fk_lesson_task__lesson_id"
+                                 referencedTableName="lesson"
+                                 referencedColumnNames="id" />
+
+        <renameColumn tableName="user_task"
+                      oldColumnName="task_id"
+                      columnDataType="bigint"
+                      newColumnName="lesson_task_id" />
+
+    </changeSet>
+
+</databaseChangeLog>

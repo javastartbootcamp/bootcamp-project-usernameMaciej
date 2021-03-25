@@ -1,0 +1,20 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, mariadb, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="010-add_foreign_key_user_task.xml" author="mkunert">
+
+        <addForeignKeyConstraint baseTableName="user_task"
+                                 baseColumnNames="lesson_task_id"
+                                 constraintName="fk_user_task__lesson_task_id"
+                                 referencedTableName="lesson_task"
+                                 referencedColumnNames="id" />
+
+    </changeSet>
+
+</databaseChangeLog>

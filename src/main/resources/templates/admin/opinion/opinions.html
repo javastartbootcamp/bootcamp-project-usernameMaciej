@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+<body>
+<div layout:fragment="admin-content" class="container">
+
+    <h2>Opinie</h2>
+    <a href="/admin/opinie/dodaj">Dodaj nową opinię</a>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Autor</th>
+            <th>Edycja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="opinion: ${opinions}">
+            <td th:text="${opinion.author}"></td>
+            <td>
+                <a th:href="'/admin/opinie/' + ${opinion.id} + '/edytuj'">
+                    <button class="btn btn-primary px-3 m-0">
+                        <i class="fa fa-edit"></i> Edytuj
+                    </button>
+                </a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

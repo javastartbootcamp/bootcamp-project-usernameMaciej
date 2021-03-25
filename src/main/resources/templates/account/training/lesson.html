@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/account}">
+<body>
+<h2>Lekcja</h2>
+<div layout:fragment="account-content" class="container">
+
+    <h3 class="mb-4" th:text="|Zajęcia: ${lesson.title}|"></h3>
+
+    <h4>Materiały</h4>
+
+    <div th:if="${!#strings.isEmpty(lesson.lessonLinks)}">
+        <p>
+            <span>Linki do tematów w kursie internetowym</span>
+        </p>
+        <ul>
+            <li th:each="link, i: ${lesson.lessonLinks.split('\n')}">
+                <a th:if="${link.contains(';')}" th:href="${link.split(';')[1]}" target="_blank"
+                   th:text="${link.split(';')[0]}"></a>
+                <a th:if="${!link.contains(';')}" th:href="${link.split(';')[0]}" target="_blank"
+                   th:text="|Link ${i.index+1}|"></a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:each="video: ${lesson.videoLinks.split('\n')}">
+        <iframe th:if="${!#strings.isEmpty(video)}" th:src="|https://www.youtube.com/embed/${video}"
+                width="560" height="315" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
+
+    <div th:if="${exercises.size() > 0}">
+        <h3>Ćwiczenia</h3>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Numer</th>
+                <th>Nazwa</th>
+                <th>Zagadnienia</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="excercise: ${exercises}" class="clickable-row"
+                th:data-href="'/konto/cwiczenie/' + ${excercise.id}">
+                <td th:text="${excercise.number}"></td>
+                <td th:text="${excercise.task.name}"></td>
+                <td th:text="${excercise.task.tags}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <h3>Zadania domowe</h3>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Numer</th>
+            <th>Nazwa</th>
+            <th>Punkty zdobyte</th>
+            <th>Punkty do zdobycia</th>
+            <th>Obowiązkowe</th>
+            <th>Termin do oddania</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="taskDto: ${tasks}" class="clickable-row"
+            th:data-href="'/konto/zadanie/' + ${taskDto.lessonTask.id}">
+            <td th:text="${taskDto.lessonTask.number}"></td>
+            <td th:text="${taskDto.lessonTask.task.name}"></td>
+            <td>
+                <span th:if="${taskDto.points}" th:text="${taskDto.points}"></span>
+                <span th:if="!${taskDto.points}">-</span>
+            </td>
+            <td th:text="${taskDto.lessonTask.task.points}"></td>
+            <td>
+                <span th:if="${taskDto.lessonTask.mandatory}">Tak</span>
+                <span th:if="!${taskDto.lessonTask.mandatory}">Nie</span>
+            </td>
+            <td th:text="${#temporals.format(taskDto.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title th:text="|Szablon lekcji: ${templateLesson.lesson.title}|">Lekcja</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <a th:href="|/admin/szablony/${templateLesson.trainingTemplate.id}|"><i class="fa fa-arrow-left"></i>&nbsp;Powrót do
+        szablonu szkolenia</a>
+
+    <h3 th:text="|Szablon lekcji: ${templateLesson.number}. ${templateLesson.lesson.title}|"></h3>
+
+    <a th:href="|/admin/szablony/${templateLesson.trainingTemplate.id}/lekcje/${templateLesson.id}/edycja|"><i
+            class="fa fa-edit"></i>&nbsp;Edytuj lekcję</a>
+
+    <h4>Materiały</h4>
+
+    <div th:if="${!#strings.isEmpty(templateLesson.lesson.lessonLinks)}">
+        <p>
+            <span>Linki do tematów w kursie internetowym</span>
+        </p>
+        <ul>
+            <li th:each="link, i: ${templateLesson.lesson.lessonLinks.split('\n')}">
+                <a th:if="${link.contains(';')}" th:href="${link.split(';')[1]}" target="_blank"
+                   th:text="${link.split(';')[0]}"></a>
+                <a th:if="${!link.contains(';')}" th:href="${link.split(';')[0]}" target="_blank"
+                   th:text="|Link ${i.index+1}|"></a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${!#strings.isEmpty(templateLesson.lesson.videoLinks)}"
+         th:each="video: ${templateLesson.lesson.videoLinks.split('\n')}">
+        <iframe width="560" height="315" th:src="|https://www.youtube.com/embed/${video}|" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
+
+    <h4>Ćwiczenia
+        <a th:href="|/admin/szablony/${templateLesson.trainingTemplate.id}/lekcje/${templateLesson.id}/cwiczenia/dodaj|">
+            <i class="fa fa-plus pr-2" aria-hidden="true"></i>
+        </a>
+        <table class="table" th:if="${!templateLesson.lesson.lessonExercises.isEmpty()}">
+            <thead>
+            <tr>
+                <th>Numer</th>
+                <th>Nazwa</th>
+                <th>Tagi</th>
+                <th>Rozwiązania</th>
+                <th>Akcje</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="lessonExercise: ${templateLesson.lesson.lessonExercises}">
+                <td th:text="${lessonExercise.number}"></td>
+                <td th:text="${lessonExercise.task.name}"></td>
+                <td th:text="${lessonExercise.task.tags}"></td>
+                <td th:text="|${#strings.isEmpty(lessonExercise.task.solutionSourceUrl) ? 'Nie': 'Tak'} / ${#strings.isEmpty(lessonExercise.task.solutionVideo) ? 'Nie': 'Tak'}|"></td>
+                <td>
+                    <a th:href="|/admin/lekcje/cwiczenia/${lessonExercise.id}|" title="Zobacz"><i
+                            class="fa fa-lg fa-directions"></i></a>
+                    &nbsp;
+                    <a th:href="|/admin/szablony/${templateLesson.trainingTemplate.id}/lekcje/${templateLessonId}/cwiczenia/${lessonExercise.id}/edytuj|" title="Edytuj">
+                        <i class="fa fa-lg fa-edit"></i>
+                    </a>
+
+                    <a th:href="|/admin/szablony/${templateLesson.trainingTemplate.id}/lekcje/${templateLesson.id}/cwiczenia/${lessonExercise.id}/usun|"
+                       title="Usuń" onclick="return confirm('Na pewno usunąć?');">
+                        <i class="fa fa-lg fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </h4>
+
+    <h4>Zadania domowe
+        <a th:href="|/admin/szablony/${templateLesson.trainingTemplate.id}/lekcje/${templateLesson.id}/zadania/dodaj|">
+            <i class="fa fa-plus pr-2" aria-hidden="true"></i>
+        </a>
+    </h4>
+
+    <table class="table" th:if="${!templateLesson.lesson.lessonTasks.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Numer</th>
+            <th>Nazwa</th>
+            <th>Punkty</th>
+            <th>Obowiązkowe?</th>
+            <th>Do kiedy</th>
+            <th>Tagi</th>
+            <th>Rozwiązania</th>
+            <th>Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lessonTask: ${templateLesson.lesson.lessonTasks}">
+            <td th:text="${lessonTask.number}"></td>
+            <td th:text="${lessonTask.task.name}"></td>
+            <td th:text="${lessonTask.task.points}"></td>
+            <td>
+                <span th:if="${!lessonTask.mandatory}">
+                    Nie
+                    <a th:href="|/admin/szablony/${templateLesson.trainingTemplate.id}/lekcje/${templateLessonId}/zadania/${lessonTask.id}/obowiazkowe?zmien=true|">Zmień</a>
+                </span>
+                <span th:if="${lessonTask.mandatory}">
+                    Tak
+                    <a th:href="|/admin/szablony/${templateLesson.trainingTemplate.id}/lekcje/${templateLessonId}/zadania/${lessonTask.id}/obowiazkowe?zmien=false|">Zmień</a>
+                </span>
+            </td>
+            <td>
+                <span th:text="|+${lessonTask.deadlineDays}d ${lessonTask.deadlineHour}|"></span>
+            </td>
+            <td th:text="${lessonTask.task.tags}"></td>
+            <td th:text="|${#strings.isEmpty(lessonTask.task.solutionSourceUrl) ? 'Nie': 'Tak'} / ${#strings.isEmpty(lessonTask.task.solutionVideo) ? 'Nie': 'Tak'}|"></td>
+            <td>
+                <a th:href="|/admin/zadania/${lessonTask.task.id}|" title="Zobacz"><i
+                        class="fa fa-lg fa-directions"></i></a>
+                &nbsp;
+                <a th:href="|/admin/szablony/${templateLesson.trainingTemplate.id}/lekcje/${templateLessonId}/zadania/${lessonTask.id}/edytuj|" title="Edytuj">
+                    <i class="fa fa-lg fa-edit"></i>
+                </a>
+
+                <a th:href="|/admin/szablony/${templateLesson.trainingTemplate.id}/lekcje/${templateLesson.id}/zadania/${lessonTask.id}/usun|"
+                   title="Usuń" onclick="return confirm('Na pewno usunąć?');">
+                    <i class="fa fa-lg fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p th:if="${templateLesson.lesson.lessonTasks.isEmpty()}">Ta lekcja nie ma jeszcze dodanych zadań</p>
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+
+</div>
+
+</body>
+</html>

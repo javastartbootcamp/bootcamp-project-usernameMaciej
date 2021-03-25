@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Lekcja</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3>Dodawanie ćwiczeń do lekcji</h3>
+
+    <form method="post"
+          th:action="@{'/admin/szablony/lekcje/cwiczenia/dodaj'}"
+          th:object="${dto}">
+        <input type="hidden" th:field="*{templateId}"/>
+        <input type="hidden" th:field="*{templateLessonId}"/>
+
+        <div class="form-row">
+            <label>Wybierz zadania które chcesz dodać</label>
+        </div>
+
+        Filtrowanie: <input type="text" id="filter-input" autocomplete="off"/>
+        <i class="fas fa-lg fa-trash" id="clear_search" style="cursor: pointer"></i>
+
+        <table class="table table-hover" >
+            <thead>
+            <tr>
+                <td>Czy dodać?</td>
+                <td>Nazwa</td>
+                <td>Tagi</td>
+            </tr>
+            </thead>
+            <tbody id="mytable">
+            <tr th:each="task: ${tasks}" th:data-href="${task.id}" class="selectable-row">
+                <td>
+                    <input type="checkbox" name="taskIds" th:id="|id_${task.id}|" th:value="${task.id}" />
+                </td>
+                <td>
+                    <a th:text="${task.name}" target="_blank" th:href="|/admin/zadania/${task.id}|"></a>
+                </td>
+                <td th:text="${task.tags}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button class="btn btn-primary" type="submit">
+            Dodaj
+        </button>
+
+    </form>
+
+    <div th:replace="~{fragments/scripts :: selectable-row}"></div>
+    <div th:replace="~{fragments/scripts :: filtering}"></div>
+
+
+</div>
+
+
+</body>
+</html>

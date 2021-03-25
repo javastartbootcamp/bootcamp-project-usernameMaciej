@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<head>
+    <title>Bootcamp Java Online - Intensywne Szkolenie od Podstaw</title>
+    <meta property="og:title" content="Bootcamp Java Online - Intensywne Szkolenie od Podstaw"/>
+    <meta name="twitter:title" content="Bootcamp Java Online - Intensywne Szkolenie od Podstaw"/>
+    <meta name="description"
+          content="Naucz się programować pod okiem doświadczonego mentora. Bootcampy programowania w Javie od podstaw aż do tworzenia własnych aplikacji webowych."/>
+    <meta property="og:description"
+          content="Naucz się programować pod okiem doświadczonego mentora. Bootcampy programowania w Javie od podstaw aż do tworzenia własnych aplikacji webowych."/>
+    <meta name="twitter:description"
+          content="Naucz się programować pod okiem doświadczonego mentora. Bootcampy programowania w Javie od podstaw aż do tworzenia własnych aplikacji webowych."/>
+    <meta property="og:url" th:content="|${currentDomain}|"/>
+    <link rel="canonical" th:href="|${currentDomain}|"/>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <script type="text/javascript">
+        $(document).on('click', 'a[href^="#"]', function (event) {
+            event.preventDefault();
+
+            $('html, body').animate({
+                scrollTop: $($.attr(this, 'href')).offset().top - 80
+            }, 500);
+        });
+
+    </script>
+
+    <div class="home-header">
+
+        <div class="wrapper">
+
+            <div class="header-content">
+
+                <h1 class="home-header-title my-4">Bootcamp Java Developer Online</h1>
+                <p class="home-header-subtitle">Naucz się od podstaw w 6 miesięcy podstaw tworzyć aplikacje webowe w
+                    Javie.<br/>
+                    Następna grupa startuje od 12.04.2021.<br/>
+                </p>
+
+                <button data-toggle="modal" data-target="#modalLoginAvatarDemo"
+                        class="btn btn-light btn-lg mb-3 waves-effect waves-light">Skontaktuj się ze Sławkiem
+                </button>
+
+                <a href="/szkolenie/junior-java-developer-online"
+                   class="btn btn-primary btn-lg mb-3 waves-effect waves-light">Więcej informacji o Bootcampie</a>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalLoginAvatarDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog cascading-modal modal-avatar modal-md" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Header-->
+                <div class="modal-header">
+                    <img src="/img/slawek.jpg" class="rounded-circle img-responsive"
+                         alt="Avatar photo">
+                </div>
+                <!--Body-->
+                <div class="modal-body text-center mb-1">
+
+                    <h5 class="mt-1 mb-2">Sławek Ludwiczak</h5>
+
+                    <p>Mam na imię Sławek i będę Twoim opiekunem podczas trwania bootcampu.<br/>Jeśli masz jakieś
+                        pytania to
+                        chętnie na nie odpowiem.</p>
+
+                    <div class="text-center mt-4">
+                        <a href="mailto:bootcamp@javastart.pl" class="btn">
+                            <span class="color-primary">Wyślij wiadomość do Sławka</span><br/>
+                            <span style="font-size: 10px">bootcamp@javastart.pl</span>
+                        </a>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal"
+                                data-target="#basicExampleModal">
+                            <span>Zamów rozmowę telefoniczną</span><br/>
+                            <span style="font-size: 10px">788 023 248</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Rozmowa telefoniczna
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="call-request-form" method="post" class="needs-validation">
+                    <div class="modal-body">
+                        <div class="input-row">
+                            <label for="firstName">Imię</label>
+                            <input type="text" id="firstName" name="phoneNumber" required class="form-control"
+                                   placeholder="Imię"/>
+                        </div>
+                        <div class="input-row mt-3">
+                            <label for="phoneNumber">Numer telefonu</label>
+                            <input type="text" id="phoneNumber" name="phoneNumber" required class="form-control"
+                                   placeholder="Numer telefonu"/>
+                            <div class="invalid-feedback">
+                                Numer telefonu jest wymagany.
+                            </div>
+                        </div>
+                        <div class="input-row mt-3">
+                            <label for="contactDate">Kiedy do Ciebie zadzwonić? (zostaw puste jeśli obojętnie)</label>
+                            <input type="text" id="contactDate" name="contactDate" class="form-control"
+                                   placeholder="Kiedy do Ciebie zadzwonić?"/>
+                        </div>
+                        <p class="mt-4 text-center">
+                            <i class="fa fa-info-circle"></i>
+                            Nikomu nie udostępniamy Twojego nr telefonu, ani go nie zapisujemy.
+                        </p>
+
+                        <p class="alert alert-danger text-center" id="call-request-form-error" style="display: none">
+                            Wystąpił błąd, spróbuj ponownie później.
+                        </p>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="call-request-submit-button" class="btn btn-primary">Zamów</button>
+                    </div>
+                </form>
+
+                <div id="call-request-form-success" class="text-center center-block m-4" style="display: none">
+                    <p class="alert alert-success">
+                        Rozmowa zamówiona pomyślnie. Do usłyszenia!
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        (function ($) {
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (form.checkValidity() !== false) {
+                        $.ajax({
+                            type: "POST",
+                            url: '/api/phone-call',
+                            // data: $('form#call-request-form').serialize(),
+                            data: JSON.stringify({
+                                "firstName": $('#firstName').val(),
+                                "phoneNumber": $('#phoneNumber').val(),
+                                "contactDate": $('#contactDate').val()
+                            }),
+                            contentType: 'application/json',
+                            success: function (data) {
+                                $('#call-request-form').hide();
+                                $('#call-request-form-error').hide();
+                                $('#call-request-form-success').show();
+                            },
+                            error: function (data) {
+                                console.log('err');
+                                $('#call-request-form-error').show();
+                            }
+                        });
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })(jQuery);
+    </script>
+
+    <div class="section">
+        <div class="container font-12 pt-4">
+
+            <h2 class="mb-4">Bootcamp <span class="colorful-header">Junior Java Developer</span></h2>
+
+            <p>Programowanie nie&nbsp;jest&nbsp;łatwą sztuką. Nauka we&nbsp;własnym zakresie może zająć długie lata i&nbsp;często
+                bywa nieefektywna. Pojawiają się&nbsp;podczas niej
+                pytania,&nbsp;wątpliwości oraz&nbsp;problemy,&nbsp;których rozwiązanie zajmuje mnóstwo czasu, a&nbsp;efekt
+                nie zawsze jest zgodny z przyjętymi standardami programowania.</p>
+            <p>Obecnie zapotrzebowanie na programistów jest ogromne. Wiele zachodnich firm programistycznych zauważyło
+                potencjał w&nbsp;Polsce i&nbsp;otworzyło tutaj swoje oddziały. Można śmiało powiedzieć, że&nbsp;to&nbsp;złoty
+                okres dla&nbsp;tej&nbsp;branży.</p>
+            <p>Przygotowaliśmy autorski program szkolenia, który zawiera wszystko co&nbsp;powinien znać początkujący
+                programista Java. Szkolenie jest bardzo intensywne, wymaga wiele wysiłku oraz&nbsp;ciężkiej pracy,
+                jesteśmy jednak przekonani, że&nbsp;efekty są&nbsp;tego warte. W&nbsp;cztery miesiące nauczysz się&nbsp;tego,
+                czego inni uczą się&nbsp;latami. O ile się do tego szkolenia przyłożysz. <a
+                        href="/szkolenie/junior-java-developer-online">Więcej o Bootcampie...</a></p>
+
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container">
+            <h2 id="szkolenia" class="mb-4">Planowane <span class="colorful-header">terminy</span></h2>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Nazwa szkolenia</th>
+                        <th>Rodzaj</th>
+                        <th>Cena</th>
+                        <th>Data rozpoczęcia</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="training: ${trainings}">
+                        <td>
+                            <a th:href="'/szkolenie/' + ${training.description.url}"
+                               th:text="${training.description.title}" class="underline"></a>
+                        </td>
+                        <td th:text="${training.type}"></td>
+                        <td th:if="${training.price != training.regularPrice}">
+                            <span style="text-decoration: line-through;"
+                                  th:text="|${#numbers.formatDecimal(training.regularPrice, 0, 'NONE', 0, 'COMMA')} zł|">5000 zł</span>
+                            <b th:text="|${#numbers.formatDecimal(training.price, 0, 'NONE', 0, 'COMMA')} zł|"></b>
+                        </td>
+                        <td th:unless="${training.price != training.regularPrice}">
+                            <span th:text="|${#numbers.formatDecimal(training.price, 0, 'NONE', 0, 'COMMA')} zł|"></span>
+                        </td>
+                        <td th:text="${training.dates.split(', ')[0]}"></td>
+                        <td>
+                            <a th:href="'/szkolenie/' + ${training.description.url} + '/' + ${training.id}">
+                                <button class="btn btn-primary">Szczegóły i zapisy</button>
+                            </a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="section section-finansowanie">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col">
+                    <div class="container pt-4">
+                        <h2 id="finansowanie">Możliwości <span class="colorful-header">finansowania</span></h2>
+                        <p>Istnieją różne możliwości wsparcia w finansowaniu szkolenia. Chętnie pomożemy w załatwieniu
+                            formalności </p>
+
+                        <div class="row" style="display: inline-block">
+                            <img src="/img/inwestuj_w_rozwoj_logo.svg" alt="inwestuj w rozwoj logo"
+                                 style="vertical-align: middle; display: inline-block"/>
+                            <h3 style="vertical-align: middle; display: inline-block">
+                                <b><a href="https://inwestujwrozwoj.pl/" target="_blank">Program Inwestuj w
+                                    Rozwój</a></b>
+                            </h3>
+                        </div>
+                        <div class="row mt-4">
+                            <p>Według nas najlepsza dostępna aktualnie opcja finansowania w której nie trzeba
+                                spełniać wyjątkowych warunków. </p>
+
+                            <p>Warto skorzystać z tego rozwiązania <b>nawet jeśli posiadasz wystarczająco środków i nie
+                                potrzebujesz pożyczki na szkolenie</b>. Pożyczka nie jest oprocentowana, nie posiada
+                                żadnych dodatkowych kosztów.</p>
+                        </div>
+                        <div class="icon-and-text_box">
+                            <i class="fa fa-percent fa-4x icon-and-text_icon"></i>
+                            <span class="icon-and-text_text">Oprocentowanie 0%, bez ukrytych opłat</span>
+                        </div>
+                        <div class="icon-and-text_box">
+                            <i class="fa fa-chart-pie fa-4x icon-and-text_icon"></i>
+                            <span class="icon-and-text_text">Minimalna liczba rat/długość spłaty to 12 miesięcy, maksymalna to 36 miesięcy</span>
+                        </div>
+                        <div class="icon-and-text_box">
+                            <i class="fa fa-ban fa-4x icon-and-text_icon"></i>
+                            <span class="icon-and-text_text">Możliwość umorzenia od 20% do 25% pożyczki</span>
+                        </div>
+                        <div class="row mt-4">
+                            <a href="https://inwestujwrozwoj.pl/" target="_blank">Dowiedz się więcej na temat tego
+                                programu...</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col d-none d-md-block">
+                    <img src="/img/michael-longmire-RhBVoJnRqVg-unsplash.jpg" alt="Finansowanie">
+                </div>
+            </div>
+            <div class="mt-4">
+                <h3>Pozostałe możliwości finansowania</h3>
+
+                <ul>
+
+                    <li><b>Dofinansowanie z Urzędu Pracy</b> - Powiatowe Urzędy Pracy oferują często
+                        dofinansowania lub
+                        pełne
+                        finansowania szkoleń zawodowych dla osób bezrobotnych. Warto zapytać w swoim Urzędzie
+                        Pracy czy taka
+                        możliwość istnieje.
+                    </li>
+                    <li><b>Fundacja IMAGO</b> prowadzi projekty z finansowaniem szkolen dla osób w tudnej
+                        sytuacji. Więcej
+                        informacji można znaleźć w <a
+                                href="http://um.bielawa.pl/pl/aktualnosci/wiadomosci/4241-fundacja-imago-z-wroclawia-zaprasza-do-udzialu-w-projekcie-pn-inwestuj-w-siebie-ii-edycja"
+                                target="_blank">tym artykule</a>.
+                    </li>
+                </ul>
+                <p>Aktualnie niedostępne formy finansowania (neiwykluczone, że wrócą w przyszłości)</p>
+                <ul>
+                    <li><a href="https://open.frp.pl/" target="_blank"><b>Projekt OPEN</b></a> - Program który
+                        umożliwia
+                        uzyskanie
+                        dofinansowania na cele rozwojowe. Dodatkowo można uzyskać nawet do 25% umorzenia
+                        pożyczki.
+                    </li>
+                </ul>
+                <p>Jeśli znajdziesz inny sposób finansowania to koniecznie daj nam o tym znać! Pomożemy w
+                    załatwieniu formalności oraz umieścimy informację dla innych kursantów.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container opinions d-flex flex-column">
+            <h2 id="opinie" class="media-body mb-4">Opinie <span class="colorful-header">uczestników</span></h2>
+            <p class="text-justify">W naszych szkoleniach uczestniczyło do tej pory ponad 100 osób. Zdecydowana
+                większość jest
+                zadowolona z szkolenia i poleca nas swoim znajomym. Aktualnie większość kursantów to ludzie z polecenia.
+                Poniżej znajdziesz kilka opinii osób które pozwoliły na ich publikację. Dołączamy link również do
+                linkedina.
+                Można zauważyć, że część pracuje już w IT, a niektórzy pomimo zadowolenia z bootcampu, przekonali się,
+                że wolą pozostać w swoich aktualnych branżach. Zawsze jest to kwestia indywidualna.</p>
+            <div th:each="opinion: ${opinions}" class="opinion">
+                <div class="d-flex flex-column flex-md-row">
+                    <img th:if="${#strings.isEmpty(opinion.imageUrl)}" src="/img/opinion/quote.png" alt="cytat"
+                         class="opinion_image"/>
+                    <img th:if="${!#strings.isEmpty(opinion.imageUrl)}" th:src="'/img/opinion/' + ${opinion.imageUrl}"
+                         th:alt="${opinion.author}"
+                         class="opinion_image round"/>
+                    <div th:utext="${opinion.text}"></div>
+                </div>
+                <div class="d-flex justify-content-end flex-row w-100">
+                    <b th:text="${opinion.author}"></b>
+                    <a th:if="${!#strings.isEmpty(opinion.profileUrl)}" th:href="${opinion.profileUrl}" target="_blank"
+                       class="ml-2">
+                        <img src="/img/linkedin.png" alt="LinkedIn" style="width: 24px">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container pt-4 d-flex flex-column">
+            <h2 class="mb-4" id="trainers">Poznaj naszych <span class="colorful-header">trenerów</span></h2>
+            <p>Od 2014 roku tworzymy kursy internetowe, od 2016 szkolenia stacjonarne, a od 2020 szkolenia 100% online.
+                Naszym celem
+                jest efektywne przekazywanie wiedzy i pomaganie w realizacji celów naszych kursantów. Na początku tylko
+                Sławek i Marcin prowadzili szkolenia, a aktualnie do zespołu dołączyło parę zaufanych osób. Poniżej
+                możesz zapoznać się z naszym zespołem.</p>
+
+            <div class="row">
+
+                <div class="col-md trainer_column">
+                    <div class="author_image_container">
+                        <img src="/img/sergiusz_mazan.jpg" alt="Sergiusz" class="author_image circle_image">
+                    </div>
+                    <p class="trainer_description">
+                        <b>Sergiusz Mazan</b> to absolwent Informatyki na Politechnice Wrocławskiej. Zawodowo zajmuje
+                        się projektowaniem oraz tworzeniem systemów webowych. Programowanie jest dla niego nie tylko
+                        pracą, ale też pasją. Wolny czas spędza na poszerzaniu wiedzy i umiejętności w zakresie
+                        programowania. Chętnie pomaga oraz dzieli się wiedzą.
+                    </p>
+                </div>
+
+                <div class="col-sm trainer_column">
+                    <div class="author_image_container">
+                        <img src="/img/marcin_paluchowski.jpg" alt="Marcin" class="author_image circle_image">
+                    </div>
+                    <p class="trainer_description">
+                        <b>Marcin Paluchowski</b> zawodowo Java Developer specjalizujący się w tworzeniu systemów
+                        webowych. Kilka lat temu ukończył szkolenie Junior Java Developer. Uczestniczył już w wielu
+                        międzynarodowych projektach, gdzie miał okazję poznać wiele różnych technologii. W pracy
+                        zajmuje się również rekrutacją oraz wdrażaniem i szkoleniem programistów.
+                        Jego pasją jest programowanie, dzięki czemu stale udoskonala swoje umiejętności z tej dziedziny.
+                        Zdobytą wiedzę z chęcią przekazuje innym.
+                    </p>
+                </div>
+
+                <div class="col-md trainer_column">
+                    <div class="author_image_container">
+                        <img src="/img/slawek.jpg" alt="Sławek" class="author_image circle_image">
+                    </div>
+                    <p class="trainer_description">
+                        <b>Sławek Ludwiczak</b> ojciec założyciel JavaStart, absolwent informatyki na Politechnice
+                        Wrocławskiej, członek Polskiego Towarzystwa Informatycznego. Specjalista i pasjonat
+                        technologii Java.
+                    </p>
+                </div>
+
+
+                <div class="col-md trainer_column">
+                    <div class="author_image_container">
+                        <img src="/img/marcin.jpg" alt="Marcin" class="author_image circle_image">
+                    </div>
+                    <p class="trainer_description">
+                        <b>Marcin Kunert</b> to doświadczony deweloper ze sporą liczbą projektów na koncie. Uczestniczył
+                        w ogromnych projektach dla wielkich korporacji, a także tworzył mniejsze aplikacje dla klientów
+                        indywidualnych. Jest krytycznie nastawiony do kiepskiego kodu. Podchodzi do życia ze sporą dawką
+                        humoru. Zaskakuje cierpliwością i nieszablonowymi przykładami
+                        podczas tłumaczenia tych prostych i bardziej zaawansowanych zagadnień.
+                    </p>
+                </div>
+
+                <div class="col-sm trainer_column">
+                    <div class="author_image_container">
+                        <img src="/img/pawel_koper.jpg" alt="Paweł" class="author_image circle_image">
+                    </div>
+                    <p class="trainer_description">
+                        <b>Paweł Koper</b> - programista z 10-letnim stażem. Pracował w wielu projektach jako Java
+                        developer oraz tech leader. W swoich projektach aktywnie bierze udział w mentoringu i upskilingu
+                        młodszych developerów. Wie co jest ważne w byciu developerem i chętnie dzieli się tą wiedzą z
+                        innymi.<br/>
+                        Sam jest pasjonatem i cały czas uczy się nowych rozwiązań i technologii.
+                    </p>
+                </div>
+
+                <div class="col-sm trainer_column">
+                    <div class="author_image_container">
+                        <img src="/img/ania.jpg" alt="Ania" class="author_image circle_image">
+                    </div>
+                    <p class="trainer_description">
+                        <b>Ania Jaskot</b> - absolwentka Politechniki Wrocławskiej, a w nie tak dalekiej przeszłości
+                        uczestniczka kursu JavaStart. Na co dzień pracuje tworząc międzynarodowe projekty. Swoje
+                        dydaktyczne szlify zdobywała na Politechnice Wrocławskiej prowadząc zajęcia z Javy. Jej pasją
+                        jest przekazywanie wiedzy i obserwowanie jak w innych rodzi się miłość do programowania.
+                        Ambitnie i z uśmiechem podchodzi do wszelkich wyzwań.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="section">
+        <div class="container opinions d-flex flex-column">
+            <h2 id="faq" class="mb-4">Częste <span class="colorful-header">pytania i odpowiedzi</span></h2>
+            <div class="container pt-4">
+                <p class="question">Czy po bootcampie Junior Java Developer zdobędę pracę?</p>
+                <p>To zależy głównie od Ciebie. My jesteśmy "tylko" firmą szkoleniową i nie uczestniczymy w procesie
+                    rekrutacyjnym. Różni pracodawcy mają różne wymagania od kandydatów. Podczas bootcampu uczymy
+                    najpopularniejszych technologii i tworzymy świetną podstawę do dalszego rozwoju. Są przypadki, że
+                    osoby
+                    znajdowały pracę już miesiąc po szkoleniu. Są to jednak przypadki bardzo ciężkiej i intensywnej
+                    pracy
+                    przez cały okres bootcampu.</p>
+            </div>
+            <div class="container pt-4">
+                <p class="question">Czy dajecie gwarancję pracy? Inne firmy dają.</p>
+                <p>Nie. Zdajemy sobie sprawę, że inne firmy oferują "gwarancję pracy". Problem w tym, że ta gwarancja
+                    często
+                    obarczona jest szeregiem wymagań: egzaminy podczas szkolenia, przygotowanie CV, wysyłanie iluśtam CV
+                    tygodniowo, zdobycie statusu "absolwenta" itd. Moglibyśmy robić podobnie, ale osoby które dobrze
+                    radzą
+                    sobie podczas szkolenia nie mają problemów ze zdobyciem pracy po szkoleniu. No i gwarancja pracy
+                    kosztuje: konkurencja ma ceny bootcampów około 2 razy wyższe od naszych.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container opinions d-flex flex-column">
+            <h2 id="kontakt" class="mb-4">Kontakt</h2>
+            <div class="container pt-4">
+                <p>Zapraszamy do kontaktu. Chętnie odpowiemy na wszystkie pytania i rozwiejemy wątpliwości.</p>
+                <p>Email: bootcamp@javastart.pl</p>
+                <p>Telefon: 788 023 248 (pon-pt 8:00-16:00)</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

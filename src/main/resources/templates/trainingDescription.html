@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <title th:text="${trainingDescription.title}"></title>
+    <meta property="og:title" th:content="${trainingDescription.title}" />
+    <meta name="twitter:title" th:content="${trainingDescription.title}" />
+    <meta name="description" th:content="${trainingDescription.metaDescription}">
+    <meta property="og:description" th:content="${trainingDescription.metaDescription}">
+    <meta name="twitter:description" th:content="${trainingDescription.metaDescription}">
+    <meta th:if="${trainingDescription.noindex}" name="robots" content="noindex">
+    <meta property="og:url" th:content="|${currentDomain}/szkolenie/${trainingDescription.url}|" />
+    <link rel="canonical" th:href="|${currentDomain}/szkolenie/${trainingDescription.url}|" />
+</head>
+<body>
+<div layout:fragment="content" class="container my-4">
+
+
+    <h1 th:text="${trainingDescription.title}"></h1>
+    <p th:utext="${trainingDescription.content}"></p>
+
+    <div>
+        <h2>Terminy i zapisy</h2>
+    </div>
+
+    <div class="container">
+
+        <p th:unless="${!trainings.isEmpty()}">
+            Aktualnie nie ma zaplanowanych terminów dla tego szkolenia. Jeśli jesteś nim zainteresowany/a to daj nam o
+            tym znać.
+        </p>
+
+        <table class="table" th:if="${!trainings.isEmpty()}">
+            <thead>
+            <tr>
+                <th>Rodzaj</th>
+                <th>Cena</th>
+                <th>Data rozpoczęcia</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="training: ${trainings}">
+                <td th:text="${training.type}"></td>
+                <td th:if="${training.price != training.regularPrice}">
+                    <span style="text-decoration: line-through;"
+                          th:text="|${#numbers.formatDecimal(training.regularPrice, 0, 'NONE', 0, 'COMMA')} zł|">5000 zł</span>
+                    <b th:text="|${#numbers.formatDecimal(training.price, 0, 'NONE', 0, 'COMMA')} zł|"></b>
+                </td>
+                <td th:unless="${training.price != training.regularPrice}">
+                    <span th:text="|${#numbers.formatDecimal(training.price, 0, 'NONE', 0, 'COMMA')} zł|"></span>
+                </td>
+                <td th:text="${training.dates.split(', ')[0]}"></td>
+                <td>
+                    <a th:href="'/szkolenie/' + ${training.description.url} + '/' + ${training.id}">
+                        <button class="btn btn-primary">Szczegóły i zapisy</button>
+                    </a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <div th:if="${#httpServletRequest.getRequestURI().startsWith('/szkolenie/junior-java-developer-online')}">
+        <h2>Żaden termin nie pasuje?</h2>
+        <h3>Zostaw maila, damy znać o nowych terminach!</h3>
+        <iframe src="https://mailtrain.javastart.pl/subscription/ssivg6Mom" style="width: 100%; height: 700px"
+                frameBorder="0"></iframe>
+    </div>
+
+
+</div>
+</body>
+</html>

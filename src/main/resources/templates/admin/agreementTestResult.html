@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Testowanie umowy</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2 class="mb-4">Testowanie generowania umowy</h2>
+
+    <a href="/admin/umowa">Edycja umowy</a><br/>
+    <a href="/admin/umowa/test">Inne dane testowe</a>
+
+    <div class="loader">
+        <iframe class="ramka" th:src="'/umowa/' + ${fileName}" height="800"
+                style="background-color: transparent; width: 100%; max-width: 1024px"></iframe>
+    </div>
+
+
+</div>
+
+</body>
+</html>

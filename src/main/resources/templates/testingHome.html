@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <title>Szkolenie z testów automatycznych: Selenium i RestAssured</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <script type="text/javascript">
+        $(document).on('click', 'a[href^="#"]', function (event) {
+            event.preventDefault();
+
+            $('html, body').animate({
+                scrollTop: $($.attr(this, 'href')).offset().top - 80
+            }, 500);
+        });
+
+    </script>
+
+
+    <div class="home-header-desktop d-none d-md-block">
+
+        <div class="wrapper">
+
+            <div class="header-content">
+
+                <div class="col-sm">
+                    <h1 class="home-header-title my-4">Szkolenie stacjonarne z testów automatycznych</h1>
+                    <p class="home-header-subtitle">Naucz się automatyzować testy przy użyciu Selenium, RestAssured i
+                        innych narzędzi.<br/>
+                        <span>&nbsp;</span>
+                    </p>
+
+                    <button data-toggle="modal" data-target="#modalLoginAvatarDemo"
+                            class="btn btn-light btn-lg mb-3 waves-effect waves-light">Skontaktuj się ze Sławkiem
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="home-header-mobile d-block d-md-none">
+
+        <div class="wrapper">
+
+            <div class="header-content">
+
+                <div class="col-sm d-flex flex-column">
+                    <h1 class="home-header-title my-4">Szkolenie stacjonarne z testów automatycznych</h1>
+                    <p class="home-header-subtitle">Naucz się automatyzować testy przy użyciu Selenium, RestAssured i
+                        innych narzędzi.<br/>
+                        <span>&nbsp;</span>
+                    </p>
+
+                    <button data-toggle="modal" data-target="#modalLoginAvatarDemo"
+                            class="btn btn-light btn-lg mb-3 waves-effect waves-light">Skontaktuj się ze Sławkiem
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalLoginAvatarDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog cascading-modal modal-avatar modal-md" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Header-->
+                <div class="modal-header">
+                    <img src="/img/slawek.jpg" class="rounded-circle img-responsive"
+                         alt="Avatar photo">
+                </div>
+                <!--Body-->
+                <div class="modal-body text-center mb-1">
+
+                    <h5 class="mt-1 mb-2">Sławek Ludwiczak</h5>
+
+                    <p>Mam na imię Sławek i będę Twoim opiekunem podczas trwania szkolenia.<br/>Jeśli masz jakieś
+                        pytania to
+                        chętnie na nie odpowiem.</p>
+
+                    <div class="text-center mt-4">
+                        <a href="mailto:bootcamp@javastart.pl" class="btn">
+                            <span class="color-primary">Wyślij wiadomość do Sławka</span><br/>
+                            <span style="font-size: 10px">bootcamp@javastart.pl</span>
+                        </a>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal"
+                                data-target="#basicExampleModal">
+                            <span>Zamów rozmowę telefoniczną</span><br/>
+                            <span style="font-size: 10px">788 023 248</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Rozmowa telefoniczna
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="call-request-form" method="post" class="needs-validation">
+                    <div class="modal-body">
+                        <div class="input-row">
+                            <label for="firstName">Imię</label>
+                            <input type="text" id="firstName" name="phoneNumber" required class="form-control"
+                                   placeholder="Imię"/>
+                        </div>
+                        <div class="input-row mt-3">
+                            <label for="phoneNumber">Numer telefonu</label>
+                            <input type="text" id="phoneNumber" name="phoneNumber" required class="form-control"
+                                   placeholder="Numer telefonu"/>
+                            <div class="invalid-feedback">
+                                Numer telefonu jest wymagany.
+                            </div>
+                        </div>
+                        <div class="input-row mt-3">
+                            <label for="contactDate">Kiedy do Ciebie zadzwonić? (zostaw puste jeśli obojętnie)</label>
+                            <input type="text" id="contactDate" name="contactDate" class="form-control"
+                                   placeholder="Kiedy do Ciebie zadzwonić?"/>
+                        </div>
+                        <p class="mt-4 text-center">
+                            <i class="fa fa-info-circle"></i>
+                            Nikomu nie udostępniamy Twojego nr telefonu, ani go nie zapisujemy.
+                        </p>
+
+                        <p class="alert alert-danger text-center" id="call-request-form-error" style="display: none">
+                            Wystąpił błąd, spróbuj ponownie później.
+                        </p>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="call-request-submit-button" class="btn btn-primary">Zamów</button>
+                    </div>
+                </form>
+
+                <div id="call-request-form-success" class="text-center center-block m-4" style="display: none">
+                    <p class="alert alert-success">
+                        Rozmowa zamówiona pomyślnie. Do usłyszenia!
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        (function ($) {
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (form.checkValidity() !== false) {
+                        $.ajax({
+                            type: "POST",
+                            url: '/api/phone-call',
+                            // data: $('form#call-request-form').serialize(),
+                            data: JSON.stringify({
+                                "firstName": $('#firstName').val(),
+                                "phoneNumber": $('#phoneNumber').val(),
+                                "contactDate": $('#contactDate').val()
+                            }),
+                            contentType: 'application/json',
+                            success: function (data) {
+                                $('#call-request-form').hide();
+                                $('#call-request-form-error').hide();
+                                $('#call-request-form-success').show();
+                            },
+                            error: function (data) {
+                                console.log('err');
+                                $('#call-request-form-error').show();
+                            }
+                        });
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })(jQuery);
+    </script>
+
+    <div class="section">
+        <div class="container font-12 pt-4">
+
+            <h2 class="mb-4">Oferta <span class="colorful-header">szkoleń</span></h2>
+
+            <p>
+                Szkolenia, które znajdziesz u nas:</p>
+
+            <ul>
+                <li><a href="/szkolenie/selenium-webdriver-podstawowe">Selenium - 2 dni</a></li>
+                <li><a href="/szkolenie/selenium-webdriver-rozszerzone">Selenium - 3 dni</a></li>
+                <li><a href="/szkolenie/rest-assured-podstawy">RestAssured - 2 dni</a></li>
+            </ul>
+
+            <p>Szukasz czegoś innego? Napisz do nas <a
+                    href="mailto:bootcamp@javastart.pl">bootcamp@javastart.pl</a></p>
+
+            <p>
+                <b>Dlaczego wybrać nasze szkolenie Selenium?</b>
+            <ul>
+                <li>
+                    Doświadczeni trenerzy, praktycy – Nasi trenerzy to nie tylko teoretycy, od wielu lat w
+                    codziennej pracy wykorzystują Selenium oraz inne narzędzia omawiane w trakcie szkoleń
+                </li>
+                <li>
+                    Szkolenia z duża ilością praktyki - szkolenia są prowadzone w charakterze warsztatowym,
+                    praktycznie wszystkie poruszony elementy są powtórzone przez uczestników,
+                </li>
+                <li>
+                    Budowanie frameworku testowego – Szkolenia mają na celu przejście przez zagadnienia
+                    automatyzacji od podstaw, co wiąże się bezpośrednio z tym, że uczestnicy na nich nauczą się
+                    tworzyć projekty testowe od zera. Po odbytym szkoleniu stworzone projekty bez większych
+                    zmian będą mogły być wykorzystywane do dalszej nauki lub do zastosowania w pracy.
+                </li>
+                <li>
+                    Dobre praktyki – Trenerzy na podstawie swojego doświadczenia przekażą Ci jakich praktyk
+                    warto używać programując testy automatyczne oraz których warto się wyzbyć, w celu
+                    tworzenia optymalnych testów.
+                </li>
+            </ul>
+
+            <p><b>Dodatkowo dla kursu Selenium:</b></p>
+            <ul>
+                <li>
+                    W ramach szkolenia wszyscy uczestnicy, którzy je ukończą otrzymają dostęp do naszego
+                    kursu internetowego Selenium na 1 rok w prezencie! Uczestnicy będą mogli utrwalić wiedzę
+                    zdobytą w trakcie szkolenia stacjonarnego oraz dowiedzieć się nowych rzeczy,
+                    nieporuszanych na szkoleniu.
+                </li>
+                <li>
+                    Wsparcie mentorów po kursie – W ramach kursu internetowego Selenium będziesz miał
+                    dostęp do forum, na którym trenerzy w ramach możliwości będą odpowiadać na Twoje
+                    pytania.
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container">
+            <h2 id="szkolenia" class="mb-4">Planowane <span class="colorful-header">terminy</span></h2>
+            <div class="table-responsive" th:if="${trainings.size() > 0}">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Nazwa szkolenia</th>
+                        <th>Rodzaj</th>
+                        <th>Cena</th>
+                        <th>Data rozpoczęcia</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="training: ${trainings}">
+                        <td>
+                            <a th:href="'/szkolenie/' + ${training.description.url}"
+                               th:text="${training.description.title}" class="underline"></a>
+                        </td>
+                        <td th:text="${training.type}"></td>
+                        <td th:if="${training.price != training.regularPrice}">
+                            <span style="text-decoration: line-through;"
+                                  th:text="|${#numbers.formatDecimal(training.regularPrice, 0, 'NONE', 0, 'COMMA')} zł|">5000 zł</span>
+                            <b th:text="|${#numbers.formatDecimal(training.price, 0, 'NONE', 0, 'COMMA')} zł|"></b>
+                        </td>
+                        <td th:unless="${training.price != training.regularPrice}">
+                            <span th:text="|${#numbers.formatDecimal(training.price, 0, 'NONE', 0, 'COMMA')} zł|"></span>
+                        </td>
+                        <td th:text="${training.dates.split(', ')[0]}"></td>
+                        <td>
+                            <a th:href="'/szkolenie/' + ${training.description.url} + '/' + ${training.id}">
+                                <button class="btn btn-primary">Szczegóły i zapisy</button>
+                            </a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <p th:unless="${!trainings.isEmpty()}">
+                Aktualnie nie ma zaplanowanych terminów dla tego typu szkoleń. Jeśli jesteś nim zainteresowany/a to daj
+                nam o
+                tym znać.
+            </p>
+        </div>
+    </div>
+
+    <div class="section section-finansowanie">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col">
+                    <div class="container pt-4">
+                        <h2 id="finansowanie">Możliwości <span class="colorful-header">finansowania</span></h2>
+                        <p>Istnieją różne możliwości wsparcia w finansowaniu szkolenia. Chętnie pomożemy w załatwieniu
+                            formalności </p>
+
+                        <div class="row" style="display: inline-block">
+                            <img src="/img/inwestuj_w_rozwoj_logo.svg" alt="inwestuj w rozwoj logo"
+                                 style="vertical-align: middle; display: inline-block"/>
+                            <h3 style="vertical-align: middle; display: inline-block">
+                                <b><a href="https://inwestujwrozwoj.pl/" target="_blank">Program Inwestuj w
+                                    Rozwój</a></b>
+                            </h3>
+                        </div>
+                        <div class="row mt-4">
+                            <p>Według nas najlepsza dostępna aktualnie opcja finansowania w której nie trzeba
+                                spełniać wyjątkowych warunków. </p>
+
+                            <p>Warto skorzystać z tego rozwiązania <b>nawet jeśli posiadasz wystarczająco środków i nie
+                                potrzebujesz pożyczki na szkolenie</b>. Pożyczka nie jest oprocentowana, nie posiada
+                                żadnych dodatkowych kosztów.</p>
+                        </div>
+                        <div class="icon-and-text_box">
+                            <i class="fa fa-percent fa-4x icon-and-text_icon"></i>
+                            <span class="icon-and-text_text">Oprocentowanie 0%, bez ukrytych opłat</span>
+                        </div>
+                        <div class="icon-and-text_box">
+                            <i class="fa fa-chart-pie fa-4x icon-and-text_icon"></i>
+                            <span class="icon-and-text_text">Minimalna liczba rat/długość spłaty to 12 miesięcy, maksymalna to 36 miesięcy</span>
+                        </div>
+                        <div class="icon-and-text_box">
+                            <i class="fa fa-ban fa-4x icon-and-text_icon"></i>
+                            <span class="icon-and-text_text">Możliwość umorzenia od 20% do 25% pożyczki</span>
+                        </div>
+                        <div class="row mt-4">
+                            <a href="https://inwestujwrozwoj.pl/" target="_blank">Dowiedz się więcej na temat tego
+                                programu...</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col d-none d-md-block">
+                    <img src="/img/michael-longmire-RhBVoJnRqVg-unsplash.jpg" alt="Finansowanie">
+                </div>
+            </div>
+            <div class="mt-4">
+                <h3>Pozostałe możliwości finansowania</h3>
+
+                <ul>
+
+                    <li><b>Dofinansowanie z Urzędu Pracy</b> - Powiatowe Urzędy Pracy oferują często
+                        dofinansowania lub
+                        pełne
+                        finansowania szkoleń zawodowych dla osób bezrobotnych. Warto zapytać w swoim Urzędzie
+                        Pracy czy taka
+                        możliwość istnieje.
+                    </li>
+                    <li><b>Fundacja IMAGO</b> prowadzi projekty z finansowaniem szkolen dla osób w tudnej
+                        sytuacji. Więcej
+                        informacji można znaleźć w <a
+                                href="http://um.bielawa.pl/pl/aktualnosci/wiadomosci/4241-fundacja-imago-z-wroclawia-zaprasza-do-udzialu-w-projekcie-pn-inwestuj-w-siebie-ii-edycja"
+                                target="_blank">tym artykule</a>.
+                    </li>
+                </ul>
+                <p>Aktualnie niedostępne formy finansowania (neiwykluczone, że wrócą w przyszłości)</p>
+                <ul>
+                    <li><a href="https://open.frp.pl/" target="_blank"><b>Projekt OPEN</b></a> - Program który
+                        umożliwia
+                        uzyskanie
+                        dofinansowania na cele rozwojowe. Dodatkowo można uzyskać nawet do 25% umorzenia
+                        pożyczki.
+                    </li>
+                </ul>
+                <p>Jeśli znajdziesz inny sposób finansowania to koniecznie daj nam o tym znać! Pomożemy w
+                    załatwieniu formalności oraz umieścimy informację dla innych kursantów.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+
+        <div class="container pt-4 d-flex flex-column">
+            <h2 class="mb-4" id="trainers">Poznaj naszych <span class="colorful-header">trenerów</span></h2>
+            <p>Za szkolenia z testowania odpowiedziany jest Mateusz Ciołek oraz Mateusz Podolak. Testerzy i trzenerzy z
+                wieloletnim doświadczeniem. Przeprowadzili już sporo szkoleń w tematyce automatyzacji testów. Zebrane
+                doświadczenie z innych firm przekuli na własny program szkoleń.</p>
+
+            <div class="row">
+                <div class="col trainer_column">
+                    <div class="author_image_container"><img class="author_image circle_image"
+                                                             src="/img/mateusz_ciolek.jpg" alt="Mateusz Ciołek"/></div>
+                    <p class="trainer_description"><strong>Mateusz Ciołek</strong> - Absolwent Politechniki
+                        Wrocławskiej. Inżynier test&oacute;w z ponad 8 letnim doświadczeniem w branży. Na co dzień
+                        pracuje jako lider zespołu tester&oacute;w automatycznych w jednej z wrocławskich firm. W wolnym
+                        czasie trener automatyzacji i tw&oacute;rca kursu Selenium. Pasjonat automatyzacji test&oacute;w
+                        i dobrych praktyk w automatyzacji, kt&oacute;ry stara opierać się o wzorce programowania i Clean
+                        Code.</p>
+                </div>
+                <div class="col trainer_column">
+                    <div class="author_image_container"><img class="author_image circle_image"
+                                                             src="/img/mateusz_podolak.jpg" alt="Mateusz Podolak"/>
+                    </div>
+                    <p class="trainer_description"><strong>Mateusz Podolak</strong> - Java Developer odpowiadający za
+                        część backendową serwis&oacute;w webowych. Absolwent informatyki na Politechnice Wrocławskiej.
+                        Swoje pierwsze kroki w karierze zawodowej stawiał jako tester automatyczny. Zajmował się
+                        automatyzacją test&oacute;w portali webowych oraz aplikacji mobilnych.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="section">
+        <div class="container opinions d-flex flex-column">
+            <h2 id="kontakt" class="mb-4">Kontakt</h2>
+            <div class="container pt-4">
+                <p>Zapraszamy do kontaktu. Chętnie odpowiemy na wszystkie pytania i rozwiejemy wątpliwości.</p>
+                <p>Email: bootcamp@javastart.pl</p>
+                <p>Telefon: 788 023 248 (pon-pt 8:00-16:00)</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

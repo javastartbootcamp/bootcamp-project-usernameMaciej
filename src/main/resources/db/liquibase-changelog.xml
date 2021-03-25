@@ -1,0 +1,47 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!-- changelog -->
+    <include file="changelog/001-init.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/002-custom-agreements.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/003-lessons-and-tasks.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/004-user-task-solution.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/005-topic.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/006-task-and-lesson_task.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/007-task-cleanup.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/008-lesson_task-solution.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/009-lesson_exercise.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/010-add_foreign_key_user_task.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/011-add_archived_to_task.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/012-lesson_sort_order.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/013-lesson_visible.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/014-task-last-used.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/015-training-regular-price.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/016-financing-method.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/017-company.xml" relativeToChangelogFile="true"/>
+    <include file="proddata/002-company-proddata.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/017-company.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/018-training-category.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/019-training-description-noindex.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/020-user-task-solutions.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/021-training-templates.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/022-automated_tasks.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/023-exercise-numbering.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/024-meta-description.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/025-user-deadline.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/026-signup-lesson-to.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/027-signup-custom-payment-info.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/028-task-rating.xml" relativeToChangelogFile="true"/>
+
+    <!-- testdata -->
+    <include file="testdata/001-init-testdata.xml" relativeToChangelogFile="true"/>
+
+    <!-- proddata -->
+    <include file="proddata/001-init-proddata.xml" relativeToChangelogFile="true"/>
+
+
+
+</databaseChangeLog>

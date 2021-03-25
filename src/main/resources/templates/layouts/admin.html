@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <link href="/admin-style.css" rel="stylesheet"/>
+    <!-- MDBootstrap Datatables  -->
+    <link href="/css/addons/datatables.min.css" rel="stylesheet" />
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="/js/addons/datatables.min.js"></script>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-3">
+        <div class="row">
+
+            <div class="col menu">
+
+                <a href="/admin/szkolenia">Szkolenia</a>
+                <a href="/admin/szablony">Szablony</a>
+                <a href="/admin/tematy">Tematy</a>
+                <a href="/admin/zadania">Zadania</a>
+                <a href="/admin/opisy">Opisy</a>
+                <a href="/admin/uzytkownicy">Użytkownicy</a>
+                <a href="/admin/opinie">Opinie</a>
+                <a href="/admin/strony">Strony</a>
+                <a href="/admin/umowa">Umowa</a>
+
+            </div>
+            <div class="col-10">
+                <div layout:fragment="admin-content"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

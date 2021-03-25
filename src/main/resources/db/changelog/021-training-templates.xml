@@ -1,0 +1,45 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, mariadb, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="021-training-templates" author="mkunert">
+
+        <createTable tableName="training_template">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(1000)"/>
+        </createTable>
+
+        <createTable tableName="training_template_lesson">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="lesson_id" type="bigint">
+                <constraints referencedColumnNames="id"
+                             referencedTableName="lesson"
+                             foreignKeyName="fk_training_template_lesson__lesson_id"/>
+            </column>
+            <column name="training_template_id" type="bigint">
+                <constraints referencedColumnNames="id"
+                             referencedTableName="training_template"
+                             foreignKeyName="fk_training_template_lesson__training_template_id"/>
+            </column>
+
+            <column name="number" type="bigint" />
+
+        </createTable>
+
+        <addColumn tableName="lesson_task">
+            <column name="deadline_days" type="int" />
+            <column name="deadline_hour" type="time" />
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

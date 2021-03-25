@@ -1,0 +1,22 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, mariadb, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="024-meta-description" author="mkunert">
+
+        <addColumn tableName="page">
+            <column name="meta_description" type="varchar(999)" />
+        </addColumn>
+
+        <addColumn tableName="training_description">
+            <column name="meta_description" type="varchar(999)" />
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

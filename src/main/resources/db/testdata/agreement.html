@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Umowa</title>
+    <style>
+        body {
+            font-family: Calibri, sans-serif;
+            font-size: 14px;
+        }
+
+        table td {
+            border: 1px solid black;
+            padding: 4px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table.noborder td {
+            border: none;
+        }
+
+        .pattern {
+            position: absolute;
+            font-size: 80px;
+            width: 100%;
+            text-align: right;
+            color: #aaa;
+            right: 10px;
+        }
+
+        ul {
+            margin: 0;
+            padding-inline-start: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="pattern" th:if="${!isSigned}">
+    WZÓR
+</div>
+<div style="page-break-after: always">
+
+    <h2>Umowa - zgłoszenie na szkolenie</h2>
+
+
+    <table>
+        <tr>
+            <td>Nazwa zajęć</td>
+            <td th:text="${signup.training.description.title}">Bootcamp Junior Java Developer</td>
+        </tr>
+
+        <tr>
+            <td>Osoba zgłaszająca</td>
+            <td>
+                <span th:text="${user.firstName} + ' ' + ${user.lastName}">Jan Kowalski</span><br/>
+                <span th:text="${user.address}">Szkolna 26/2</span>,
+                <span th:text="${user.postalCode} + ' ' + ${user.city}">50-001 Wrocław</span><br/>
+                Tel: <span th:text="${user.phoneNumber}">111 222 333</span><br/>
+                Email: <span th:text="${user.email}">jan.kowalski@example.com</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Zagadnienia szkolenia</td>
+            <td th:utext="${signup.training.description.contentShort}">
+                <ul>
+                    <li>Java podstawy + elementy średniozaawansowane</li>
+                    <li>Testowanie za pomocą JUnit i Mockito</li>
+                    <li>Bazy danych: modelowanie, SQL</li>
+                    <li>Wstęp do Java EE</li>
+                    <li>Spring Framework, Spring MVC, Spring Boot</li>
+                    <li>JPA, Hibernate</li>
+                    <li>Typowe zadania rekrutacyjne</li>
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Usługi dodatkowe</td>
+            <td th:utext="${signup.training.description.extraService}">
+                <ul>
+                    <li>dostęp do wybranych kursów na platformie internetowej JavaStart.pl na okres jednego roku</li>
+                    <li>4 miesięczną licencję na oprogramowanie firmy JetBrains do celów edukacyjnych</li>
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Terminarz zajęć
+            </td>
+            <td th:text="${signup.training.dates}">
+                02.07.2018, 05.07.2018, 09.07.2018, 12.07.2018, 16.07.2018,
+                19.07.2018, 23.07.2018, 26.07.2018, 30.07.2018, 02.08.2018,
+                06.08.2018, 09.08.2018, 13.08.2018, 16.08.2018, 20.08.2018,
+                23.08.2018, 27.08.2018, 30.08.2018, 03.09.2018, 06.09.2018,
+                10.09.2018, 13.09.2018, 17.09.2018, 20.09.2018, 24.09.2018,
+                27.09.2018, 01.10.2018, 04.10.2018, 08.10.2018, 11.10.2018
+            </td>
+        </tr>
+
+        <th:block th:if="${#strings.isEmpty(customPaymentInfo)}">
+
+            <tr th:if="${showDepositInformation}">
+                <td>Zadatek</td>
+                <td th:text="${signup.deposit} + 'zł'">1000zł</td>
+            </tr>
+            <tr>
+                <td>Cena zajęć (brutto)</td>
+                <td>
+                    <span th:text="${signup.price} + 'zł'">4499zł</span><span th:if="${showDepositInformation}"> (zawiera zadatek)</span>
+                </td>
+            </tr>
+
+            <tr th:if="${showDepositInformation}">
+                <td>Termin płatności zadatku</td>
+                <td>
+                    <span th:text="${advancePaymentTo}">02.07.2018r.</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span th:if="!${showDepositInformation}">Termin płatności</span>
+                    <span th:if="${showDepositInformation}">Termin płatności pozostałej kwoty</span>
+                </td>
+                <td>
+                    <span th:text="|Od ${fullPaymentFrom} do|"
+                          th:if="${showFullPaymentFrom}">Od 16.07.2018 do&nbsp;</span>
+                    <span th:text="|${fullPaymentTo}|">30.07.2018r.</span>
+                </td>
+            </tr>
+
+        </th:block>
+
+        <th:block th:unless="${#strings.isEmpty(customPaymentInfo)}">
+            <td>Kwota i termin płatności</td>
+            <td>
+                <span th:text="${customPaymentInfo}">Płatność: 1500zł 12.04.2021, 1500zł 12.05.2021r. Razem 5000zł</span>
+            </td>
+        </th:block>
+
+        <tr>
+            <td>Dane do płatności</td>
+            <td th:utext="${company.paymentData}">nr konta bankowego: 75 1050 1575 1000 0090 7225 2225 (ING Bank
+                Śląski)<br/>
+                Sławomir Ludwiczak Consulting<br/>
+                ul. Krynicka 70/32, 50-555 Wrocław<br/>
+                NIP 8992755325
+            </td>
+        </tr>
+
+    </table>
+
+    <p>Oświadczam, że zapoznałem(am) się i akceptuję „Ogólne warunki uczestnictwa w zajęciach”</p>
+
+    <p>Wyrażam zgodę na umieszczenie i przetwarzanie powyższych danych osobowych przez firmę <span
+            th:text="${company.shortName}">Sławomir Ludwiczak Consulting</span>
+        zgodnie z ustawą z 29 sierpnia 1997 roku o ochronie danych osobowych (tj. z dnia 26.06.2014 r. Dz. U. z 2014 r.
+        poz.
+        1182 z późn. zm.) oraz ustawą z dnia 18.07.2002 r. o świadczeniu usług drogą elektroniczną (tj. z dnia
+        15.10.2013 r.
+        Dz.
+        U. z 2013 r., poz. 1422).</p>
+
+    <table style="width: 100%; text-align: center" class="noborder">
+        <tbody>
+        <tr style="height: 50px">
+            <td>
+                <span th:text="'Imię i nazwisko: ' + ${user.firstName} + ' ' + ${user.lastName}">Jan Kowalski</span><br/>
+                <span th:if="${isSigned}">Umowa zawarta online.<br/>Klient zaakceptował postanowienia umowy oraz<br/>OWU w dniu
+                    <span th:text="${#temporals.format(signup.agreementSigningDate, 'yyyy-MM-dd HH:mm')}">2019-10-10 12:12</span><br/>z urządzenia o IP: <span
+                            th:text="${signup.agreementSigningIp}">192.168.0.10</span>
+                </span>
+            </td>
+            <td><img src="/agreement/podpis-slawek.png" th:src="${company.representativeSignature}"
+                     alt="Sławomir Ludwiczak" th:alt="${company.representative}" style="height: 50px;"/><br/>
+                <span th:text="${company.representative}">Sławomir Ludwiczak</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Data zgłoszenia i czytelny podpis Osoby Zgłaszającej</td>
+            <td>Podpis Organizatora Szkolenia</td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<h2>Ogólne warunki uczestnictwa</h2>
+<h3>Definicje</h3>
+
+<ol>
+    <li><b>Organizator Szkolenia</b> – <span th:text="${company.fullName}">Sławomir Ludwiczak Consulting z siedzibą przy ul. Krynicka 70/32, 50-555 Wrocław.
+        NIP
+        8992755325</span>
+    </li>
+    <li><b>Osoba Zgłaszająca</b> – osoba wymieniona w umowie- zgłoszeniu</li>
+    <li><b>Instytucja Finansująca</b> – instytucja która odpowiedzialna jest za finansowanie szkolenia dla Osoby
+        Zgłaszającej
+    </li>
+</ol>
+
+<h3>§1. Zgłoszenie</h3>
+<ol>
+    <li>Wstępne zgłoszenie chęci uczestnictwa w zajęciach oferowanych przez Organizatora Szkolenia rozumie się przez
+        przesłanie zgłoszenia korzystając z formularza na stronie https://bootcamp.javastart.pl
+    </li>
+    <li>
+        Organizator szkolenia weryfikuje wprowadzone dane, a w razie potrzeby kontaktuje się z Osobą zgłaszającą w celu
+        uzyskania danych niezbędnych do sporządzenia umowy- zgłoszenia.
+    </li>
+    <li>Organizator szkolenia przesyła do Osoby zgłaszającej link do strony internetowej zawierającą wzór
+        umowy-zgłoszenia.
+    </li>
+    <li>
+        Osoba Zgłaszająca winna zaakaceptować umowę-zgłoszenie na stronie Organizatora. Po akceptacji oryginał
+        Umowy-Zgłoszenia zostanie wysłany do Osoby Zgłaszającej za pośrednictwem poczty email
+        <ol type="a">
+            <li>W przypadku osób fizycznych, które nie prowadzą działalności gospodarczej, umowa- zgłoszenie musi być
+                zaakceptowana przez osobę, która zamierza wziąć udział w zajęciach (bądź opiekuna prawnego w
+                przypadku osób niepełnoletnich).
+            </li>
+            <li>W przypadku pozostałych podmiotów umowa- zgłoszenie musi być zaakceptowane przez osobę
+                uprawnioną do zaciągania zobowiązań finansowych w imieniu firmy zgłaszającej.
+            </li>
+        </ol>
+    </li>
+    <li>Warunkiem uczestnictwa w zajęciach jest akceptacja prawidłowo wypełnionej umowy- zgłoszenia oraz
+        "Ogólnych warunków uczestnictwa” o ile Organizator Szkolenia nie zaznaczył inaczej oraz wpłata zadatku.
+    </li>
+    <li>Akceptacja Umowy-zgłoszenia na stronie Organizatora potwierdza akceptację "Ogólnych warunków uczestnictwa" w tym
+        przyjęcie warunków organizacyjnych i finansowych realizacji usługi oraz upoważnia Organizatora Szkolenia do
+        wystawienia faktury VAT.
+    </li>
+    <li>Po przesłaniu Umowy- zgłoszenia przez Osobę Zgłaszającą, Organizator Szkolenia prześle do Osoby Zgłaszającej za
+        pośrednictwem poczty email informacje o niezbędne do opłacenia szkolenia.
+    </li>
+    <li>W przypadku braku wpłaty w terminie wskazanym na umowie-zgłoszeniu, Osoba Zgłaszająca może zostać
+        wypisana ze szkolenia.
+    </li>
+    <li>Przed rozpoczęciem zajęć Osoba Zgłaszająca otrzyma telefonicznie lub pocztą elektroniczną potwierdzenie
+        realizacji zajęć w umówionym terminie.
+    </li>
+</ol>
+
+<h3>§2. Warunki płatności</h3>
+<ol>
+    <li>Należność za uczestnictwo w zajęciach powinna być uregulowana na podstawie niniejszych Ogólnych warunków
+        uczestnictwa. Kwota, terminy oraz dane płatności znajdują się na umowie-zgłoszeniu przesłanej do Osoby
+        Zgłaszającej przez Organizatora Szkolenia.
+    </li>
+    <li>
+        W przypadku finansowania ze środków własnych ogólne warunki płatności są następujące:
+        <ol type="a">
+            <li>Osoby fizyczne zobowiązane są do opłacenia szkolenia w terminie wskazanym na Umowie-zgłoszeniu. W
+                zależności od daty rozpoczęcia szkolenia płatność może zostać podzielona na dwie części: zadatek oraz
+                pozostałą część płatności. O ile nie ustalono inaczej z Organizatorem Szkolenia, obowiązują terminy
+                terminy płatności zadatku oraz pozostałej kwoty wskazane na Umowie-zgłoszeniu.
+            </li>
+            <li>Pozostałe podmioty zobowiązane są do wniesienia opłaty w kwocie 100% ceny zajęć, na podstawie faktury
+                VAT wystawionej przez Organizatora Szkolenia przed rozpoczęciem szkolenia. Opłaty należy dokonać w
+                terminie 14 dni od daty wystawienia faktury VAT
+            </li>
+        </ol>
+    </li>
+    <li>
+        W przypadku korzystania przez uczestnika z finansowania przez Instytucję Finansującą warunki płatności są
+        następujące. Osoba Zgłaszająca zobowiązana jest do opłacenia szkolenia z własnych środków zgodnie z §2.2. Po
+        otrzymaniu przez Organizatora Szkolenia środków od Instytucji Finansującej, Organizator Szkolenia zwróci
+        środki wpłacone przez Osobę Zgłaszającą na ten sam numer rachunku z którego wpłynęły.
+    </li>
+    <li>W przypadku, gdy zajęcia organizowane przez Organizatora Szkolenia nie odbędą się w zaplanowanym terminie lub w
+        przypadku braku miejsc w danym terminie, kwoty wpłacone na poczet zajęć, określone w powyższym punkcie 2.
+        Organizator Szkolenia zaliczy na poczet udziału w innych zajęciach organizowanych przez Organizatora Szkolenia,
+        ustalonych z Osobą Zgłaszającą lub na wniosek Osoby Zgłaszającej Organizator Szkolenia zwróci 100% wpłaconej
+        kwoty na wskazany przez Osobę Zgłaszającą rachunek bankowy w ciągu 7 dni roboczych od dnia otrzymania dyspozycji
+        zwrotu pieniędzy od Osoby Zgłaszającej.
+    </li>
+</ol>
+
+<h3>§3. Rezygnacja</h3>
+<ol>
+    <li>Po przesłaniu Umowy- zgłoszenia Osoba Zgłaszająca może zrezygnować z uczestnictwa w wybranych zajęciach zgodnie
+        z następującymi warunkami:
+        <ol type="a">
+            <li>W przypadku rezygnacji w czasie nie krótszym niż 30 dni przed pierwszym dniem zajęć wynikającym z
+                terminarza zawartego w umowie-zgłoszeniu Osobie Zgłaszającej zostanie zwrócone 100% wpłaconych środków.
+            </li>
+            <li>W przypadku rezygnacji w czasie krótszym niż 30 dni i jednocześnie dłuższym niż 15 dni przed pierwszym
+                dniem zajęć
+                wynikającym z terminarza zawartego w umowie-zgłoszeniu Osobie Zgłaszającej zostanie zwrócona wpłacona
+                kwota pomniejszona
+                o wysokość zadatku.
+            </li>
+            <li>W przypadku okresu krótszego niż 15 dni przed pierwszym dniem zajęć wynikającym z terminarza zawartego w
+                umowie-zgłoszeniu Organizator Szkolenia nie przewiduje możliwości rezygnacji z uczestnictwa w wybranych
+                zajęciach.
+            </li>
+            Na wniosek Osoby Zgłaszającej Organizator Szkolenia zwróci wpłaconą kwotę wynikającą z punktu 1. na wskazany
+            przez Osobę
+            Zgłaszającą rachunek bankowy w ciągu 7 dni roboczych od dnia otrzymania dyspozycji zwrotu pieniędzy od Osoby
+            Zgłaszającej.
+        </ol>
+    </li>
+    <li>W przypadku nieobecności Osoby Zgłaszającej na którychkolwiek zajęciach w ramach szkolenia, Organizator
+        Szkolenia
+        zalicza kwotę wpłaconą przez Osobę Zgłaszającą tytułem opłaty manipulacyjnej, a Osobie Zgłaszającej nie
+        przysługuje z
+        tego tytułu prawo uczestniczenia w innych zajęciach prowadzonych przez Organizatora Szkolenia, ani też prawo
+        żądania
+        zwrotu wpłaconej kwoty. W przypadku nieobecności na zajęciach Organizator Szkolenia wraz z Osobą Zgłaszającą
+        mogą
+        ustalić inną formę edukacji, która pozwoli nadrobić zaległy materiał szkolenia.
+    </li>
+    <li>W przypadku, gdy zajęcia nie mogą odbyć się z powodów organizacyjnych lub technicznych w siedzibie Organizatora
+        Szkolenia, Organizator Szkolenia zobowiązany jest do ustalenia dogodnego dla Osoby Zgłaszającej alternatywnego
+        terminu
+        zajęć lub zwrócenia proporcjonalnej części kosztów zajęć obliczanego według wzoru (liczba utraconych godzin
+        zajęć /
+        całkowita liczba godzin szkolenia) * cena zajęć.
+    </li>
+</ol>
+
+<h3>§4. Uwagi organizacyjne</h3>
+<ol>
+    <li>
+        W ramach opłaty za zajęcia odbywające się Online każdy uczestnik ma zagwarantowane:
+        <ul>
+            <li>odpowiednie materiały szkoleniowe (o ile szczegółowe warunki zajęć nie stanowią inaczej)</li>
+            <li>świadectwo uczestnictwa w zajęciach</li>
+        </ul>
+    </li>
+    <li>Wszelkie koszty związane zapewnieniem sobie infrastruktury do korzystania ze szkolenia ponoszą uczestnicy.</li>
+    <li>Organizator Szkolenia może odwołać szkolenie lub odmówić jego przeprowadzenia, w szczególności, gdy jest to
+        uzasadnione trudnościami organizacyjnymi, technicznymi lub brakiem wystarczającej liczby chętnych. O fakcie oraz
+        przyczynach odwołania zajęć Organizator Szkolenia poinformuje Osoby Zgłaszające w najkrótszym możliwym terminie.
+    </li>
+    <li>Organizator Szkolenia zastrzega możliwość zmiany terminu poszczególnych zajęć w ramach szkolenia po jego
+        ustaleniu ze wszystkimi uczestnikami szkolenia.
+    </li>
+    <li>Podpisując Kartę Zgłoszenia Osoba Zgłaszająca wyraża zgodę na umieszczenie i przetwarzanie zawartych w umowie-
+        zgłoszeniu danych osobowych przez firmę <span
+                th:text="${company.shortName}">Sławomir Ludwiczak Consulting</span> zgodnie z ustawą z 29 sierpnia 1997
+        roku o
+        ochronie danych osobowych (tj. z dnia 26.06.2014 r. Dz. U. z 2014 r. poz. 1182 z późn. zm.) oraz ustawą z dnia
+        18.07.2002 r. o świadczeniu usług drogą elektroniczną (tj. z dnia 15.10.2013 r. Dz. U. z 2013 r., poz. 1422) dla
+        celów związanych z realizacją usługi. W przypadku wskazania na umowie- zgłoszeniu danych osobowych uczestników
+        zajęć innych niż Osoba Zgłaszająca, Osoba Zgłaszająca zobowiązuje się do uzyskania zgody tych uczestników na
+        umieszczenie i przetwarzanie ich danych osobowych przez <span th:text="${company.shortName}">Sławomir Ludwiczak Consulting</span>
+        w zakresie wskazanym
+        powyżej.
+    </li>
+    <li>Wszelkie spory powstałe w związku z realizacją szkoleń wskazanych w Umowie- zgłoszeniu w przypadku Osób
+        Zgłaszających nie będących konsumentami w rozumieniu przepisów prawa polskiego rozstrzygać będzie sąd powszechny
+        właściwy dla siedziby Organizatora Szkolenia.
+    </li>
+</ol>
+
+</body>
+</html>

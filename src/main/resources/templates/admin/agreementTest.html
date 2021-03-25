@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Testowanie umowy</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2 class="mb-2">Przetestuj generowanie umowy</h2>
+
+    <a href="/admin/umowa">Edycja umowy</a>
+
+    <form th:action="@{/admin/umowa/test}" method="post" th:object="${testData}">
+        <div class="form-row mb-4">
+            <div class="col">
+                <input type="text" id="firstName" th:field="*{firstName}" class="form-control" placeholder="Imię"
+                       required th:errorclass="is-invalid">
+                <div class="invalid-feedback">
+                    Pole jest wymagane
+                </div>
+            </div>
+            <div class="col">
+                <!-- Last name -->
+                <input type="text" id="lastName" th:field="*{lastName}" class="form-control" placeholder="Nazwisko"
+                       required th:errorclass="is-invalid">
+                <div class="invalid-feedback">
+                    Pole jest wymagane
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row mb-4">
+            <div class="col">
+                <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="E-mail"
+                       required th:errorclass="is-invalid">
+                <div class="invalid-feedback">
+                    Podaj proszę poprawny adres email.
+                </div>
+            </div>
+            <div class="col">
+                <input type="text" id="phoneNumber" th:field="*{phoneNumber}" class="form-control"
+                       placeholder="Numer telefonu" required th:errorclass="is-invalid">
+                <div class="invalid-feedback">
+                    Pole jest wymagane
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col col-6  mb-3">
+                <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="Adres"
+                       required th:errorclass="is-invalid">
+                <div class="invalid-feedback">
+                    Pole jest wymagane
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <input type="text" class="form-control" id="postalCode" th:field="*{postalCode}"
+                       placeholder="Kod pocztowy" required th:errorclass="is-invalid" minlength="6" maxlength="6">
+                <div class="invalid-feedback">
+                    Podaj poprawny kod pocztowy
+                </div>
+            </div>
+            <div class="col mb-3">
+                <input type="text" class="form-control" id="city" th:field="*{city}" placeholder="Miasto" required
+                       th:errorclass="is-invalid">
+                <div class="invalid-feedback">
+                    Pole jest wymagane
+                </div>
+            </div>
+        </div>
+
+        <label for="training">Szkolenie</label>
+        <select id="training" th:field="*{training}" class="form-control mb-4">
+            <option th:each="training: ${trainings}" th:value="${training.id}" th:text="|${training.code} (${training.description.title})|"></option>
+        </select>
+
+        <label for="deposit">Zadatek</label>
+        <input type="number" id="deposit" th:field="*{deposit}" class="form-control mb-4"/>
+
+        <label for="price">Cena</label>
+        <input type="number" id="price" th:field="*{price}" class="form-control mb-4"/>
+
+        <label for="advancePaymentTo">Nadpisanie do kiedy zadatek (zostaw puste jeśli nie nadpisywać)</label>
+        <input type="date" id="advancePaymentTo" th:field="*{advancePaymentTo}" class="form-control mb-4"/>
+
+        <label for="fullPaymentFrom">Nadpisanie od kiedy pełna płatność (zostaw puste jeśli nie nadpisywać)</label>
+        <input type="date" id="fullPaymentFrom" th:field="*{fullPaymentFrom}" class="form-control mb-4"/>
+
+        <label for="fullPaymentTo">Nadpisanie do kiedy pełna płatność (zostaw puste jeśli nie nadpisywać)</label>
+        <input type="date" id="fullPaymentTo" th:field="*{fullPaymentTo}" class="form-control mb-4"/>
+
+        <label for="today">Symulacja dzisiejszej daty</label>
+        <input type="date" id="today" th:field="*{today}" class="form-control mb-4"/>
+
+        <button class="btn btn-primary mb-4" type="submit">Generuj</button>
+
+    </form>
+
+
+</div>
+
+</body>
+</html>

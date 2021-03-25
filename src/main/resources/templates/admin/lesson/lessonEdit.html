@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Lekcja</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <a th:href="|/admin/szkolenia/${lesson.training.id}/lekcje|">&lt;- Powrót do listy lekcji</a>
+
+    <h3>Edycja lekcji</h3>
+
+    <div class="alert alert-danger">
+        <span>Pamiętaj, że edytujesz tylko lekcję w tym szkoleniu. Nie zapomnij o poprawie odpowiedniego tematu!</span>
+    </div>
+
+    <form method="post" th:action="@{/admin/lekcje/edytuj}"
+          th:object="${lesson}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{training}"/>
+        <div class="form-row">
+            <label for="title">Tytuł</label>
+            <input type="text" id="title" class="form-control" th:field="*{title}"/>
+        </div>
+        <div class="form-row">
+            <label for="number">Numer</label>
+            <input type="number" id="number" class="form-control" th:field="*{number}"/>
+        </div>
+        <div class="form-row">
+            <label for="lessonDate">Data zajęć</label>
+            <input type="date" id="lessonDate" class="form-control" th:field="*{lessonDate}"/>
+        </div>
+        <div class="form-row ml-4">
+            <label for="visible" class="form-check-label">Czy widoczna?</label>
+            <input type="checkbox" id="visible" class="form-check-input" th:field="*{visible}"/>
+        </div>
+        <div class="form-row">
+            <label for="videoLinks">Linki do filmów - tylko identyfikatory filmów z youtube (każdy w nowej linii)</label>
+            <textarea rows="3" id="videoLinks" class="form-control" th:field="*{videoLinks}"></textarea>
+        </div>
+        <div class="form-row">
+            <label for="lessonLinks">Linki do lekcji (każdy w nowej linii). Format: [tytuł];[url]</label>
+            <textarea rows="3" id="lessonLinks" class="form-control" th:field="*{lessonLinks}"></textarea>
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            <span th:if="${mode} == 'add'">Dodaj</span>
+            <span th:if="${mode} == 'edit'">Zapisz zmiany</span>
+        </button>
+    </form>
+
+    <h3>Dodaj kolejne tematy do tej lekcji</h3>
+
+    <form th:action="@{/admin/lekcje/dodajTematy}" method="post">
+        Filtrowanie: <input type="text" id="filter-input"/>
+        <i class="fas fa-lg fa-trash" id="clear_search" style="cursor: pointer"></i>
+
+        <input type="hidden" name="lessonId" th:value="${lesson.id}" />
+        <input type="hidden" name="trainingId" th:value="${lesson.training.id}" />
+
+        <table class="table table-hover" id="mytable">
+            <tr th:each="topic: ${topics}" th:data-href="${topic.id}" class="selectable-row">
+                <td><input type="checkbox" name="topicIds" th:id="|id_${topic.id}|" th:value="${topic.id}" class="prevent_default_checkbox"/></td>
+                <td th:text="${topic.title}"></td>
+            </tr>
+        </table>
+
+
+        <button class="btn btn-primary" type="submit">
+            <span>Dodaj</span>
+        </button>
+    </form>
+
+    <div th:replace="~{fragments/scripts :: selectable-row}"></div>
+    <div th:replace="~{fragments/scripts :: filtering}"></div>
+
+</div>
+
+
+</body>
+</html>

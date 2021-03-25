@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Kopiowanie z szablonu</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3>Kopiowanie z szablonu</h3>
+
+    <form method="post" th:action="@{/admin/lekcje/kopiuj}" th:object="${lesson}">
+        <input type="hidden" th:field="*{trainingId}"/>
+
+        <div class="form-row">
+            <label for="template">Szablon</label>
+            <select class="form-control" id="template">
+                <option>Junior Java Developer</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="number">Numer</label>
+            <input type="text" id="number" class="form-control" th:field="*{number}"/>
+        </div>
+
+        <div class="form-row">
+            <label for="lessonDate">Data zajęć</label>
+            <input type="date" id="lessonDate" class="form-control" th:field="*{lessonDate}" required/>
+        </div>
+
+        <div class="form-row">
+            <label>Wybierz lekcję do skopiowania</label>
+        </div>
+
+        Filtrowanie: <input type="text" id="filter-input"/>
+        <i class="fas fa-lg fa-trash" id="clear_search" style="cursor: pointer"></i>
+
+
+        <table class="table" id="mytable">
+
+            <tr th:each="templateLesson: ${templateLessons}">
+                <td>
+                    <input type="radio" th:value="${templateLesson.id}" th:field="*{templateLessonId}" th:id="|tl_${templateLesson.id}|" />
+                    <label th:for="|tl_${templateLesson.id}|" th:text="|${templateLesson.number}. ${templateLesson.lesson.title}|"
+                           th:id="${templateLesson.id}"></label>
+                </td>
+            </tr>
+        </table>
+
+        <button class="btn btn-primary" type="submit">
+            <span>Kopiuj</span>
+        </button>
+    </form>
+
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function ($) {
+                $(".clickable-row").click(function () {
+                    checkbox = $("#id_" + $(this).data("href"));
+                    checkbox.prop("checked", !checkbox.prop("checked"));
+                });
+                $('#filter-input').keyup(function (event) {
+                    var value = $(this).val().toLowerCase();
+                    $("#mytable tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+                $('.prevent_default_checkbox').change(function (event) {
+                    event.target.checked = !event.target.checked;
+                });
+                $("#clear_search").click(function () {
+                    inputField = $("#filter-input");
+                    inputField.val('');
+                    inputField.keyup();
+                })
+            });
+        })(jQuery);
+    </script>
+
+    <div th:replace="~{fragments/scripts :: filtering}"></div>
+
+</div>
+
+
+</body>
+</html>

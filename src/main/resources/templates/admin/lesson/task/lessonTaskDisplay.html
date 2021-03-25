@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title th:text="|Zadanie ${lessonTask.task.name}|">Zadanie</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <a th:href="|/admin/lekcje/${lessonTask.lesson.id}|">&lt;- Powrót do lekcji</a>
+
+    <h3 th:text="|Zadanie ${lessonTask.task.name}|"></h3>
+
+    <h4>Lista ocen uczestników szkolenia</h4>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Osoba</th>
+            <th>Punkty</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="userTask: ${userTasks}">
+            <td th:text="|${userTask.user.firstName} ${userTask.user.lastName}|"></td>
+            <td th:text="|${userTask.points}|"></td>
+            <td>
+                <a th:href="'/admin/lekcje/zadania/' + ${lessonTask.id} + '/ocena?userId=' + ${userTask.user.id}"><i
+                        class="fa fa-edit"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <h4>Dane zadania</h4>
+
+    <a th:href="|/admin/zadania/${lessonTask.task.id}/edytuj|"><i class="fa fa-edit"></i>Edytuj zadanie</a>
+
+    <p th:text="|Punkty do zdobycia: ${lessonTask.task.points}|"></p>
+
+    <h5>Treść</h5>
+
+    <div th:utext="${lessonTask.task.content}"></div>
+
+    <h5>Film z rozwiązaniem</h5>
+    <div th:if="${!#strings.isEmpty(lessonTask.task.solutionVideo)}">
+        <iframe width="560" height="315" th:src="|https://www.youtube.com/embed/${lessonTask.task.solutionVideo}" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
+    <p th:if="${#strings.isEmpty(lessonTask.task.solutionVideo)}">To zadanie nie ma dołączonego filmu z rozwiązaniem</p>
+
+    <h5>Link do kodu z rozwiązaniem</h5>
+    <p>
+        <a th:if="${!#strings.isEmpty(lessonTask.task.solutionSourceUrl)}" th:href="${lessonTask.task.solutionSourceUrl}" target="_blank"
+           th:text="${lessonTask.task.solutionSourceUrl}"></a>
+        <span th:if="${#strings.isEmpty(lessonTask.task.solutionSourceUrl)}">To zadanie nie ma dołączonego linku do kodu źródłowego rozwiązania</span>
+    </p>
+
+</div>
+
+
+</body>
+</html>

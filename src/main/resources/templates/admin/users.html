@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+<body>
+<h2>Admin - użytkownicy</h2>
+<div layout:fragment="admin-content" class="container">
+
+    <h2>Użytkownicy</h2>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Imię i nazwisko</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user: ${users}" class="clickable-row" th:data-href="'/admin/uzytkownicy/' + ${user.id}">
+            <td th:text="${user.firstName} + ' ' + ${user.lastName}"></td>
+            <td th:text="${user.email}"></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Szablon</title>
+    <script th:replace="~{fragments/scripts :: tinymce}"></script>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3 th:if="${mode} == 'add'">Dodawanie szablonu szkolenia</h3>
+    <h3 th:if="${mode} == 'edit'">Edycja szablonu szkolenia</h3>
+
+    <form method="post" th:action="@{${mode == 'add' ? '/admin/szablony/dodaj' : '/admin/szablony/edytuj'}}"
+          th:object="${template}">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="form-row">
+            <label for="name">Nazwa</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}"/>
+        </div>
+
+        <div th:if="${mode} == 'edit'" style="display: flex; justify-content: space-between">
+            <div>
+                <a th:href="|/admin/szablony/${template.id}/usun|"
+                   onclick="return confirm('Na pewno usunąć?');">
+                    <i class="fas fa-trash"></i><span>&nbsp;Usuń</span>
+                </a>
+            </div>
+            <button class="btn btn-primary" type="submit">
+                <span><i class="fas fa-save"></i>&nbsp;&nbsp;Zapisz zmiany</span>
+            </button>
+
+        </div>
+
+        <div th:if="${mode} == 'add'" style="display: flex; justify-content: space-between">
+            <span></span>
+            <button class="btn btn-primary" type="submit">
+                <span>Dodaj</span>
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+
+</body>
+</html>

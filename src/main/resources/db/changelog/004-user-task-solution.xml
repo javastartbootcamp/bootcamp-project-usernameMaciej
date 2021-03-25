@@ -1,0 +1,21 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="004-user-task-solution" author="mkunert">
+
+        <addColumn tableName="user_task">
+            <column name="solution_url" type="varchar(255)"/>
+        </addColumn>
+        <addColumn tableName="task">
+            <column name="is_mandatory" type="boolean" defaultValueBoolean="true"/>
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

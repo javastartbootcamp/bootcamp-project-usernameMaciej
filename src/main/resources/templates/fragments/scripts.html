@@ -1,0 +1,130 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="imports">
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/js/mdb.min.js"></script>
+
+    <script src="/js/prism/prism.js"></script>
+    <link rel="stylesheet" type="text/css" href="/js/prism/prism.css"/>
+
+
+</div>
+
+<div th:fragment="clickable-row">
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function ($) {
+                $(".clickable-row").click(function (e) {
+                    if (e.ctrlKey || e.metaKey) {
+                        window.open($(this).data("href"), '_blank');
+                    } else {
+                        window.location = $(this).data("href");
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
+
+</div>
+
+<div th:fragment="selectable-row">
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function ($) {
+                $(".selectable-row").click(function (event) {
+                    if(event.target.type !== 'checkbox') {
+                        checkbox = $("#id_" + $(this).data("href"));
+                        checkbox.prop("checked", !checkbox.prop("checked"));
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
+
+</div>
+
+<div th:fragment="filtering">
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function ($) {
+                $('#filter-input').keyup(function(event) {
+                    var value = $(this).val().toLowerCase();
+                    $("#mytable tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+                $("#clear_search").click(function() {
+                    inputField = $("#filter-input");
+                    inputField.val('');
+                    inputField.keyup();
+                })
+            });
+        })(jQuery);
+    </script>
+
+</div>
+
+<div th:fragment="tinymce">
+    <script src="/js/tinymce/tinymce.min.js"></script>
+    <script>tinymce.init({
+        selector: 'textarea.tiny',
+        plugins: 'lists link code codesample image paste',
+        toolbar: 'codesample2 formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media pageembed | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment',
+        paste_data_images: true,
+        advlist_bullet_styles: "default",
+        codesample_content_css: false,
+        codesample_languages: [
+            { text: 'Java', value: 'java' },
+            { text: 'HTML/XML', value: 'xml' },
+            { text: 'JavaScript', value: 'javascript' },
+            { text: 'CSS', value: 'css' },
+            { text: 'Plaintext', value: 'plaintext' },
+        ],
+        setup: function(editor) {
+            editor.ui.registry.addButton('codesample2', {
+                text: 'Wklej Kod',
+                icon: 'paste',
+                onAction: () => {
+                    tinymce.activeEditor.execCommand('codesample');
+                },
+            });
+        },
+        browser_spellcheck: true,
+        relative_urls : false,
+        images_upload_handler: function (blobInfo, success, failure) {
+            var xhr, formData;
+            xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+            xhr.open('POST', '/admin/img/upload');
+            xhr.onload = function() {
+                var json;
+
+                if (xhr.status != 200) {
+                    failure('HTTP Error: ' + xhr.status);
+                    return;
+                }
+                json = JSON.parse(xhr.responseText);
+
+                if (!json || typeof json.imageUrl != 'string') {
+                    failure('Invalid JSON: ' + xhr.responseText);
+                    return;
+                }
+                success(json.imageUrl);
+            };
+            formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+            xhr.send(formData);
+        },
+        file_picker_callback: function (callback, value, meta) { }
+    });</script>
+</div>
+
+</html>

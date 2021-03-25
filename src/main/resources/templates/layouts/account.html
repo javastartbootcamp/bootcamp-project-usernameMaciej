@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <link href="/admin-style.css" rel="stylesheet"/>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-3">
+        <div class="row">
+
+            <div class="col menu">
+
+                <a href="/konto/szkolenia">Szkolenia</a>
+                <a href="/konto/zapisy">Zapisy</a>
+                <a href="/konto/ustawienia">Ustawienia</a>
+                <a href="/konto/zmiana-hasla">Zmiana hasła</a>
+                <a href="/konto/usun">Usuwanie konta</a>
+
+            </div>
+            <div class="col-10">
+                <div layout:fragment="account-content"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <title th:if="${title}" th:text="${title}">Szkolenie Java - JavaStart</title>
+    <meta property="og:title" th:if="${title}" th:content="${title}"/>
+    <meta name="twitter:title" th:if="${title}" th:content="${title}"/>
+    <meta name="description" th:content="${offer.metaDescription}" />
+    <meta property="og:description" th:content="${offer.metaDescription}" />
+    <meta name="twitter:description" th:content="${offer.metaDescription}" />
+    <meta property="og:url" th:content="|${currentDomain}/firmy${url}|" />
+    <link rel="canonical" th:href="|${currentDomain}/firmy${url}|" />
+</head>
+<body>
+<div layout:fragment="content" class="container my-4">
+
+    <p th:if="${singleOffer}">
+        <a href="/firmy/oferta">Wróć do szkoleń</a>
+    </p>
+    <h1 th:if="${singleOffer}" th:text="|Szkolenie ${offer.title}|"></h1>
+    <h1 th:unless="${singleOffer}" th:text="${offer.title}"></h1>
+    <p th:utext="${offer.content}"></p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<footer class="page-footer font-small unique-color-dark" th:fragment="footer">
+
+    <!--Footer Links-->
+    <div class="container mt-5 mb-4 pt-4 text-center text-md-left">
+        <div class="row mt-3">
+
+            <!--First column-->
+            <div class="col-md-3 col-lg-4 col-xl-3 mb-4">
+                <h6 class="text-uppercase font-weight-bold">
+                    <strong>JavaStart</strong>
+                </h6>
+                <hr class="deep-orange accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                <p>Od lat naszą misją jest nauka programowania od zupełnych podstaw. Z naszych bootcampów skorzystały już
+                    setki osób, a z kursów internetowych tysiące. Dołącz do grona zadowolonych klientów.</p>
+            </div>
+            <!--/.First column-->
+
+            <!--Second column-->
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                <h6 class="text-uppercase font-weight-bold">
+                    <strong>Usługi</strong>
+                </h6>
+                <hr class="deep-orange accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                <p>
+                    <a href="/szkolenie/junior-java-developer-online">Bootcamp Junior Java Developer Online</a>
+                </p>
+                <p>
+                    <a href="/firmy/oferta">Oferta dla firm</a>
+                </p>
+                <p>
+                    <a href="https://javastart.pl" target="_blank">Kursy online</a>
+                </p>
+            </div>
+            <!--/.Second column-->
+
+            <!--Third column-->
+            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                <h6 class="text-uppercase font-weight-bold">
+                    <strong>Przydatne linki</strong>
+                </h6>
+                <hr class="deep-orange accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                <p>
+                    <a href="/strona/owu">Ogólne warunki uczestnictwa</a>
+                </p>
+                <p>
+                    <a href="/strona/polityka-prywatnosci">Polityka prywatności</a>
+                </p>
+            </div>
+            <!--/.Third column-->
+
+            <!--Fourth column-->
+            <div class="col-md-4 col-lg-3 col-xl-3">
+                <h6 class="text-uppercase font-weight-bold">
+                    <strong>Kontakt</strong>
+                </h6>
+                <hr class="deep-orange accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                <p>
+                    <i class="fa fa-home mr-3"></i> Wrocław</p>
+                <p>
+                    <i class="fa fa-envelope mr-3"></i> bootcamp@javastart.pl</p>
+                <p>
+                    <i class="fa fa-phone mr-3"></i> 788 023 248 (pon-pt 8:00-16:00)</p>
+            </div>
+            <!--/.Fourth column-->
+
+        </div>
+    </div>
+    <!--/.Footer Links-->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <a href="https://javastart.pl"> JavaStart.pl</a>
+    </div>
+
+    <div th:replace="~{fragments/scripts :: imports}"></div>
+
+</footer>
+
+</html>

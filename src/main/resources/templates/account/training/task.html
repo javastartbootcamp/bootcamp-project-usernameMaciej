@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/account}">
+<body>
+<h2>Lekcja</h2>
+<div layout:fragment="account-content" class="container mb-4">
+
+    <h3 class="mb-4" th:text="${lessonTask.task.name}"></h3>
+
+    <div th:if="${type != 'exercise'}">
+        <h4 class="mt-4">Twoje rozwiązanie i ocena</h4>
+
+        <div>
+            <span th:if="${userTask != null}"
+                  th:text="|Termin na oddanie zadania:  ${#temporals.format(userTask.deadline, 'yyyy-MM-dd HH:mm')}|"></span>
+            <span th:unless="${userTask != null}"
+                  th:text="|Termin na oddanie zadania:  ${#temporals.format(lessonTask.deadline, 'yyyy-MM-dd HH:mm')}|"></span>
+            <form th:if="${!isAfterDeadline && signup.homeworkExtensionsLeft > 0}"
+                  th:action="@{/konto/zadanie/przedluz}" method="post" style="display: inline-block">
+                <input type="hidden" name="lessonTaskId" th:value="${lessonTask.id}"/>
+                <input type="submit" class="btn btn-flat"
+                       th:value="|Przedłuż termin o tydzień (pozostało: ${signup.homeworkExtensionsLeft})|"/>
+            </form>
+        </div>
+
+
+        <p th:if="${userTask != null && userTask.getPoints() != null}">Ocena:
+            <span th:text="|${userTask.points} / ${lessonTask.task.points}|"></span>
+        </p>
+
+        <p th:if="${userTask != null && userTask.toBeChecked}"><b>Status</b>: Twoje zadanie zostanie wkrótce sprawdzone
+            przez trenera. </p>
+
+        <div th:if="${!#strings.isEmpty(lessonTask.task.baseRepositoryUrl)}">
+
+            <p>
+                To zadanie posiada automat sprawdzający. Instrukcję podsyłania rozwiązań znajdziesz
+                <a target="_blank" href="https://youtu.be/GLrWmt0zwbg">tutaj</a>.
+            </p>
+
+            <div th:if="${#strings.isEmpty(githubUsername)}">
+                W celu rozpoczęcia zadania ustaw najpierw swoją nazwę użytkownika na GitHubie.
+                Możesz to zrobić w <a target="_blank" href="/konto/ustawienia">ustawieniach konta</a>.
+            </div>
+
+            <div th:if="${!#strings.isEmpty(githubUsername) && (userTask == null || userTask.solutionUrl == null)}"
+                 id="startTask">
+                <button type="button" class="btn btn-primary" id="startTaskButton">
+                    Rozpoczynam zadanie
+                </button>
+                <p>Przed rozpoczęciem upewnij się, że Twoje konto na GitHubie to "<b th:text="${githubUsername}"></b>"!
+                </p>
+            </div>
+
+            <div id="startTaskSpinner" style="display: none">
+                Przygotowujemy repozytorium z kodem...
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+
+            <div th:if="${userTask != null && userTask.solutionUrl != null}">
+                <p th:if="${isAfterDeadline}">
+                    Czas na oddanie zadania minął.
+                </p>
+
+                <div th:if="${!isAfterDeadline}">
+
+                    <div th:if="${!(userTask != null && userTask.toBeChecked)}">
+
+                        <p th:if="${userTask != null && userTask.solutionUrl != null}">
+                            Swoje rozwiązanie podeślij jako pull request do tego repozytorium:
+                            <a target="_blank" th:href="${userTask.solutionUrl}" th:text="${userTask.solutionUrl}"></a>
+                        </p>
+
+                        <form th:action="@{/konto/zadanie/rozwiazanie}" method="post" th:object="${userTaskSolution}">
+                            <input type="hidden" th:field="*{lessonTaskId}"/>
+                            <input type="hidden" th:field="*{url}">
+                            <button class="btn btn-primary">Zgłoś zadanie do sprawdzenia</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div th:if="${#strings.isEmpty(lessonTask.task.baseRepositoryUrl)}">
+            <p th:if="${userTask != null && userTask.solutionUrl != null}">Link do Twojego rozwiązania:
+                <a th:href="${userTask.solutionUrl}" target="_blank">LINK</a>
+            </p>
+
+            <p th:if="${isAfterDeadline}">
+                Czas na oddanie zadania minął.
+            </p>
+
+            <div th:if="${!isAfterDeadline}">
+                <form th:action="@{/konto/zadanie/rozwiazanie}" method="post" th:object="${userTaskSolution}">
+                    <input type="hidden" th:field="*{lessonTaskId}"/>
+                    <div class="form-row">
+                        <label for="url">Link do kodu źródłowego rozwiązania</label>
+                        <input type="url" id="url" class="form-control" th:field="*{url}"/>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Wyślij do sprawdzenia"/>
+                </form>
+            </div>
+        </div>
+
+        <div th:if="${userTaskSolutionEntries != null && !userTaskSolutionEntries.isEmpty()}">
+            <p><b>Historia zadania</b></p>
+
+            <div th:each="entry: ${userTaskSolutionEntries}" class="alert alert-secondary">
+                <p th:text="${#temporals.format(entry.dateTime, 'yyyy-MM-dd HH:mm')}"></p>
+                <p th:utext="${entry.text}"></p>
+            </div>
+        </div>
+
+    </div>
+
+    <h4 class="mt-4">Treść zadania</h4>
+    <div th:utext="${lessonTask.task.content}"></div>
+
+    <div class="alert alert-info mt-4" th:if="${type != 'exercise'}">
+        <h5>Jakość kodu</h5>
+        <p>Zwracaj uwagę na jakość kodu. W przypadku słabej jakości tniemy punkty o połowę!<br/>
+            Więcej informacji, wymagania oraz instrukcję jak skonfigurować Checkstyle
+            znajdziesz <a href="/strona/jakosc-kodu" target="_blank">tutaj</a>.
+        </p>
+    </div>
+
+    <h4>Oceń to ćwiczenie / zadanie</h4>
+
+    <p>Twoja opinia jest dla nas bardzo ważna. W związku z tym prosimy o ocenę tego ćwiczenia/zadania. Czy uważasz je
+        za użyteczne, praktyczne, a może jest z nim coś nie tak?</p>
+
+    <form th:action="@{/konto/cwiczenie/ocen}" method="post" th:object="${taskRating}" id="ratingform">
+
+        <input type="hidden" name="taskId" th:value="${lessonTask.task.id}" th:field="*{taskId}"/>
+        <input type="hidden" name="redirectUrl" th:value="${#httpServletRequest.requestURI}"/>
+
+        <div><b>Ocena</b></div>
+
+        <div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{rating}" id="rating1" value="1" required/>
+                <label class="form-check-label" for="rating1">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{rating}" id="rating2" value="2"/>
+                <label class="form-check-label" for="rating2">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{rating}" id="rating3" value="3"/>
+                <label class="form-check-label" for="rating3">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{rating}" id="rating4" value="4"/>
+                <label class="form-check-label" for="rating4">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{rating}" id="rating5" value="5"/>
+                <label class="form-check-label" for="rating5">5</label>
+            </div>
+        </div>
+
+        <label for="ratingComment">Co możemy poprawić?</label>
+
+        <textarea class="form-control rounded-0" id="ratingComment" th:field="*{comment}"></textarea>
+
+        <input class="btn" type="submit" value="Wyślij ocenę!" id="sendrating"/>
+    </form>
+
+    <h4 class="mt-4">Rozwiązanie</h4>
+
+    <div th:if="${!solutionVisible}">
+        <p>Rozwiązanie do tego zadania jest na ten moment ukryte.</p>
+    </div>
+
+    <div th:if="${solutionVisible}">
+
+        <h5>Film z rozwiązaniem</h5>
+        <div th:if="${!#strings.isEmpty(lessonTask.task.solutionVideo)}">
+            <iframe width="560" height="315" th:src="|https://www.youtube.com/embed/${lessonTask.task.solutionVideo}|"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+        </div>
+        <p th:if="${#strings.isEmpty(lessonTask.task.solutionVideo)}">To zadanie nie ma dołączonego filmu z
+            rozwiązaniem</p>
+
+        <h5>Link do kodu z rozwiązaniem</h5>
+        <p>
+            <a th:if="${!#strings.isEmpty(lessonTask.task.solutionSourceUrl)}"
+               th:href="${lessonTask.task.solutionSourceUrl}" target="_blank"
+               th:text="${lessonTask.task.solutionSourceUrl}"></a>
+            <span th:if="${#strings.isEmpty(lessonTask.task.solutionSourceUrl)}">To zadanie nie ma dołączonego linku do kodu źródłowego rozwiązania</span>
+        </p>
+    </div>
+
+
+    <script type="text/javascript" th:inline="javascript">
+        (function ($) {
+
+            let startTaskDiv = $("#startTask");
+            let startTaskButton = $("#startTaskButton");
+            let startTaskSpinner = $("#startTaskSpinner");
+
+            console.log(startTaskButton);
+
+            startTaskButton.click(function () {
+
+                startTaskDiv.hide();
+                startTaskSpinner.show();
+
+                let lessonTaskId = /*[[${lessonTask.id}]]*/ '';
+
+                $.ajax({
+                    type: "POST",
+                    url: '/api/lesson-task/' + lessonTaskId + '/start',
+                    contentType: 'application/json',
+                    complete: function () {
+                        location.reload()
+                    }
+                });
+            });
+
+            $('ratingform').submit(function(){
+                $(this).children('input[type=submit]').prop('disabled', true);
+            });
+
+        })(jQuery);
+    </script>
+
+</div>
+</body>
+</html>

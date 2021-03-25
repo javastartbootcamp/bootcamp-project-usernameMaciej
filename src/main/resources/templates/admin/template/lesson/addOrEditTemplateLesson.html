@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Lekcja</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <a th:href="|/admin/szablony/${trainingTemplateLesson.trainingTemplateId}|"><i class="fa fa-arrow-left"></i>&nbsp;Powrót do szablonu szkolenia</a>
+
+    <h3>Dodawanie / edycja lekcji w szablonie</h3>
+
+    <form method="post"
+          th:action="${trainingTemplateLesson.id} == null ?
+          @{'/admin/szablony/'+${trainingTemplateLesson.trainingTemplateId}+'/lekcje/dodaj'} :
+          @{'/admin/szablony/'+${trainingTemplateLesson.trainingTemplateId}+'/lekcje/'+${trainingTemplateLesson.id}+'/edycja'}"
+          th:object="${trainingTemplateLesson}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{trainingTemplateId}"/>
+        <div class="form-row">
+            <label for="title">Tytuł</label>
+            <input type="text" id="title" class="form-control" th:field="*{title}"/>
+        </div>
+        <div class="form-row">
+            <label for="number">Numer</label>
+            <input type="number" id="number" class="form-control" th:field="*{number}"/>
+        </div>
+        <div class="form-row">
+            <label for="videoLinks">Linki do filmów - tylko identyfikatory filmów z youtube (każdy w nowej
+                linii)</label>
+            <textarea rows="3" id="videoLinks" class="form-control" th:field="*{videoLinks}"></textarea>
+        </div>
+        <div class="form-row">
+            <label for="lessonLinks">Linki do lekcji (każdy w nowej linii). Format: [tytuł];[url]</label>
+            <textarea rows="3" id="lessonLinks" class="form-control" th:field="*{lessonLinks}"></textarea>
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            <span th:if="${mode} == 'add'">Dodaj</span>
+            <span th:if="${mode} == 'edit'">Zapisz zmiany</span>
+        </button>
+    </form>
+
+    <div th:if="${trainingTemplateLesson.lessonId}">
+        <h3>Dodaj tematy do tej lekcji</h3>
+
+        <form th:action="@{/admin/lekcje/dodajTematy}" method="post">
+            Filtrowanie: <input type="text" id="filter-input"/>
+            <i class="fas fa-lg fa-trash" id="clear_search" style="cursor: pointer"></i>
+
+            <input type="hidden" name="lessonId" th:value="${trainingTemplateLesson.lessonId}" />
+            <input type="hidden" name="templateId" th:value="${trainingTemplateLesson.getTrainingTemplateId()}" />
+            <input type="hidden" name="templateLessonId" th:value="${trainingTemplateLesson.id}" />
+
+            <table class="table table-hover" id="mytable">
+                <tr th:each="topic: ${topics}" th:data-href="${topic.id}" class="selectable-row">
+                    <td><input type="checkbox" name="topicIds" th:id="|id_${topic.id}|" th:value="${topic.id}" class="prevent_default_checkbox"/></td>
+                    <td th:text="${topic.title}"></td>
+                </tr>
+            </table>
+
+            <button class="btn btn-primary" type="submit">
+                <span>Dodaj</span>
+            </button>
+        </form>
+
+    <div th:replace="~{fragments/scripts :: selectable-row}"></div>
+    <div th:replace="~{fragments/scripts :: filtering}"></div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

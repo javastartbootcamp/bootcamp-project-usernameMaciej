@@ -1,0 +1,6 @@
+id;training_id;title;number;lesson_date;link_to_slack;video_links;sort_order;visible
+2;1;Programowanie obiektowe 1;2;2021-01-11;http://example.com;;100;true
+3;1;Programowanie obiektowe 2;3;2021-14;http://example.com;;200;true
+4;1;Programowanie obiektowe 3;4;2021-01-18;http://example.com;;300;true
+5;1;Algorytmy;5;2019-01-25;http://example.com;;500;false
+6;1;Tablice i pętle;6;2019-01-21;http://example.com;;400;true

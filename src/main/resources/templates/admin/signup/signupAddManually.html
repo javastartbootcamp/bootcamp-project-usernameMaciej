@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Manualne dodawanie zapisu</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+
+    <h2>Manualne dodawanie zapisu</h2>
+    <form th:object="${signupDto}" method="post" th:action="@{/admin/zapisy/dodaj}">
+        <h3>Dane osoby</h3>
+
+
+        <input class="form-control" type="text" placeholder="Imię" th:field="*{firstName}"/>
+        <input class="form-control" type="text" placeholder="Nazwisko" th:field="*{lastName}"/>
+        <input class="form-control" type="text" placeholder="Telefon" th:field="*{phoneNumber}"/>
+        <input class="form-control" type="text" placeholder="Email" th:field="*{email}"/>
+        <input class="form-control" type="text" placeholder="Adres" th:field="*{address}"/>
+
+
+        <h3>Wybór szkolenia</h3>
+
+        <label for="trainingId">Szkolenie</label>
+        <select th:field="*{trainingId}" id="trainingId" class="form-control">
+            <option th:each="training: ${trainings}" th:text="${training.code} + ' - ' + ${training.description.title} "
+                    th:value="${training.id}"></option>
+        </select>
+
+        <h3>Dane zapisu</h3>
+
+        <label for="signupStatus">Status (wybierz Zatwierdzone, jeśli uczestnik ma jeszcze podpisać umowę)</label>
+        <select th:field="*{signupStatus}" id="signupStatus" class="form-control">
+            <option th:each="status: ${T(pl.javastart.bootcamp.domain.signup.SignupStatus).values()}"
+                    th:text="${status.text}" th:value="${status.name()}"></option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Dodaj</button>
+
+        <p>Dodanie osoby spowoduje wysłanie maila z potwierdzeniem zapisu</p>
+
+    </form>
+
+</div>
+
+</body>
+</html>

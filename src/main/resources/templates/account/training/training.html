@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/account}">
+<body>
+<h2>Szkolenie ABC</h2>
+<div layout:fragment="account-content" class="container">
+
+    <h3 class="mb-4" th:text="|Szkolenie ${training.description.title}|">Szkolenie ABC</h3>
+
+    <p th:text="|Aktualnie zdobyte punkty: ${trainingResult.points}/${trainingResult.maxPoints} (${trainingResult.percentage}%)|"></p>
+
+    <p>Lista zajęć</p>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Numer</th>
+                <th>Temat</th>
+                <th>Data</th>
+                <th>Punkty za zadania</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lessonWithPoints: ${lessons}" class="clickable-row"
+            th:data-href="'/konto/zajecia/' + ${lessonWithPoints.lesson.id}"
+            th:if="${lessonWithPoints.visible}"
+        >
+            <td th:text="${lessonWithPoints.lesson.number}"></td>
+            <td th:text="${lessonWithPoints.lesson.title}"></td>
+            <td th:text="${lessonWithPoints.lesson.lessonDate}"></td>
+            <td>
+                <span th:text="|${lessonWithPoints.pointsFormatted}/${lessonWithPoints.maxPoints}|"></span>
+                <span th:if="${lessonWithPoints.maxAdditionalPoints > 0}" th:text="| + ${lessonWithPoints.additionalPointsFormatted}/${lessonWithPoints.maxAdditionalPoints}|"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Treść umowy</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2 class="mb-4">Umowa</h2>
+
+    <a href="/admin/umowa/test">Przetestuj</a>
+
+    <form th:action="@{/admin/umowa}" method="post">
+        <label for="content">Treść umowy (HTML)</label>
+        <textarea name="content" id="content" class="form-control mb-4" rows="20" th:text="${content}"></textarea>
+        <button type="submit" class="btn mb-4 orange darken-3">
+            <i class="fa fa-save pr-2" aria-hidden="true"></i>Zapisz
+        </button>
+
+    </form>
+
+
+</div>
+
+</body>
+</html>

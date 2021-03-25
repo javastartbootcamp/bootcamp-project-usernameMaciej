@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Edycja szkolenia</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2>Dodawanie / Edycja szkolenia</h2>
+
+    <form th:action="@{${training.id != null ? '/admin/szkolenia/edytuj' : '/admin/szkolenia/dodaj'}}" method="post"
+          th:object="${training}">
+        <input type="hidden" th:field="*{id}"/>
+        <label for="description">Szkolenie</label>
+        <select id="description" th:field="*{description}" class="form-control mb-4">
+            <option th:each="desc: ${descriptions}" th:value="${desc.id}" th:text="${desc.title}"></option>
+        </select>
+
+        <label for="code">Kod szkolenia</label>
+        <input type="text" id="code" th:field="*{code}" class="form-control mb-4"/>
+
+        <label for="code">Slack Bot Access Token</label>
+        <input type="text" id="slackBotAccessToken" th:field="*{slackBotAccessToken}" class="form-control mb-4"/>
+
+        <label for="trainersGithubUsernames">Nazwy userów githubowych trenerów (oddzielone przecinkiem)</label>
+        <input type="text" id="trainersGithubUsernames" th:field="*{trainersGithubUsernames}" class="form-control mb-4"/>
+
+        <label for="company">Firma prowadząca szkolenia (do umowy)</label>
+        <select id="company" th:field="*{company}" class="form-control mb-4">
+            <option th:each="company: ${companies}"
+                    th:text="${company.shortName}" th:value="${company.id}"></option>
+        </select>
+
+        <label for="status">Kategoria szkolenia</label>
+        <select id="category" th:field="*{category}" class="form-control mb-4">
+            <option th:each="category: ${T(pl.javastart.bootcamp.domain.training.TrainingCategory).values()}"
+                    th:text="${category.text}" th:value="${category.name()}"></option>
+        </select>
+
+        <label for="deposit">Kwota zaliczki</label>
+        <input type="number" id="deposit" th:field="*{deposit}" class="form-control mb-4"/>
+
+        <label for="price">Cena szkolenia</label>
+        <input type="number" id="price" th:field="*{price}" class="form-control mb-4"/>
+
+        <label for="regularPrice">Cena regularna (będzie widoczna jako przekreślona jeśli inna niż cena aktualna)</label>
+        <input type="number" id="regularPrice" th:field="*{regularPrice}" class="form-control mb-4"/>
+
+        <label for="type">Typ szkolenia (dzienne, wieczorowe, etc.)</label>
+        <input type="text" id="type" th:field="*{type}" class="form-control mb-4"/>
+
+        <label for="status">Status szkolenia</label>
+        <select id="status" th:field="*{status}" class="form-control mb-4">
+            <option th:each="status: ${T(pl.javastart.bootcamp.domain.training.TrainingStatus).values()}"
+                    th:text="${status.text}" th:value="${status.name()}"></option>
+        </select>
+
+        <div class="row">
+            <div class="col">
+                <label for="minAttendees">Minimalna liczba uczestników</label>
+                <input type="number" id="minAttendees" th:field="*{minAttendees}" class="form-control mb-4"/>
+            </div>
+            <div class="col">
+                <label for="maxAttendees">Maksymalna liczba uczestników</label>
+                <input type="number" id="maxAttendees" th:field="*{maxAttendees}" class="form-control mb-4"/>
+            </div>
+        </div>
+
+        <label for="hoursDescription">Godziny szkolenia (opis)</label>
+        <input type="text" id="hoursDescription" th:field="*{hoursDescription}" class="form-control mb-4"/>
+
+        <div class="row">
+            <div class="col">
+                <label for="hourFrom">Godziny od (export do Google Calendar)</label>
+                <input type="time" id="hourFrom" th:field="*{hourFrom}" class="form-control mb-4"/>
+            </div>
+            <div class="col">
+                <label for="hourTo">Godziny do (export do Google Calendar)</label>
+                <input type="time" id="hourTo" th:field="*{hourTo}" class="form-control mb-4"/>
+            </div>
+        </div>
+
+        <label for="dates">Daty szkolenia - <a href="#" id="clearDates">Wyczyść</a></label>
+        <div class="row">
+            <div class="col-md-auto mb-4">
+                <span id="multi-date-picker"></span>
+            </div>
+            <div class="col">
+                <textarea id="dates" th:field="*{dates}" class="form-control mb-4" rows="8" readonly></textarea>
+                <p>Liczba wybranych dni: <span id="days-count">0</span></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="fullPaymentFrom">Od kiedy pełna opłata</label>
+                <input type="date" id="fullPaymentFrom" th:field="*{fullPaymentFrom}" class="form-control mb-4"/>
+            </div>
+            <div class="col">
+                <label for="fullPaymentTo">Do kiedy pełna opłata</label>
+                <input type="date" id="fullPaymentTo" th:field="*{fullPaymentTo}" class="form-control mb-4"/>
+            </div>
+        </div>
+
+        <button type="submit" class="btn mb-4 orange darken-3">
+            <i class="fa fa-save pr-2" aria-hidden="true"></i>Zapisz
+        </button>
+
+    </form>
+
+    <script type="text/javascript" th:inline="javascript">
+        (function ($) {
+            $(document).ready(function ($) {
+                var datePicker = $('#multi-date-picker');
+                var datesString = /*[[${training.dates}]]*/ '';
+                var firstDate = new Date();
+                if(datesString) {
+                    var dates = datesString.split(', ');
+                    $('#days-count').html(dates.length);
+                    firstDate = dates[0];
+                }
+                let multiDatesPicker = datePicker.multiDatesPicker({
+                    altField: '#dates',
+                    addDates: dates,
+                    defaultDate: firstDate,
+                    onSelect: function () {
+                        var dates = datePicker.multiDatesPicker('getDates');
+                        $('#days-count').html(dates.length);
+                        if(dates.length > 0) {
+                            var dateParts = dates[0].split('.');
+                            var formattedDate = dateParts[2] + '-' + dateParts[1] + '-' + dateParts[0];
+                            var startDate = new Date(formattedDate);
+
+                            var fullPaymentDateFrom = new Date(startDate);
+                            fullPaymentDateFrom.setDate(startDate.getDate() - 30);
+                            var fullPaymentDateFromFormatted = $.datepicker.formatDate('yy-mm-dd', fullPaymentDateFrom);
+                            $('#fullPaymentFrom').val(fullPaymentDateFromFormatted);
+
+                            var fullPaymentDateTo = new Date(startDate);
+                            fullPaymentDateTo.setDate(startDate.getDate() - 14);
+                            var fullPaymentDateFormatted = $.datepicker.formatDate('yy-mm-dd', fullPaymentDateTo);
+                            $('#fullPaymentTo').val(fullPaymentDateFormatted);
+                        } else {
+                            $('#fullPaymentFrom').val(null);
+                            $('#fullPaymentTo').val(null);
+                        }
+                    }
+                });
+
+                let clearButton = $('#clearDates');
+                clearButton.click(function(event) {
+                    datePicker.multiDatesPicker('resetDates');
+                    event.preventDefault();
+                });
+            });
+        })(jQuery);
+    </script>
+
+</div>
+
+
+</body>
+</html>

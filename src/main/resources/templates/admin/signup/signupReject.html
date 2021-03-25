@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Odrzucanie zapisu na szkolenie</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2>Odrzucanie zapisu na szkolenie</h2>
+
+    <p>
+        <b>Osoba:</b>
+        <a th:href="'/admin/uzytkownicy/' + ${signup.user.id}"
+           th:text="${signup.user.firstName} + ' ' + ${signup.user.lastName}"></a>
+    </p>
+
+    <form th:action="@{/admin/zapisy/odrzuc}" method="post">
+        <input type="hidden" name="signupId" th:value="${signup.id}"/>
+
+        <div class="form-row">
+            <div class="col">
+
+            <label for="reason">Podaj powód odrzucenia (zostanie umieszczony w mailu)</label>
+            <textarea id="reason" name="reason" class="form-control"></textarea>
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary" type="submit">odrzuć</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Zapis na szkolenie</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2 class="mb-2">Zapis na szkolenie</h2>
+
+    <div class="card p-4 my-2">
+
+        <p>
+            <b>Szkolenie:</b>
+            <a th:href="'/admin/szkolenia/' + ${signup.training.id}"
+               th:text="${signup.training.description.title}"></a>
+        </p>
+
+        <p>
+            <b>Osoba:</b>
+            <a th:href="'/admin/uzytkownicy/' + ${signup.user.id}"
+               th:text="${signup.user.firstName} + ' ' + ${signup.user.lastName}"></a>
+        </p>
+
+        <p>
+            <b>Status:</b>
+            <span th:text="${signup.status.text}"></span>
+        </p>
+
+        <p>
+            <b>Data zapisu:</b>
+            <span th:text="${#temporals.format(signup.signupDate, 'yyyy-MM-dd HH:mm')}"></span>
+        </p>
+
+        <p>
+            <b>Wiadomość podczas zapisu:</b>
+            <span th:text="${signup.note}"></span>
+        </p>
+
+        <p>
+            <b>Szablon umowy:</b>
+            <span th:if="${#strings.isEmpty(signup.agreementTemplateFileName)}">Brak umowy</span>
+            <a th:if="!${#strings.isEmpty(signup.agreementTemplateFileName)}"
+               th:href="'/umowa/' + ${signup.agreementTemplateFileName}" target="_blank">Link</a>
+        </p>
+
+        <p>
+            <b>Podpisana umowa:</b>
+            <span th:if="${#strings.isEmpty(signup.agreementSignedFileName)}">Brak umowy</span>
+            <a th:if="!${#strings.isEmpty(signup.agreementSignedFileName)}"
+               th:href="'/umowa/' + ${signup.agreementSignedFileName}" target="_blank">Link</a>
+        </p>
+
+        <p>
+            <b>Czy ma dostęp do zawartości szkolenia (lekcje, zadania):</b>
+            <span th:text="${signup.canSeeContent}"></span>
+        </p>
+
+    </div>
+
+    <div th:if="${visibleButtons.size() > 0}">
+
+        <div class="card p-4 my-2">
+            <h3>Akcje</h3>
+
+            <form th:action="@{'/admin/zapisy/' + ${signup.id} + '/generujWzorUmowy'}" method="post">
+                <button type="submit" class="btn btn-primary">
+                    Wygeneruj ponownie wzór umowy
+                </button>
+            </form>
+
+            <a th:href="@{'/admin/zapisy/' + ${signup.id} + '/akceptacja'}">
+                <button type="submit" class="btn btn-primary">
+                    Akceptacja zapisu...
+                </button>
+            </a>
+
+            <form th:if="${visibleButtons.contains('BUTTON_ADVANCE_PAID')}"
+                  th:action="@{'/admin/zapisy/' + ${signup.id} + '/potwierdzZaplateZadatku'}" method="post">
+                <button type="submit" class="btn btn-primary">
+                    Potwierdź otrzymanie zadatku
+                </button>
+            </form>
+
+            <form th:if="${visibleButtons.contains('BUTTON_FULLY_PAID')}"
+                  th:action="@{'/admin/zapisy/' + ${signup.id} + '/potwierdzPelnaZaplate'}" method="post">
+                <button type="submit" class="btn btn-primary">
+                    Potwierdź pełne opłacenie szkolenia
+                </button>
+            </form>
+
+            <form th:if="${visibleButtons.contains('BUTTON_GENERATE_AGREEMENT')}"
+                  th:action="@{'/admin/zapisy/' + ${signup.id} + '/generujWzorUmowy'}" method="post">
+                <button type="submit" class="btn btn-primary">
+                    Wygeneruj ponownie wzór umowy
+                </button>
+            </form>
+
+            <form th:if="${signup.canSeeContent}"
+                  th:action="@{'/admin/zapisy/' + ${signup.id} + '/dostep'}" method="post">
+                <input type="hidden" value="false" name="access"/>
+                <button type="submit" class="btn btn-primary">
+                    Odbierz dostęp do treści
+                </button>
+            </form>
+
+            <form th:if="!${signup.canSeeContent}"
+                  th:action="@{'/admin/zapisy/' + ${signup.id} + '/dostep'}" method="post">
+                <input type="hidden" value="true" name="access"/>
+                <button type="submit" class="btn btn-primary">
+                    Przydziel dostęp do treści
+                </button>
+            </form>
+
+            <a th:href="'/admin/zapisy/' + ${signup.id} + '/odrzuc'">
+                <button class="btn btn-primary">
+                    Odrzuć zapis...
+                </button>
+            </a>
+
+            <form th:action="@{'/admin/zapisy/' + ${signup.id} + '/ustawIdKanalu'}" method="post" th:object="${signup}">
+                <label for="slackChannelId">Identyfikator prywantnego kanału Slacka (PPM -> copy link)
+                    https://(...)slack.com/(...)archives/<b>G01B2L610RZ</b>. Najpierw ustaw token w szkoleniu. Bot
+                    powinien potwierdzić na kanale, że został podpięty. </label>
+                <input id="slackChannelId" type="text" th:field="*{slackChannelId}" class="form-control"/>
+                <input type="submit" class="btn btn-primary" value="Ustaw ID kanału"/>
+            </form>
+        </div>
+
+        <div class="card p-4 my-2" th:if="${visibleButtons.contains('BUTTON_SEND_MESSAGE')}">
+            <h3>Wyślij wiadomość</h3>
+
+            <form th:action="@{'/admin/zapisy/' + ${signup.id} + '/wyslijWiadomosc'}" method="post">
+                <div class="input-row mt-3">
+                    <label for="title">Tytuł</label>
+                    <input type="text" class="form-control" name="title" id="title" th:value="${title}"/>
+                </div>
+                <div class="form-row mt-3">
+                    <label for="message">Treść</label>
+                    <textarea class="form-control" name="text" th:text="${message}" id="message"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Wyślij</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="card p-4 my-2">
+        <h2>Historia zapisu</h2>
+
+        <form th:action="@{'/admin/zapisy/' + ${signup.id} + '/dodajNotatke'}" method="post">
+            <div class="input-row">
+                <input type="text" name="text" class="form-control" placeholder="Treść notatki"/>
+            </div>
+            <button type="submit" class="btn btn-primary">Dodaj</button>
+        </form>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Data</th>
+                <th>Notatka</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="logItem: ${signup.logItems}">
+                <td th:text="${#temporals.format(logItem.itemDate, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${logItem.note}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+</body>
+</html>

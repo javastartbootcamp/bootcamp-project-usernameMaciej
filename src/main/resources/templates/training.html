@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <title th:text="|Rejestracja na ${training.description.title} - Grupa ${training.code}|"></title>
+    <meta property="og:title" th:content="|Rejestracja na ${training.description.title} - Grupa ${training.code}|" />
+    <meta name="twitter:title" th:content="|Rejestracja na ${training.description.title} - Grupa ${training.code}|" />
+    <meta th:if="${training.description.noindex}" name="robots" content="noindex" />
+    <meta name="description" th:content="|Grupa szkoleniowa ${training.description.title}. Tutaj możesz poznać szczegóły i zapisać się na szkolenie.|" />
+    <meta property="og:description" th:content="|Grupa szkoleniowa ${training.description.title}. Tutaj możesz poznać szczegóły i zapisać się na szkolenie.|" />
+    <meta name="twitter:description" th:content="|Grupa szkoleniowa ${training.description.title}. Tutaj możesz poznać szczegóły i zapisać się na szkolenie.|" />
+    <meta property="og:url" th:content="|${currentDomain}/szkolenie/${training.description.url}/${training.id}|" />
+    <link rel="canonical" th:href="|${currentDomain}/szkolenie/${training.description.url}/${training.id}|" />
+</head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+
+    <h1 th:text="${training.description.title}"></h1>
+
+    <div th:if="${activeSignupsCount < training.maxAttendees}" style="font-size: 20px">
+        <p th:if="${activeSignupsCount >= training.minAttendees}"
+           th:text="|Pozostało miejsc: ${training.maxAttendees - activeSignupsCount}. Nie czekaj z zapisem na ostatni moment!|" > </p>
+        <p th:unless="${activeSignupsCount >= training.minAttendees}">Są jeszcze wolne miejsca!</p>
+    </div>
+
+    <div th:if="${activeSignupsCount >= training.maxAttendees}" style="font-size: 18px">
+        <p>Brak wolnych miejsc. Możesz się zapisać na listę rezerwową. Jeżeli któryś z uczestników zrezygnuje lub
+        nie opłaci szkolenia, to trafisz na jego miejsce.</p>
+    </div>
+
+    <p><b>Zakres: </b><a th:href="|/szkolenie/${training.description.url}|">Zobacz pełen opis szkolenia</a></p>
+    <p><b>Kiedy: </b><span th:text="${training.hoursDescription}"></span></p>
+    <p><b>Gdzie: </b>Szkolenia odbywają się online.</p>
+    <p><b>Cena szkolenia: </b>
+        <span th:if="${training.price != training.regularPrice}">
+            <span style="text-decoration: line-through;" th:text="|${#numbers.formatDecimal(training.regularPrice, 0, 'NONE', 0, 'COMMA')} zł|">5000 zł</span>
+            <b th:text="|${#numbers.formatDecimal(training.price, 0, 'NONE', 0, 'COMMA')}zł|"></b>
+            <span> brutto. W celu potwierdzenia zapisu wymagamy 1000zł zadatku. Miesiąc przed szkoleniem należy wpłacić pozostałą kwotę. W przypadku gdyby szkolenie nie miało sie odbyć oddajemy całe wpłacone pieniądze.</span>
+        </span>
+        <span th:unless="${training.price != training.regularPrice}">
+            <span th:text="|${#numbers.formatDecimal(training.price, 0, 'NONE', 0, 'COMMA')}zł brutto. W celu potwierdzenia zapisu wymagamy 1000zł zadatku. Miesiąc przed szkoleniem należy wpłacić pozostałą kwotę. W przypadku gdyby szkolenie nie miało sie odbyć oddajemy całe wpłacone pieniądze.|"></span>
+        </span>
+    </p>
+
+    <label for="dates"><b>Daty szkolenia</b></label>
+    <div class="row">
+        <div class="col-md-auto mb-4">
+            <span id="multi-date-picker"></span>
+        </div>
+        <div class="col">
+            <textarea th:text="${training.dates}" id="dates" class="form-control mb-4" rows="8" readonly></textarea>
+            <p>Liczba spotkań: <span id="days-count">0</span></p>
+        </div>
+    </div>
+
+    <div>
+        <form th:action="@{/zgloszenie}" th:object="${signup}" method="post"
+              class="needs-validation border border-light p-5" novalidate>
+
+            <p class="h4 mb-4 text-center">Formularz zgłoszeniowy</p>
+
+            <input type="hidden" th:field="*{trainingId}"/>
+
+            <div class="form-row mb-4">
+                <div class="col">
+                    <label for="firstName">Imię</label>
+                    <input type="text" id="firstName" th:field="*{firstName}" class="form-control" placeholder="Imię"
+                           required th:errorclass="is-invalid">
+                    <div class="invalid-feedback">
+                        Pole jest wymagane
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="lastName">Nazwisko</label>
+                    <input type="text" id="lastName" th:field="*{lastName}" class="form-control" placeholder="Nazwisko"
+                           required th:errorclass="is-invalid">
+                    <div class="invalid-feedback">
+                        Pole jest wymagane
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row mb-4">
+                <div class="col">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="E-mail"
+                           required th:errorclass="is-invalid">
+                    <div class="invalid-feedback">
+                        Podaj proszę poprawny adres email.
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="phoneNumber">Numer telefonu</label>
+                    <input type="text" id="phoneNumber" th:field="*{phoneNumber}" class="form-control"
+                           placeholder="Numer telefonu" required th:errorclass="is-invalid">
+                    <div class="invalid-feedback">
+                        Pole jest wymagane
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col col-6  mb-3">
+                    <label for="street">Ulica</label>
+                    <input type="text" class="form-control" id="street" th:field="*{street}" placeholder="Ulica"
+                           required th:errorclass="is-invalid">
+                    <div class="invalid-feedback">
+                        Pole jest wymagane
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="houseNumber">Numer domu</label>
+                    <input type="text" class="form-control" id="houseNumber" th:field="*{houseNumber}"
+                           placeholder="Numer domu" required th:errorclass="is-invalid">
+                    <div class="invalid-feedback">
+                        Pole jest wymagane
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="flatNumber">Numer mieszkania</label>
+                    <input type="text" class="form-control" id="flatNumber" th:field="*{flatNumber}"
+                           placeholder="Numer mieszkania" th:errorclass="is-invalid">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-3 mb-3">
+                    <label for="postalCode">Kod pocztowy</label>
+                    <input type="text" class="form-control" id="postalCode" th:field="*{postalCode}"
+                           placeholder="Kod pocztowy" required th:errorclass="is-invalid" minlength="6" maxlength="6">
+                    <div class="invalid-feedback">
+                        Podaj poprawny kod pocztowy
+                    </div>
+                </div>
+                <div class="col mb-3">
+                    <label for="city">Miasto</label>
+                    <input type="text" class="form-control" id="city" th:field="*{city}" placeholder="Miasto" required
+                           th:errorclass="is-invalid">
+                    <div class="invalid-feedback">
+                        Pole jest wymagane
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="financingForm">Forma finansowania</label>
+                <select class="form-control" id="financingForm" th:field="*{financingMethod}" >
+                    <option value="Opłacam kurs samodzielnie">Opłacam kurs samodzielnie</option>
+                    <option value="Pożyczka Inwestuj w Rozwój">Pożyczka Inwestuj w Rozwój</option>
+                    <option value="Finansowane przez pracodawcę">Finansowane przez pracodawcę</option>
+                    <option value="Urząd Pracy">Dofinansowanie z Urzędu Pracy</option>
+                    <option value="Inne">Inne (opisz proszę w formularzu poniżej)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Czy chcesz nam przekazać wiadomość dotyczącą zapisu? (np.: mamy zapewnić
+                    sprzęt)</label>
+                <textarea class="form-control rounded-0" id="message" th:field="*{message}" rows="3"
+                          placeholder="Wiadomość"></textarea>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-4 text-left">
+                <input type="checkbox" class="custom-control-input" id="acceptTerms"
+                       th:field="*{acceptTerms}"
+                       th:errorclass="is-invalid" required>
+                <label class="custom-control-label" for="acceptTerms">
+                    Akceptuję <a href="/strona/owu" target="_blank">Ogólne Warunki Uczestnictwa</a>
+                </label>
+                <div class="invalid-feedback">
+                    Akceptacja warunków uczestnictwa jest wymagana
+                </div>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-4 text-left">
+                <input type="checkbox" class="custom-control-input" id="privacyTerms"
+                       th:field="*{privacyTerms}"
+                       th:errorclass="is-invalid" required>
+                <label class="custom-control-label" for="privacyTerms">
+                    Wyrażam zgodę na przetwarzanie moich danych osobowych w celu i zakresie niezbędnym do wykonania
+                    usługi. Zgodnie z <a href="/strona/polityka-prywatnosci" target="_blank">Polityką prywatności</a>
+                </label>
+                <div class="invalid-feedback">
+                    Wyrażenie zgody jest wymagane.
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-block" type="submit">Wyślij zgłoszenie</button>
+
+        </form>
+
+        <div class="border border-light p-5 my-2">
+
+            <p>Jak wygląda proces zapisu na szkolenie?</p>
+            <ol>
+                <li>Uzupełniasz powyższy formularz</li>
+                <li>Wysyłamy maila z linkiem do potwierdzenia</li>
+                <li>Weryfikujesz swojego maila</li>
+                <li>Weryfikujemy poprawność danych osobowych</li>
+                <li>Jeśli wszystko jest ok to wysyłamy linka do umowy</li>
+                <li>Akceptujesz umowę</li>
+                <li>Wpłacasz zadatek, co jest potwierdzeniem zgłoszenia</li>
+                <li>Miesiąc przed szkoleniem wpłacasz pozostałą kwotę</li>
+                <li>Kilka dni przed szkoleniem wysyłamy informacje organizacyjne</li>
+            </ol>
+
+        </div>
+
+
+    </div>
+
+    <script type="text/javascript" th:inline="javascript">
+        (function ($) {
+            $(document).ready(function ($) {
+                var datePicker = $('#multi-date-picker');
+                var datesString = /*[[${training.dates}]]*/ '';
+                var firstDate = new Date();
+                if (datesString) {
+                    var dates = datesString.split(', ');
+                    $('#days-count').html(dates.length);
+                    firstDate = dates[0];
+                }
+                datePicker.multiDatesPicker({
+                    addDates: dates,
+                    defaultDate: firstDate,
+                    mode: 'disabled'
+                });
+            });
+        })(jQuery);
+
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        } else {
+                            $(this).find(':submit').attr('disabled', 'disabled');
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+</div>
+</body>
+</html>

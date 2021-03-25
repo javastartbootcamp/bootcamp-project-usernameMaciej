@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Zadanie</title>
+    <script th:replace="~{fragments/scripts :: tinymce}"></script>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <div style="display: flex; justify-content: space-between">
+        <a href="/admin/zadania">&lt;- Przejdź do listy zadań</a><br/>
+        <a th:href="'/admin/zadania/' + ${task.id}"><i class="fa fa-directions"></i>Zobacz zadanie</a>
+    </div>
+
+    <h3 th:if="${mode} == 'add'">Dodawanie zadania</h3>
+    <div th:if="${mode} == 'edit'">
+        <h3>Edycja zadania</h3>
+        <div class="alert alert-danger">
+            <span>Pamiętaj, że edytujesz zadanie które może być podpięte także do innych szkoleń!</span>
+        </div>
+    </div>
+
+    <form method="post" th:action="@{${mode == 'add' ? '/admin/zadania/dodaj' : '/admin/zadania/edytuj'}}"
+          th:object="${task}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{lastUsed}"/>
+        <div class="form-row">
+            <label for="name">Nazwa</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}"/>
+        </div>
+        <div class="form-row">
+            <label for="tags">Tagi</label>
+            <input type="text" id="tags" class="form-control" th:field="*{tags}"/>
+        </div>
+        <div class="form-row">
+            <label for="sortOrder">Sort order (wg tego jest sortowane)</label>
+            <input type="number" id="sortOrder" class="form-control" th:field="*{sortOrder}"/>
+        </div>
+        <div class="form-row">
+            <label for="points">Liczba punktów do zdobycia</label>
+            <input type="number" id="points" class="form-control" th:field="*{points}"/>
+        </div>
+        <div class="form-row">
+            <label for="baseRepositoryUrl">Repozytorium bazowe (zostanie skopiowane jako baza zadania)</label>
+            <input type="url" id="baseRepositoryUrl" class="form-control" th:field="*{baseRepositoryUrl}"/>
+        </div>
+        <div class="form-row ml-4">
+            <label for="archived" class="form-check-label ">Czy archiwizowane? (nie będzie wyświetlane na
+                listach)</label>
+            <input type="checkbox" id="archived" class="form-check-input" th:field="*{archived}"/>
+        </div>
+
+        <h3>Rozwiązanie</h3>
+        <div class="form-row">
+            <label for="solutionSourceUrl">Link do kodu źródłowego rozwiązania</label>
+            <input type="url" id="solutionSourceUrl" class="form-control" th:field="*{solutionSourceUrl}"/>
+        </div>
+        <div class="form-row">
+            <label for="solutionVideo">Video rozwiązania (tylko id z youtube, np dla "watch?v=QgrgPqGoKk4" poprawna
+                wartość to QgrgPqGoKk4)</label>
+            <input type="text" id="solutionVideo" class="form-control" th:field="*{solutionVideo}"/>
+        </div>
+        <label for="content">Treść zadania</label>
+        <textarea rows="20" id="content" class="form-control tiny"
+                  th:field="*{content}"></textarea>
+
+        <div th:if="${mode} == 'edit'" style="display: flex; justify-content: space-between">
+            <div>
+                <a  th:href="|/admin/zadania/${task.id}/usun|"
+                   onclick="return confirm('Na pewno usunąć?');">
+                    <i class="fas fa-trash"></i><span>&nbsp;Usuń</span>
+                </a>
+                <a th:if="${!task.archived}" th:href="|/admin/zadania/${task.id}/archiwizuj|"
+                   onclick="return confirm('Na pewno zarchiwizować?');">
+                    <i class="fas fa-archive"></i>&nbsp;Archiwizuj
+                </a>
+            </div>
+            <button class="btn btn-primary" type="submit">
+                <span><i class="fas fa-save"></i>&nbsp;&nbsp;Zapisz zmiany</span>
+            </button>
+
+        </div>
+
+        <div th:if="${mode} == 'add'" style="display: flex; justify-content: space-between">
+            <span></span>
+            <button class="btn btn-primary" type="submit">
+                <span>Dodaj</span>
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Wynik zadania</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3>Informacje o zadaniu</h3>
+
+    <p th:text="|Użytkownik: ${userTask.user.firstName} ${userTask.user.lastName}|"></p>
+    <p>
+        <span>Zadanie: </span>
+        <a th:href="|/admin/lekcje/zadania/${userTask.lessonTask.id}|" th:text="${userTask.lessonTask.task.name}"></a>
+    </p>
+    <p th:text="|Max punktów do zdobycia: ${userTask.lessonTask.task.points}|"></p>
+    <p th:text="|Termin:  ${#temporals.format(userTask.lessonTask.deadline, 'yyyy-MM-dd HH:mm')}|"></p>
+
+    <h3>Dodawanie wyniku</h3>
+
+    <form method="post" th:action="@{/admin/lekcje/zadania/ocena}" th:object="${userTask}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{lessonTask}"/>
+        <input type="hidden" th:field="*{user}"/>
+        <div class="form-row">
+            <label for="points">Punkty</label>
+            <input id="points" type="number" step="0.1" class="form-control" th:field="*{points}"/>
+        </div>
+        <div class="form-row">
+            <label for="solutionUrl">Link do rozwiązania</label>
+            <input id="solutionUrl" type="url" class="form-control" th:field="*{solutionUrl}"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Zapisz ocenę</button>
+    </form>
+
+    <h3>Historia tego zadania</h3>
+
+    <div th:if="userTaskSolutionEntries">
+        <div th:each="entry: ${userTaskSolutionEntries}" class="alert alert-secondary">
+            <p th:text="${#temporals.format(entry.dateTime, 'yyyy-MM-dd HH:mm')}"></p>
+            <p th:utext="${entry.text}"></p>
+        </div>
+    </div>
+
+    <p th:if="!${userTaskSolutionEntries}">
+        Brak historii dla tego zadania.
+    </p>
+
+
+</div>
+
+
+</body>
+</html>

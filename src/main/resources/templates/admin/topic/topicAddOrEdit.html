@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Temat</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3>
+        <span th:if="${mode} == 'add'">Dodawanie tematu</span>
+        <span th:if="${mode} == 'edit'">Edycja tematu</span>
+    </h3>
+
+    <a th:href="|/admin/tematy|">Powrót do listy tematów</a>
+
+    <form method="post" th:action="@{${mode == 'add' ? '/admin/tematy/dodaj' : '/admin/tematy/edytuj'}}" th:object="${topic}">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="form-row">
+            <label for="title">Tytuł</label>
+            <input type="text" id="title" class="form-control" th:field="*{title}"/>
+        </div>
+
+        <div class="form-row">
+            <label for="videoLinks">Linki do filmów - tylko identyfikatory filmów z youtube (każdy w nowej linii)</label>
+            <textarea rows="3" id="videoLinks" class="form-control" th:field="*{videoLinks}"></textarea>
+        </div>
+        <div class="form-row">
+            <label for="lessonLinks">Linki do lekcji (każdy w nowej linii). Format: [tytuł];[url]</label>
+            <textarea rows="3" id="lessonLinks" class="form-control" th:field="*{lessonLinks}"></textarea>
+        </div>
+
+        <div class="form-row">
+            <label for="sortOrder">Sort order (wg tego jest sortowane)</label>
+            <input type="number" id="sortOrder" class="form-control" th:field="*{sortOrder}"/>
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            <span th:if="${mode} == 'add'">Dodaj</span>
+            <span th:if="${mode} == 'edit'">Zapisz zmiany</span>
+        </button>
+    </form>
+
+</div>
+
+
+</body>
+</html>

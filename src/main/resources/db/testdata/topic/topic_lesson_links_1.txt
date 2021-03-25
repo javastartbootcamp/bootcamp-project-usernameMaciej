@@ -1,0 +1,2 @@
+Konfiguracja środowiska;https://javastart.pl/kurs/java-podstawy/java-podstawy-temat-1-jdk/lekcja/java-podstawy-instalacja-i-konfiguracja-srodowiska-jdk
+Program Hello World;https://javastart.pl/kurs/java-podstawy/java-podstawy-temat-2-hello-world/lekcja/java-podstawy-pierwszy-program-hello-world

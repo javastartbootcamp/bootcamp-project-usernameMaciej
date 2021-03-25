@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Edycja strony</title>
+    <script th:replace="~{fragments/scripts :: tinymce}"></script>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2>Edycja strony</h2>
+
+    <form th:action="@{${page.id != null ? '/admin/strony/edytuj' : '/admin/strony/dodaj'}}" method="post"
+          th:object="${page}">
+        <input type="hidden" th:field="*{id}"/>
+
+        <label for="title">Tytuł</label>
+        <input type="text" id="title" th:field="*{title}" class="form-control mb-4"/>
+
+        <label for="url">Url</label>
+        <input type="text" id="url" th:field="*{url}" class="form-control mb-4"/>
+
+        <label for="metaDescription">Meta description (od 50 do 160 znaków)</label>
+        <textarea id="metaDescription" th:field="*{metaDescription}" class="form-control mb-4" rows="4"></textarea>
+
+        <label for="content">Zawartość</label>
+        <textarea id="content" th:field="*{content}" class="form-control mb-4 tiny" rows="20"></textarea>
+
+        <button type="submit" class="btn mb-4 orange darken-3">
+            <i class="fa fa-save pr-2" aria-hidden="true"></i>Zapisz
+        </button>
+
+    </form>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Szkolenia</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2>Opisy</h2>
+
+    <a href="/admin/opisy/dodaj">Dodaj opis</a>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nazwa szkolenia</th>
+            <th>Zobacz</th>
+            <th>Edytuj</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="description: ${descriptions}">
+            <td th:text="${description.title}"></td>
+            <td>
+                <a th:href="'/szkolenie/' + ${description.url}">Zobacz</a>
+            </td>
+            <td>
+                <a th:href="'/admin/opisy/' + ${description.id} + '/edytuj'">Edytuj</a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

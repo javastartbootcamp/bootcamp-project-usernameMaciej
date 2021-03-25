@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Edycja ćwiczenia w szablonie lekcji</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <a th:href="|/admin/zadania/${taskId}/edytuj|">
+        <i class="fas fa-edit"></i>
+        Edytuj definicję zadania (treść, rozwiązanie)
+    </a>
+
+    <h3>Edycja ćwiczenia w lekcji</h3>
+
+    <form method="post" th:action="@{'/admin/szablony/lekcje/cwiczenia/edytuj'}" th:object="${dto}">
+        <input type="hidden" th:field="*{lessonExerciseId}"/>
+        <input type="hidden" th:field="*{templateLessonId}"/>
+        <input type="hidden" th:field="*{templateId}"/>
+
+        <div class="form-row">
+            <label for="number">Numer</label>
+            <input type="number" id="number" class="form-control" th:field="*{number}"/>
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            Zapisz zmiany
+        </button>
+
+    </form>
+
+</div>
+
+
+</body>
+</html>

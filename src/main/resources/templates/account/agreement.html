@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+    <title>Zapisy</title>
+    <style>
+        .ramka {
+            max-height: calc(100vh - 300px);
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container my-5">
+
+    <div th:if="${signup.status == T(pl.javastart.bootcamp.domain.signup.SignupStatus).APPROVED}">
+
+        <p>Potwierdź zapoznanie się z umową korzystając z przycisku na dole strony.</p>
+
+        <div class="loader">
+            <iframe class="ramka" th:src="'/umowa/' + ${agreementFileName}" height="800"
+                    style="background-color: transparent; width: 100%; max-width: 1024px"></iframe>
+        </div>
+
+        <div class="text-center">
+            <form th:action="@{'/konto/zapisy/' + ${signupId} + '/umowa/akceptuje'}" method="post"
+                  class="needs-validation"
+                  novalidate th:object="${agreementAcceptation}">
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="accepted"
+                           th:field="*{accepted}"
+                           th:errorclass="is-invalid" required>
+                    <label class="custom-control-label" for="accepted">
+                        Potwierdzam zapoznanie się z umową i Ogólnymi Warunkami Uczestnictwa.
+                    </label>
+                    <div class="invalid-feedback">
+                        Potwierdzenie jest wymagane.
+                    </div>
+                </div>
+
+                <p>Umowa o powyższej treści i bez znaku WZÓR będzie wysłana na Państwa adres email po jej
+                    zatwierdzeniu.</p>
+
+                <button type="submit" class="btn btn-primary">Zawieram umowę</button>
+            </form>
+        </div>
+
+        <script type="text/javascript" th:inline="javascript">
+            (function () {
+                'use strict';
+                window.addEventListener('load', function () {
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.getElementsByClassName('needs-validation');
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+        </script>
+
+    </div>
+
+    <div class="text-center" th:if="${signup.status != T(pl.javastart.bootcamp.domain.signup.SignupStatus).APPROVED}">
+        <h2>Link nieaktywny</h2>
+        <p>Link do umowy wygasł.</p>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Opis szkolenia</title>
+    <script th:replace="~{fragments/scripts :: tinymce}"></script>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2 class="mb-4">Opis szkolenia</h2>
+
+    <form th:action="@{${description.id != null ? '/admin/opisy/edytuj' : '/admin/opisy/dodaj'}}" method="post"
+          th:object="${description}">
+        <input type="hidden" th:field="*{id}"/>
+        <label for="title">Tytuł</label>
+        <input type="text" id="title" th:field="*{title}" class="form-control mb-4"/>
+        <label for="url">URL</label>
+        <input type="text" th:field="*{url}" id="url" class="form-control mb-4"/>
+        <div class="form-row ml-4  mb-4">
+            <input type="checkbox" th:field="*{noindex}" id="noindex" class="form-check-input"/>
+            <label for="noindex">Noindex (zablokowanie indeksowania w Google)</label>
+        </div>
+
+        <label for="metaDescription">Meta description (od 50 do 160 znaków)</label>
+        <textarea th:field="*{metaDescription}" id="metaDescription" class="form-control mb-4" rows="3"></textarea>
+
+        <label for="content">Opis (HTML)</label>
+        <textarea th:field="*{content}" id="content" class="form-control mb-4 tiny" rows="20"></textarea>
+
+        <label for="contentShort">Krótki opis - do umowy (HTML)</label>
+        <textarea th:field="*{contentShort}" id="contentShort" class="form-control mb-4" rows="10"></textarea>
+        <label for="extraService">Dodatkowe usługi - do umowy (HTML)</label>
+        <textarea th:field="*{extraService}" id="extraService" class="form-control mb-4" rows="10"></textarea>
+        <button type="submit" class="btn mb-4 orange darken-3">
+            <i class="fa fa-save pr-2" aria-hidden="true"></i>Zapisz
+        </button>
+
+
+    </form>
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/account}">
+<body>
+<h2>Admin - użytkownicy</h2>
+<div layout:fragment="account-content" class="container">
+
+    <h3 class="mb-4">Twoje dane</h3>
+
+    <p th:text="${user.firstName} + ' ' + ${user.lastName}"></p>
+    <p th:text="${user.email}"></p>
+    <p th:text="${user.phoneNumber}"></p>
+    <p>
+        <span th:text="${user.address}"></span>
+        <span th:text="${user.postalCode} + ', ' + ${user.city}"></span>
+    </p>
+
+    <p>Jeśli dane się nie zgadzają to prosimy o maila na <a
+            href="mailto:bootcamp@javastart.pl">bootcamp@javastart.pl</a>.</p>
+
+    <h3>Konto GitHub</h3>
+
+    <form th:action="@{/konto/ustawienia/github}" method="post">
+        <div class="form-row">
+            <label for="githubUsername">Podaj swoją nazwę użytkownika na GitHubie. Upewnij się, że jest
+                poprawna!</label>
+            <input class="form-control" type="text" id="githubUsername" name="githubUsername" th:value="${user.githubUsername}">
+        </div>
+        <div class="form-row">
+            <button class="btn btn-primary" type="submit">Ustaw</button>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

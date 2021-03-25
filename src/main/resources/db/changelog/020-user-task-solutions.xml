@@ -1,0 +1,47 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, mariadb, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="020-user-task-solutions.xml" author="mkunert">
+
+        <addColumn tableName="user_task">
+            <column name="to_be_checked" type="boolean" defaultValueBoolean="false"/>
+        </addColumn>
+
+        <createTable tableName="user_task_entry">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_task_id" type="bigint">
+                <constraints foreignKeyName="fk_user_task_entry__user_task"
+                             referencedTableName="user_task"
+                             referencedColumnNames="id" />
+            </column>
+            <column name="text" type="varchar(1000)" />
+            <column name="date_time" type="datetime"/>
+        </createTable>
+
+        <addColumn tableName="signup">
+            <column name="slack_channel_id" type="varchar(255)" />
+        </addColumn>
+
+        <addColumn tableName="training">
+            <column name="slack_bot_access_token" type="varchar(255)" />
+        </addColumn>
+
+        <addColumn tableName="lesson">
+            <column name="number" type="bigint" />
+        </addColumn>
+
+        <addColumn tableName="lesson_task">
+            <column name="number" type="bigint" />
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

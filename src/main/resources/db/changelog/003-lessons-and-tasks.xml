@@ -1,0 +1,65 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="003-lessons-and-tasks" author="mkunert">
+
+        <addColumn tableName="signup">
+            <column name="can_see_content" type="boolean" defaultValue="false" />
+        </addColumn>
+
+        <createTable tableName="lesson">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="title" type="varchar(255)"/>
+            <column name="link_to_slack" type="varchar(255)"/>
+            <column name="training_id" type="bigint"/>
+            <column name="lesson_date" type="date"/>
+            <column name="video_links" type="${textType}" />
+            <column name="lesson_links" type="${textType}" />
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="lesson"
+                                 baseColumnNames="training_id"
+                                 referencedTableName="training"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_lesson_training_id"/>
+
+        <createTable tableName="task">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="lesson_id" type="bigint" />
+            <column name="name" type="varchar(255)"/>
+            <column name="content" type="${textType}"/>
+            <column name="points" type="int"/>
+            <column name="deadline" type="datetime"/>
+            <column name="solution_video" type="varchar(255)"/>
+            <column name="solution_source_url" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="user_task">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="task_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="points" type="decimal(5,2)"/>
+            <column name="description" type="${textType}"/>
+
+        </createTable>
+
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Lekcja</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3>Dodawanie zadań do lekcji</h3>
+
+    <form method="post"
+          th:action="@{'/admin/lekcje/zadania/dodaj'}"
+          th:object="${task}">
+        <input type="hidden" th:field="*{lessonId}"/>
+
+        <div class="form-row">
+            <label>Wybierz zadania które chcesz dodać</label>
+        </div>
+
+        Filtrowanie: <input type="text" id="filter-input" autocomplete="off"/>
+        <i class="fas fa-lg fa-trash" id="clear_search" style="cursor: pointer"></i>
+
+        <table class="table table-hover" >
+            <thead>
+            <tr>
+                <td>Czy dodać?</td>
+                <td>Nazwa</td>
+                <td>Tagi</td>
+                <td>Czy ma być obowiązkowe?</td>
+            </tr>
+            </thead>
+            <tbody id="mytable">
+            <tr th:each="task: ${tasks}" th:data-href="${task.id}" class="selectable-row">
+                <td>
+                    <input type="checkbox" name="taskIds" th:id="|id_${task.id}|" th:value="${task.id}" />
+                </td>
+                <td>
+                    <a th:text="${task.name}" target="_blank" th:href="|/admin/zadania/${task.id}|"></a>
+                </td>
+                <td th:text="${task.tags}"></td>
+                <td>
+                    <input type="checkbox" name="mandatoryTopicIds" th:id="|id_${task.id}|" th:value="${task.id}" checked>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="form-row">
+            <label for="deadline">Do kiedy należy oddać</label>
+            <input type="datetime-local" id="deadline" class="form-control" th:field="*{deadline}"/>
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            Dodaj
+        </button>
+
+    </form>
+
+    <div th:replace="~{fragments/scripts :: selectable-row}"></div>
+    <div th:replace="~{fragments/scripts :: filtering}"></div>
+
+</div>
+
+
+</body>
+</html>

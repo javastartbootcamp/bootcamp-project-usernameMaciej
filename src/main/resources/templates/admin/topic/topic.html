@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title th:text="|Temat: ${topic.title}|">Temat</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3 th:text="|Temat: ${topic.title}|"></h3>
+
+    <a th:href="|/admin/tematy|">Powrót do listy tematów</a><br/>
+
+    <a th:href="|/admin/tematy/${topic.id}/edytuj|"><i class="fa fa-edit"></i>&nbsp;Edytuj temat</a>
+
+    <div th:if="${!#strings.isEmpty(topic.lessonLinks)}">
+        <p>
+            <span>Linki do tematów w kursie internetowym</span>
+        </p>
+        <ul>
+            <li th:each="link, i: ${topic.lessonLinks.split('\n')}">
+                <a th:if="${link.contains(';')}" th:href="${link.split(';')[1]}" target="_blank" th:text="${link.split(';')[0]}"></a>
+                <a th:if="${!link.contains(';')}" th:href="${link.split(';')[0]}" target="_blank" th:text="|Link ${i.index+1}|"></a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${!#strings.isEmpty(topic.videoLinks)}" th:each="video: ${topic.videoLinks.split('\n')}">
+        <iframe width="560" height="315" th:src="|https://www.youtube.com/embed/${video}" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
+
+</div>
+
+</body>
+</html>

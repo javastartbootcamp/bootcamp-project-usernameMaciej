@@ -1,0 +1,185 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="001-init" author="mkunert">
+
+        <createTable tableName="user">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="first_name" type="varchar(255)"/>
+            <column name="last_name" type="varchar(255)"/>
+            <column name="address" type="varchar(255)"/>
+            <column name="postal_code" type="varchar(255)"/>
+            <column name="city" type="varchar(255)"/>
+            <column name="activated" type="boolean"/>
+            <column name="activation_code" type="varchar(255)"/>
+            <column name="auth_key" type="varchar(255)"/>
+            <column name="created_date" type="datetime"/>
+            <column name="password_reset_key" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="user_role">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="user_role"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_user_role_user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="training_description">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="title" type="varchar(255)"/>
+            <column name="url" type="varchar(255)"/>
+            <column name="content" type="${textType}"/>
+            <column name="content_short" type="${textType}"/>
+            <column name="extra_service" type="${textType}"/>
+        </createTable>
+
+        <createTable tableName="training">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="price" type="decimal(10,2)"/>
+            <column name="type" type="varchar(255)"/>
+            <column name="code" type="varchar(255)"/>
+            <column name="status" type="varchar(255)"/>
+            <column name="min_attendees" type="int"/>
+            <column name="max_attendees" type="int"/>
+            <column name="hours_description" type="${textType}"/>
+            <column name="hour_from" type="time"/>
+            <column name="hour_to" type="time"/>
+            <column name="full_payment_from" type="date"/>
+            <column name="full_payment_to" type="date"/>
+            <column name="dates" type="${textType}"/>
+            <column name="description_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="training"
+                                 baseColumnNames="description_id"
+                                 constraintName="fk_training_training_description_id"
+                                 referencedTableName="training_description"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="signup">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="training_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="signup_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="note" type="${textType}"/>
+            <column name="advance_payment_to" type="date"/>
+            <column name="agreement_signing_date" type="datetime"/>
+            <column name="agreement_signing_ip" type="varchar(255)"/>
+            <column name="agreement_template_file_name" type="varchar(255)"/>
+            <column name="agreement_signed_file_name" type="varchar(255)"/>
+            <column name="approved_date" type="datetime"/>
+            <column name="notification_status" type="varchar(255)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="signup"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_signup_user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="signup"
+                                 baseColumnNames="training_id"
+                                 constraintName="fk_signup_training_id"
+                                 referencedTableName="training"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="signup_log_item">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="item_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="note" type="${textType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="signup_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="signup_log_item"
+                                 baseColumnNames="signup_id"
+                                 constraintName="fk_signup_log_item_signup_id"
+                                 referencedTableName="signup"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="page">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="title" type="varchar(255)"/>
+            <column name="url" type="varchar(255)"/>
+            <column name="content" type="${textType}"/>
+
+        </createTable>
+
+        <createTable tableName="opinion">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="text" type="${textType}"/>
+            <column name="author" type="varchar(255)"/>
+            <column name="image_url" type="varchar(255)"/>
+            <column name="profile_url" type="varchar(255)"/>
+
+        </createTable>
+
+        <createTable tableName="document">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="${textType}"/>
+        </createTable>
+
+
+    </changeSet>
+
+</databaseChangeLog>

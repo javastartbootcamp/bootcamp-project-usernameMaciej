@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/account}">
+<head>
+    <title>Usuwanie konta</title>
+</head>
+<body>
+<div layout:fragment="account-content" class="container">
+
+    <h2>Usuwanie konta</h2>
+    <p>Przepisz kod: <b><span th:text="${code}"></span></b> do pola poniżej i zatwierdź w celu usunięcia konta. <b>Operacja
+        jest nieodwracalna!</b></p>
+
+    <form th:action="@{/konto/usun}" method="post">
+        <input type="hidden" th:value="${code}" name="code"/>
+        <div class="input-row">
+            <input type="text" name="inputCode" class="form-control" placeholder="Kod"/>
+        </div>
+        <button class="btn btn-primary mt-4">Usuń konto</button>
+    </form>
+
+
+</div>
+</body>
+</html>

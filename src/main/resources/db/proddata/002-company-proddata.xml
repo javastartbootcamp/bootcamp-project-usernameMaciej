@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="002-company-proddata" author="mkunert" context="prod">
+
+        <insert tableName="company">
+            <column name="id" value="1"/>
+            <column name="short_name" value="Sławomir Ludwiczak Consulting"/>
+            <column name="full_name"
+                    value="Sławomir Ludwiczak Consulting z siedzibą przy ul. Krynicka 70/32, 50-555 Wrocław. NIP 8992755325"/>
+            <column name="payment_data" valueClobFile="./company/company_1_payment_data.html"/>
+            <column name="representative" value="Sławomir Ludwiczak"/>
+            <column name="representative_signature" value="/agreement/podpis-slawek.png"/>
+        </insert>
+
+        <update tableName="training">
+            <column name="company_id" value="1"/>
+        </update>
+
+    </changeSet>
+
+
+</databaseChangeLog>

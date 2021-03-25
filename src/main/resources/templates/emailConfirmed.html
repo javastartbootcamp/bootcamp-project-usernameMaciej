@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<body>
+<div layout:fragment="content" class="container">
+
+    <div style="margin: 140px auto; width: 600px; text-align: center">
+        <div th:if="${result.equals('OK')}">
+            <h2>Dziękujemy za potwierdzenie adresu email</h2>
+            <p>Sprawdzamy Twoje zgłoszenie. Jeśli wszystko pójdzie dobrze to niebawem podeślemy Ci na maila umowę do
+                szkolenia.</p>
+            <p>Oprócz tego wysłaliśmy Ci na maila hasło za pomocą którego będziesz mógł zalogować się do serwisu.</p>
+        </div>
+        <div th:if="${result.equals('ALREADY_ACTIVATED')}">
+            <h2>Konto już aktywne</h2>
+            <p>Wygląda na to, że Twoje konto zostało już aktywowane wcześniej.</p>
+        </div>
+        <div th:if="${result.equals('NOT_FOUND')}">
+            <h2>Kod niepoprawny</h2>
+            <p>Kod aktywacyjny jest niepoprawny.</p>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

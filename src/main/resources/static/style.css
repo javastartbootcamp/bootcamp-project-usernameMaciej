@@ -1,0 +1,294 @@
+.section-title {
+    background-color: #ef6c00;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 30px;
+    padding: 24px 0;
+    margin: 10px 0;
+}
+
+.section-title h2 {
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.content {
+    flex: 1;
+    padding-top: 70px;
+}
+
+.page-footer {
+    /*background-color: #ef6c00;*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
+    /*left: 0;*/
+}
+
+.top {
+    padding: 12px 0;
+    height: 38px;
+}
+
+.javastart-logo {
+    max-height: 30px;
+    background-color: white;
+}
+
+.home-header {
+    display: block;
+}
+
+.home-header .header-content {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.home-header .home-header-title {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.home-header .home-header-subtitle {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+@media (min-width: 758px) {
+    .home-header {
+        background-image: url('/img/sala2.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position-y: center;
+        height: 600px;
+        color: white;
+        padding-top: 240px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .home-header > .wrapper {
+        max-width: 1140px;
+        margin: 0 auto;
+    }
+
+    .home-header .header-content {
+        padding: 0 15px;
+        text-align: start;
+        display: block;
+        justify-content: flex-end;
+    }
+
+    .home-header .home-header-title {
+        font-size: 48px;
+        font-weight: 700;
+        text-shadow: 1px 1px #aaa;
+    }
+
+    .home-header .home-header-subtitle {
+        font-size: 24px;
+        font-weight: 400;
+        text-shadow: 1px 1px #aaa;
+    }
+
+    .home-header > p {
+        font-size: 26px;
+    }
+}
+
+.section {
+    margin: 60px auto;
+}
+
+.first-section {
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.promo-section {
+    text-align: center;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    border: solid 2px red;
+    padding: 30px;
+}
+
+.promo-section > p {
+    margin: 0;
+}
+
+a, a.disabled:hover, a:disabled:hover, table.table a {
+    color: #ef6c00;
+}
+
+a:hover {
+    color: #cb5f00;
+}
+
+td {
+    vertical-align: middle !important;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #ef6c00 !important;
+}
+
+.btn-primary {
+    background-color: #ef6c00 !important;
+}
+
+.btn-primary:not([disabled]):not(.disabled):active {
+    background-color: #ef6c00 !important;
+}
+
+.text-primary {
+    color: #ef6c00 !important;
+}
+
+.opinions {
+    font-size: 1.2rem;
+}
+
+.opinion {
+    padding: 20px;
+}
+
+.font-12 {
+    font-size: 1.2rem;
+}
+
+.font-14 {
+    font-size: 1.4rem;
+}
+
+.question {
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-align: justify;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.trainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.trainer_description {
+    flex: 1 1 50%;
+    text-align: center;
+}
+
+.circle_image {
+    border-radius: 100%;
+}
+
+@media (min-width: 576px) {
+    .trainer_column {
+        flex: 1 1 50%;
+    }
+}
+
+.author_image_container {
+    text-align: center;
+    flex: 1 1 50%;
+    margin-bottom: 20px;
+}
+
+.author_image {
+    width: 300px;
+    height: auto;
+}
+
+.opinion_image {
+    width: 300px;
+    height: 300px;
+    align-self: center;
+}
+
+@media (min-width: 768px) {
+    .opinion_image {
+        width: 150px;
+        height: 150px;
+        margin-right: 30px;
+        flex-shrink: 0
+    }
+}
+
+.round {
+    border-radius: 100%;
+}
+
+label {
+    margin-bottom: 0;
+}
+
+img {
+    max-width: 100%;
+}
+
+.color-primary {
+    color: #ef6c00;
+}
+
+.colorful-header {
+    background: rgba(255, 110, 0, 0.37);
+    padding: 5px;
+    color: #ef6c00;
+    border-radius: 4px;
+}
+
+.section-finansowanie {
+    margin: 100px 0;
+}
+
+.icon-and-text_box {
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.icon-and-text_icon {
+    vertical-align: middle;
+    display: inline-block;
+    width: 64px;
+}
+
+.icon-and-text_text {
+    width: calc(100% - 75px);
+    vertical-align: middle;
+    padding-left: 10px;
+    display: inline-block;
+}
+/*
+Box promocyjny
+ */
+.coupon {
+    border: 5px dotted red; /* Dotted border */
+    width: 80%;
+    border-radius: 15px; /* Rounded border */
+    margin: 0 auto; /* Center the coupon */
+    padding: 10px;
+    font-size: 20px;
+}
+
+.expire {
+    color: red;
+}
+/*
+Box promocyjny end
+ */

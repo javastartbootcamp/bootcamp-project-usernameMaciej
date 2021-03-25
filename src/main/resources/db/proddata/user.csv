@@ -1,0 +1,3 @@
+id;email;activated;password
+1;marcin@javastart.pl;true;{bcrypt}$2a$10$6RXa/tXI3nyzrE1RkgXdZuE0SgEIXyun5WH18mzrQ7HB8D6o0p2Xm
+2;slawek@javastart.pl;true;{bcrypt}$2a$10$AVUeOZcnLuTCsmox3F.YgObtPEEv25UQQR4EFqMHUwJiuImfTAim2

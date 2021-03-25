@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Tematy</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2>Lista zagadnień</h2>
+    <p>Zagadnienia to elementy które można podpiąć do lekcji w szkoleniu. Zagadnienie składa się z listy filmów, linków
+        do materiałów oraz zadań. Do jednej lekcji w szkoleniu można podpiąć wiele zagadnień. Ta sekcja służy do tego,
+        żeby przygotować zagadnienia które można wykorzystać w przyszłości.</p>
+
+    <a href="/admin/tematy/dodaj">Dodaj nowy temat</a>
+
+    <br/>
+
+    Filtrowanie: <input type="text" id="filter-input"/>
+    <i class="fas fa-lg fa-trash" id="clear_search" style="cursor: pointer"></i>
+
+    <table class="table table-hover sort">
+        <thead>
+        <tr>
+            <th>Numer</th>
+            <th>Tytuł</th>
+        </tr>
+        </thead>
+        <tbody id="mytable">
+        <tr th:each="topic: ${topics}" class="clickable-row"
+            th:data-href="'/admin/tematy/' + ${topic.id}"
+            th:data-id="${topic.id}">
+            <td th:text="${topic.sortOrder}"></td>
+            <td th:text="${topic.title}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+    <div th:replace="~{fragments/scripts :: filtering}"></div>
+
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function ($) {
+            });
+            var fixHelperModified = function(e, tr) {
+                    var $originals = tr.children();
+                    var $helper = tr.clone();
+                    $helper.children().each(function(index) {
+                        $(this).width($originals.eq(index).width())
+                    });
+                    return $helper;
+                },
+                updateIndex = function(e, ui) {
+                    $('td.index', ui.item.parent()).each(function (i) {
+                        $(this).html(i + 1);
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/tematy/pozycja',
+                        data: JSON.stringify({
+                            "itemId": ui.item.data("id"),
+                            "targetPosition": ui.item.index()
+                        }),
+                        contentType: 'application/json'
+                    });
+                };
+
+            $(".sort tbody").sortable({
+                helper: fixHelperModified,
+                stop: updateIndex
+            }).disableSelection();
+        })(jQuery);
+    </script>
+
+</div>
+
+</body>
+</html>

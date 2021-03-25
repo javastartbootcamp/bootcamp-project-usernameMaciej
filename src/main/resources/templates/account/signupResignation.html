@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/account}">
+<head>
+    <title>Zapisy</title>
+</head>
+<body>
+<div layout:fragment="account-content" class="container">
+
+    <h2>Rezygnacja ze szkolenia</h2>
+    <p>Klikając na przycisk ponżej potwierdzasz rezygnację ze szkolenia. Jeśli jednak zmienisz zdanie to możesz ponownie
+        zapisać się na szkolenie.</p>
+
+    <form th:action="@{'/konto/zapisy/' + ${signup.id} + '/rezygnacja'}" method="post">
+        <input type="hidden" th:value="${signup.id}" name="signupId" />
+        <button class="btn btn-primary mt-4">Rezygnuję</button>
+    </form>
+
+</div>
+</body>
+</html>

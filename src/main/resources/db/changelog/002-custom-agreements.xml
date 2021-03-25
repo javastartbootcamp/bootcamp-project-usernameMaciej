@@ -1,0 +1,22 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="002-custom-agreements" author="mkunert">
+
+        <addColumn tableName="signup">
+            <column name="price" type="decimal(10,2)" />
+            <column name="advance_payment_to_override" type="date"/>
+            <column name="full_payment_from_override" type="date"/>
+            <column name="full_payment_to_override" type="date"/>
+        </addColumn>
+
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/account}">
+<body>
+<h2>Lista szkoleń</h2>
+<div layout:fragment="account-content" class="container">
+
+    <h3 class="mb-4">Lista szkoleń</h3>
+
+    <span th:if="${signups.isEmpty()}">Aktualnie nie masz dostępu do żadnego szkolenia</span>
+
+    <table class="table table-hover">
+        <tr th:each="signup: ${signups}" th:data-href="|/konto/szkolenia/${signup.training.id}|" class="clickable-row">
+            <td th:text="|${signup.training.code} - ${signup.training.description.title}|"></td>
+        </tr>
+    </table>
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+
+</div>
+</body>
+</html>

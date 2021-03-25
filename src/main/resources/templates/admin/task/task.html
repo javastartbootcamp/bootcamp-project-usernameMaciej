@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title th:text="${task.name}">Temat</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <div style="display: flex; justify-content: space-between">
+        <p>&nbsp;</p>
+        <a th:href="|/admin/zadania/${task.id}/edytuj|"><i class="fa fa-edit"></i>Edytuj zadanie</a>
+    </div>
+
+    <h3 th:text="${task.name}"></h3>
+
+    <p th:text="|Tagi: ${task.tags}|"></p>
+
+    <p>Liczba użyć jako ćwiczenia: <span th:text="${task.lessonExercises.size()}"></span></p>
+    <p>Liczba użyć jako zadania domowe: <span th:text="${task.lessonTasks.size()}"></span></p>
+
+    <p th:text="|Punkty do zdobycia: ${task.points}|"></p>
+
+    <h5>Link do repozytorium z bazą zadania (zostaje kopiowane)</h5>
+    <p>
+        <a th:if="${!#strings.isEmpty(task.baseRepositoryUrl)}" th:href="${task.baseRepositoryUrl}" target="_blank"
+           th:text="${task.baseRepositoryUrl}"></a>
+        <span th:if="${#strings.isEmpty(task.baseRepositoryUrl)}">To zadanie nie ma dołączonego bazowego repozytorium.</span>
+    </p>
+
+    <h5>Treść</h5>
+
+    <div th:utext="${task.content}"></div>
+
+    <h5>Film z rozwiązaniem</h5>
+    <div th:if="${!#strings.isEmpty(task.solutionVideo)}">
+        <iframe width="560" height="315" th:src="'https://www.youtube.com/embed/' + ${task.solutionVideo}" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
+    <p th:if="${#strings.isEmpty(task.solutionVideo)}">To zadanie nie ma dołączonego filmu z rozwiązaniem</p>
+
+    <h5>Link do kodu z rozwiązaniem</h5>
+    <p>
+        <a th:if="${!#strings.isEmpty(task.solutionSourceUrl)}" th:href="${task.solutionSourceUrl}" target="_blank"
+           th:text="${task.solutionSourceUrl}"></a>
+        <span th:if="${#strings.isEmpty(task.solutionSourceUrl)}">To zadanie nie ma dołączonego linku do kodu źródłowego rozwiązania</span>
+    </p>
+
+</div>
+
+</body>
+</html>

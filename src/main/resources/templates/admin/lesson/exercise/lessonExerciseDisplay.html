@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title th:text="|Ćwiczenie ${lessonExercise.task.name}|">Zadanie</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3 th:text="|Ćwiczenie ${lessonExercise.task.name}|"></h3>
+
+    <h4>Dane ćwiczenia</h4>
+
+    <a th:href="|/admin/zadania/${lessonExercise.task.id}/edytuj|"><i class="fa fa-edit"></i>Edytuj zadanie</a>
+
+    <h5>Treść</h5>
+
+    <div th:utext="${lessonExercise.task.content}"></div>
+
+    <h5>Film z rozwiązaniem</h5>
+    <div th:if="${!#strings.isEmpty(lessonExercise.task.solutionVideo)}">
+        <iframe width="560" height="315" th:src="|https://www.youtube.com/embed/${lessonExercise.task.solutionVideo}" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
+    <p th:if="${#strings.isEmpty(lessonExercise.task.solutionVideo)}">To zadanie nie ma dołączonego filmu z rozwiązaniem</p>
+
+    <h5>Link do kodu z rozwiązaniem</h5>
+    <p>
+        <a th:if="${!#strings.isEmpty(lessonExercise.task.solutionSourceUrl)}" th:href="${lessonExercise.task.solutionSourceUrl}" target="_blank"
+           th:text="${lessonExercise.task.solutionSourceUrl}"></a>
+        <span th:if="${#strings.isEmpty(lessonExercise.task.solutionSourceUrl)}">To zadanie nie ma dołączonego linku do kodu źródłowego rozwiązania</span>
+    </p>
+
+</div>
+
+
+</body>
+</html>

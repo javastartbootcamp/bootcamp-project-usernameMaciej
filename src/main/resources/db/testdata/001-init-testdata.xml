@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="001-init-testdata" author="mkunert" context="dev">
+
+        <loadData file="db/testdata/user.csv"
+                  separator=";"
+                  tableName="user">
+            <column name="activated" type="boolean"/>
+        </loadData>
+
+        <loadData file="db/testdata/user_role.csv"
+                  separator=";"
+                  tableName="user_role"/>
+
+        <insert tableName="training_description">
+            <column name="id" value="1"/>
+            <column name="title" value="Bootcamp Junior Java Developer"/>
+            <column name="url" value="junior-java-developer-online"/>
+            <column name="content"
+                    valueClobFile="./training_description/training_description_1_junior_java_developer.html"/>
+            <column name="content_short"
+                    valueClobFile="./training_description/training_description_1_junior_java_developer_short.html"/>
+            <column name="extra_service"
+                    valueClobFile="./training_description/training_description_1_junior_java_developer_extra.html"/>
+        </insert>
+
+        <insert tableName="training_description">
+            <column name="id" value="2"/>
+            <column name="title" value="Szkolenie Bazy Danych"/>
+            <column name="url" value="bazy-danych"/>
+            <column name="content"
+                    valueClobFile="./training_description/training_description_2_bazy_danych.html"/>
+        </insert>
+
+        <insert tableName="company">
+            <column name="id" value="1"/>
+            <column name="short_name" value="Sławomir Ludwiczak Consulting"/>
+            <column name="full_name"
+                    value="Sławomir Ludwiczak Consulting z siedzibą przy ul. Krynicka 70/32, 50-555 Wrocław. NIP 8992755325"/>
+            <column name="payment_data" valueClobFile="./company/company_1_payment_data.html"/>
+            <column name="representative" value="Sławomir Ludwiczak"/>
+            <column name="representative_signature" value="/agreement/podpis-slawek.png"/>
+        </insert>
+
+        <insert tableName="company">
+            <column name="id" value="2"/>
+            <column name="short_name" value="PPHU Januszex"/>
+            <column name="full_name"
+                    value="PPHU Januszex z siedzibą przy ul. Krynicka 120/31, 50-555 Wrocław. NIP 123123123"/>
+            <column name="payment_data" valueClobFile="./company/company_2_payment_data.html"/>
+            <column name="representative" value="Janusz Kowalski"/>
+            <column name="representative_signature" value="/agreement/podpis-slawek.png"/>
+        </insert>
+
+        <loadData file="db/testdata/training.csv"
+                  separator=";"
+                  tableName="training"/>
+
+        <loadData file="db/testdata/signup.csv"
+                  separator=";"
+                  tableName="signup">
+            <column name="can_see_content" type="boolean"/>
+            <column name="lesson_to" type="numeric"/>
+        </loadData>
+
+        <loadData file="db/testdata/signup_log_item.csv"
+                  separator=";"
+                  tableName="signup_log_item"/>
+
+        <insert tableName="page">
+            <column name="id" value="1"/>
+            <column name="title" value="Ogólne warunki uczestnictwa"/>
+            <column name="url" value="owu"/>
+            <column name="content" valueClobFile="./page/001_owu.html"/>
+        </insert>
+
+        <insert tableName="page">
+            <column name="id" value="2"/>
+            <column name="title" value="Polityka prywatności"/>
+            <column name="url" value="polityka-prywatnosci"/>
+            <column name="content" valueClobFile="./page/002_polityka_prywatnosci.html"/>
+        </insert>
+
+        <insert tableName="page">
+            <column name="id" value="3"/>
+            <column name="title" value="Szkolenia dla firm"/>
+            <column name="url" value="oferta-dla-firm"/>
+            <column name="content" valueClobFile="./page/003_oferta-dla-firm.html"/>
+        </insert>
+
+        <insert tableName="page">
+            <column name="id" value="4"/>
+            <column name="title" value="Java"/>
+            <column name="url" value="java-podstawy"/>
+            <column name="content" valueClobFile="./page/004_java.html"/>
+        </insert>
+
+        <insert tableName="page">
+            <column name="id" value="5"/>
+            <column name="title" value="Spring"/>
+            <column name="url" value="spring"/>
+            <column name="content" valueClobFile="./page/005_spring.html"/>
+        </insert>
+
+        <insert tableName="page">
+            <column name="id" value="6"/>
+            <column name="title" value="Java EE"/>
+            <column name="url" value="java-ee"/>
+            <column name="content" valueClobFile="./page/006_java-ee.html"/>
+        </insert>
+
+        <insert tableName="page">
+            <column name="id" value="7"/>
+            <column name="title" value="Automatyzacja testów - Oferta dla firm"/>
+            <column name="url" value="oferta-dla-firm-automatyzacja"/>
+            <column name="content" valueClobFile="./page/007_oferta-dla-firm-testowanie.html"/>
+        </insert>
+
+        <insert tableName="document">
+            <column name="id" value="1"/>
+            <column name="name" value="agreement"/>
+            <column name="content" valueClobFile="./agreement.html"/>
+        </insert>
+
+        <insert tableName="opinion">
+            <column name="id" value="1"/>
+            <column name="text" valueClobFile="./opinion/opinion_1.html"/>
+            <column name="author" value="Dominik Jakubowski"/>
+            <column name="image_url" value="dominik_jakubowski.jpeg"/>
+            <column name="profile_url" value="https://www.linkedin.com/in/dominik-jakubowski/"/>
+        </insert>
+        <insert tableName="opinion">
+            <column name="id" value="2"/>
+            <column name="text" valueClobFile="./opinion/opinion_2.html"/>
+            <column name="author" value="Mateusz Hotowy"/>
+            <column name="image_url" value="mateusz_hotowy.jpeg"/>
+            <column name="profile_url" value="https://www.linkedin.com/in/mateusz-hotowy-59b47a14b/"/>
+        </insert>
+
+        <loadData file="db/testdata/lesson/lesson.csv"
+                  separator=";"
+                  tableName="lesson"/>
+
+        <insert tableName="lesson">
+            <column name="id">1</column>
+            <column name="training_id">1</column>
+            <column name="number">1</column>
+            <column name="title">Wprowadzenie</column>
+            <column name="lesson_date">2019-01-07</column>
+            <column name="link_to_slack">https://jjd19-1.slack.com/messages/CF99B07HV</column>
+            <column name="video_links" valueClobFile="./lesson/lesson_video_links_1.txt"/>
+            <column name="lesson_links" valueClobFile="./lesson/lesson_lesson_links_1.txt"/>
+            <column name="visible" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="task">
+            <column name="id" value="1"/>
+            <column name="name" value="Pierwsze interakcje z gitem"/>
+            <column name="sort_order" value="100"/>
+            <column name="tags" value="git"/>
+            <column name="content" valueClobFile="./task/task_1.html"/>
+            <column name="points" value="1"/>
+        </insert>
+
+        <insert tableName="task">
+            <column name="id" value="2"/>
+            <column name="name" value="Hello World"/>
+            <column name="sort_order" value="200"/>
+            <column name="tags" value="java helloworld"/>
+            <column name="content" valueClobFile="./task/task_2.html"/>
+            <column name="points" value="2"/>
+            <column name="solution_video" value="Vja7Aaic7_s"/>
+            <column name="solution_source_url" value="https://github.com/javastartpl/asdf"/>
+        </insert>
+
+        <insert tableName="task">
+            <column name="id" value="3"/>
+            <column name="name" value="Nieobowiązkowe"/>
+            <column name="sort_order" value="300"/>
+            <column name="tags" value="java"/>
+            <column name="content" value="To zadanie jest nieobowiązkowe"/>
+            <column name="points" value="2"/>
+        </insert>
+
+        <insert tableName="task">
+            <column name="id" value="4"/>
+            <column name="name" value="Naprawa filmu"/>
+            <column name="sort_order" value="350"/>
+            <column name="tags" value="java"/>
+            <column name="content" valueClobFile="./task/task_4.html"/>
+            <column name="points" value="1"/>
+            <column name="base_repository_url" value="http://git.javastart.pl/zadania-automat/oop_movie_fail" />
+        </insert>
+
+        <loadData file="db/testdata/task/task.csv"
+                  separator=";"
+                  tableName="task"/>
+
+        <insert tableName="lesson_exercise">
+            <column name="id" value="1"/>
+            <column name="lesson_id" value="1"/>
+            <column name="task_id" value="1"/>
+        </insert>
+
+        <insert tableName="lesson_task">
+            <column name="id" value="1"/>
+            <column name="lesson_id" value="1"/>
+            <column name="task_id" value="2"/>
+            <column name="number" value="1"/>
+            <column name="is_mandatory" valueBoolean="true"/>
+            <column name="deadline" valueDate="2021-01-11 23:59:00"/>
+        </insert>
+
+        <insert tableName="lesson_task">
+            <column name="id" value="2"/>
+            <column name="lesson_id" value="1"/>
+            <column name="task_id" value="3"/>
+            <column name="number" value="2"/>
+            <column name="is_mandatory" valueBoolean="false"/>
+            <column name="deadline" valueDate="2021-01-11 23:59:00"/>
+        </insert>
+
+        <insert tableName="lesson_task">
+            <column name="id" value="3"/>
+            <column name="lesson_id" value="2"/>
+            <column name="task_id" value="4"/>
+            <column name="number" value="1"/>
+            <column name="is_mandatory" valueBoolean="true"/>
+            <column name="deadline" valueDate="2020-10-11 23:59:00"/>
+        </insert>
+
+        <loadData file="db/testdata/user_task.csv"
+                  separator=";"
+                  tableName="user_task"/>
+
+        <loadData file="db/testdata/topic/topic.csv"
+                  separator=";"
+                  tableName="topic"/>
+
+        <insert tableName="topic">
+            <column name="id">1</column>
+            <column name="title">Wprowadzenie</column>
+            <column name="sort_order" value="100"/>
+            <column name="video_links" valueClobFile="./topic/topic_video_links_1.txt"/>
+            <column name="lesson_links" valueClobFile="./topic/topic_lesson_links_1.txt"/>
+        </insert>
+
+        <insert tableName="training_template">
+            <column name="id">1</column>
+            <column name="name">Bootcamp Junior Java Developer</column>
+        </insert>
+
+        <insert tableName="lesson">
+            <column name="id">7</column>
+            <column name="number">1</column>
+            <column name="title">Pierwsza lekcja w szablonie</column>
+            <column name="video_links" valueClobFile="./lesson/lesson_video_links_1.txt"/>
+            <column name="lesson_links" valueClobFile="./lesson/lesson_lesson_links_1.txt"/>
+        </insert>
+
+        <insert tableName="training_template_lesson">
+            <column name="number">1</column>
+            <column name="training_template_id">1</column>
+            <column name="lesson_id">7</column>
+        </insert>
+
+        <insert tableName="lesson_exercise">
+            <column name="lesson_id" value="7"/>
+            <column name="task_id" value="1"/>
+        </insert>
+
+        <insert tableName="lesson_task">
+            <column name="lesson_id" value="7"/>
+            <column name="task_id" value="1"/>
+            <column name="number" value="1" />
+            <column name="is_mandatory" value="true" />
+            <column name="deadline_days" value="1" />
+            <column name="deadline_hour" value="23:59" />
+        </insert>
+
+    </changeSet>
+
+
+</databaseChangeLog>

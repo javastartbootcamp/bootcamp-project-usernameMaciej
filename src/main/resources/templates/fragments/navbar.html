@@ -1,0 +1,103 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<nav class="navbar navbar-expand-lg white fixed-top scrolling-navbar" th:fragment="navbar">
+
+    <!-- Navbar brand -->
+    <a class="navbar-brand" href="/">
+        <img src="/img/javastart-logo.png" class="javastart-logo" alt="Logo JavaStart"/>
+    </a>
+
+    <div class="navbar-toggler navbar-light" data-toggle="collapse"
+         aria-controls="basicExampleNav" aria-expanded="false"
+         th:if="${nextTrainingId != null}">
+        <a th:href="|/szkolenie/${nextTrainingUrl}/${nextTrainingId}|">
+            <button class="btn btn-primary">
+                Zapisz się
+            </button>
+        </a>
+    </div>
+
+    <!-- Collapse button -->
+    <button class="navbar-toggler navbar-light" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+            aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="basicExampleNav">
+
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" th:if="${#httpServletRequest.requestURI != '/'}">
+                <a class="nav-link" href="/">Strona główna</a>
+            </li>
+            <li class="nav-item" th:if="${#httpServletRequest.requestURI == '/' || #httpServletRequest.requestURI == '/szkolenie-testowanie'}">
+                <a class="nav-link smooth-scroll" id="anchor1" href="#szkolenia">Szkolenia</a>
+            </li>
+            <li class="nav-item" th:if="${#httpServletRequest.requestURI == '/' || #httpServletRequest.requestURI == '/szkolenie-testowanie'} ">
+                <a class="nav-link" href="#finansowanie">Finansowanie</a>
+            </li>
+            <li class="nav-item" th:if="${#httpServletRequest.requestURI == '/'}">
+                <a class="nav-link" href="#opinie">Opinie</a>
+            </li>
+            <li class="nav-item" th:if="${#httpServletRequest.requestURI == '/' || #httpServletRequest.requestURI == '/szkolenie-testowanie'}">
+                <a class="nav-link" href="#trainers">Trenerzy</a>
+            </li>
+            <li class="nav-item" th:if="${#httpServletRequest.requestURI == '/'}">
+                <a class="nav-link" href="#faq">FAQ</a>
+            </li>
+            <li class="nav-item" th:if="${#httpServletRequest.requestURI == '/' || #httpServletRequest.requestURI == '/szkolenie-testowanie'}">
+                <a class="nav-link" href="#kontakt">Kontakt</a>
+            </li>
+            <li class="nav-item">
+                <a th:if="${#httpServletRequest.requestURI == '/szkolenie-testowanie'}" class="nav-link" href="/strona/oferta-dla-firm-automatyzacja">Oferta dla firm</a>
+                <a th:unless="${#httpServletRequest.requestURI == '/szkolenie-testowanie'}" class="nav-link" href="/firmy/oferta">Oferta dla firm</a>
+            </li>
+
+        </ul>
+        <!-- Links -->
+
+        <a th:href="|/szkolenie/${nextTrainingUrl}/${nextTrainingId}|" th:if="${nextTrainingId != null}"
+           class="d-none d-md-block">
+            <button class="btn btn-primary">
+                Zapisz się
+            </button>
+        </a>
+
+
+        <a href="/login" sec:authorize="${!isAuthenticated()}" id="login-link" class="nav-item"
+           style="padding: 20px 6px">Logowanie</a>
+
+        <span class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLinkAdmin" data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false">Administracja</a>
+                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/admin/szkolenia">Szkolenia</a>
+                    <a class="dropdown-item" href="/admin/tematy">Tematy</a>
+                    <a class="dropdown-item" href="/admin/zadania">Zadania</a>
+                    <a class="dropdown-item" href="/admin/opisy">Opisy</a>
+                    <a class="dropdown-item" href="/admin/uzytkownicy">Użytkownicy</a>
+                    <a class="dropdown-item" href="/admin/opinie">Opinie</a>
+                    <a class="dropdown-item" href="/admin/strony">Strony</a>
+                    <a class="dropdown-item" href="/admin/umowa">Umowa</a>
+                </div>
+            </span>
+
+        <span class="nav-item dropdown mr-4" sec:authorize="${isAuthenticated()}">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLinkProfile" data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false">Konto</a>
+                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/konto/szkolenia">Szkolenia</a>
+                    <a class="dropdown-item" href="/konto/zapisy">Zapisy</a>
+                    <a class="dropdown-item" href="/konto/ustawienia">Ustawienia</a>
+                    <a class="dropdown-item" href="/konto/zmiana-hasla">Zmiana hasła</a>
+                    <a class="dropdown-item" href="/logout">Wyloguj</a>
+                </div>
+            </span>
+    </div>
+    <!-- Collapsible content -->
+
+
+</nav>
+</html>

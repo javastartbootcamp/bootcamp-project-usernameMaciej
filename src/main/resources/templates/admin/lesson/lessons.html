@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title th:text="|Lekcje w ${training.code}|"></title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h3 th:text="|Szkolenie ${training.code}|"></h3>
+
+    <h4>
+        Lekcje
+        <a th:href="|/admin/lekcje/dodaj?trainingId=${training.id}|"><i class="fa fa-plus"></i></a>
+        <a th:href="|/admin/lekcje/kopiuj?trainingId=${training.id}|" title="Kopiuj z szablonu"><i class="fa fa-copy"></i></a>
+    </h4>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Numer</th>
+            <th>Tytuł</th>
+            <th>Data</th>
+            <th>Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lesson: ${training.lessons}" class="clickable-row"
+            th:data-href="'/admin/lekcje/' + ${lesson.id}">
+            <td th:text="${lesson.number}"></td>
+            <td th:text="${lesson.title}"></td>
+            <td th:text="${#temporals.format(lesson.lessonDate, 'yyyy-MM-dd')}"></td>
+            <td>
+                <a th:if="${lesson.visible}" th:href="|/admin/lekcje/${lesson.id}/widocznosc?pokaz=false|" title="Ukryj"><i class="far fa-lg fa-eye"></i></a>
+                <a th:if="${!lesson.visible}" th:href="|/admin/lekcje/${lesson.id}/widocznosc?pokaz=true|" title="Pokaż"><i class="far fa-lg fa-eye-slash"></i></a>
+                <a th:href="|/admin/lekcje/${lesson.id}/edytuj|" title="Edytuj"><i class="far fa-lg fa-edit"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+
+</div>
+
+</body>
+</html>

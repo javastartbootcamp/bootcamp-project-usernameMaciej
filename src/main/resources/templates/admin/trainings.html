@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Szkolenia</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2>
+        <span>Szkolenia</span>
+        <a href="/admin/szkolenia/dodaj" title="Dodaj szkolenie"><i class="fa fa-plus"></i></a>
+    </h2>
+
+    <a th:if="${#httpServletRequest.getParameter('showAll') == null}" href="/admin/szkolenia?showAll=true"><i class="fa fa-filter"></i>Pokaż zakończone</a>
+    <a th:if="${#httpServletRequest.getParameter('showAll') != null}" href="/admin/szkolenia"><i class="fa fa-filter"></i>Pokaż tylko aktualne</a>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Nazwa szkolenia</th>
+            <th>Kod</th>
+            <th>Rodzaj</th>
+            <th>Zapisane osoby</th>
+            <th>Od</th>
+            <th>Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="training: ${trainings}" class="clickable-row" th:data-href="'/admin/szkolenia/' + ${training.id}">
+            <td>
+                <a th:href="'/admin/szkolenia/' + ${training.id}"
+                   th:text="${training.title}"></a>
+            </td>
+            <td th:text="${training.code}"></td>
+            <td th:text="${training.type}"></td>
+            <td th:text="${training.activeSignupsCount}"></td>
+            <td th:text="${training.firstDate}"></td>
+            <td>
+                <a th:href="'/admin/szkolenia/' + ${training.id} +'/lekcje'" class="btn btn-primary btn-md mb-3 waves-effect waves-light">
+                    Lekcje
+                </a>
+                <a th:href="'/admin/szkolenia/' + ${training.id} +'/zadania'" class="btn btn-primary btn-md mb-3 waves-effect waves-light">
+                    Zadania
+                </a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, mariadb, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="028-task-rating" author="mkunert">
+
+        <createTable tableName="task_rating">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="task_id" type="bigint">
+                <constraints foreignKeyName="fk_task_rating__task_id"
+                             referencedColumnNames="id"
+                             referencedTableName="task"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="fk_task_rating__user_id"
+                             referencedColumnNames="id"
+                             referencedTableName="user"/>
+            </column>
+            <column name="rating" type="int"/>
+            <column name="comment" type="${textType}"/>
+            <column name="created_at" type="timestamp"/>
+
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

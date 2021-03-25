@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/account}">
+<head>
+    <title>Zapisy</title>
+</head>
+<body>
+<div layout:fragment="account-content" class="container mb-4">
+
+    <h2 class="mb-3">Zapis na szkolenie</h2>
+    <p>Szkolenie: <span th:text="${signup.training.description.title}"></span></p>
+    <p>Status: <span th:text="${signup.status.text}"></span></p>
+    <p>Data zapisu: <span th:text="${#temporals.format(signup.signupDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+    <p th:if="${canReject}">
+        Jeśli chcesz się wypisać ze szkolenia możesz to zrobić
+        <a th:href="'/konto/zapisy/' + ${signup.id} + '/rezygnacja'">tutaj</a>
+    </p>
+
+    <h3 class="mt-2">Następne kroki:</h3>
+
+    <p th:if="${signup.status == T(pl.javastart.bootcamp.domain.signup.SignupStatus).NEW}">
+        Weryfikujemy Twój zapis. Za niedługo dostaniesz powiadomienie o kolejnych krokach.
+    </p>
+
+    <p th:if="${signup.status == T(pl.javastart.bootcamp.domain.signup.SignupStatus).APPROVED}">
+        Na tym etapie czekamy aż podpiszesz umowę.
+        <a th:href="|/konto/zapisy/${signup.id}/umowa|">Link do umowy</a>
+    </p>
+
+    <p th:if="${signup.status == T(pl.javastart.bootcamp.domain.signup.SignupStatus).RESERVE}">
+        Znajdujesz się aktualnie na liście rezerwowych. Będziemy na bieżąco informować jeśli zwolnią się miejsca na
+        szkolenie.
+    </p>
+
+    <div th:if="${signup.status == T(pl.javastart.bootcamp.domain.signup.SignupStatus).AGREEMENT_SIGNED}">
+        Czekamy na wpłatę zadatku <span th:text="${signup.deposit}">1000</span>zł.
+        <p> Dane do wpłaty:<br/>
+            <span th:utext="${signup.training.company.paymentData}"></span>
+        </p>
+        <p class="mt-2">
+            Przypominamy, że zadatek zostanie zwócony w przypadku gdyby szkolenie miałoby się nie odbyć lub w przypadku
+            rezygnacji do 30 dni przed szkoleniem.</p>
+        </p>
+    </div>
+
+    <p th:if="${signup.status == T(pl.javastart.bootcamp.domain.signup.SignupStatus).ADVANCE_PAID}">
+        Zadatek opłacony. Na ok 2 tygodnie przed szkoleniem zgłosimy się po resztę zapłaty.
+    </p>
+
+    <p th:if="${signup.status == T(pl.javastart.bootcamp.domain.signup.SignupStatus).PAID}">
+        Szkolenie zostało opłacone. Będziemy się z Tobą kontaktować w celu przekazania informacji organizacyjnych
+        dotyczących szkolenia.
+    </p>
+
+    <p th:if="${signup.status == T(pl.javastart.bootcamp.domain.signup.SignupStatus).REJECTED}">
+        Zapis na szkolenie został odrzucony. Powód został umieszczony w mailu.
+    </p>
+
+</div>
+</body>
+</html>

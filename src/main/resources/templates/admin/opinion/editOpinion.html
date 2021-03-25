@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Edycja opinii</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2>Edycja opinii</h2>
+
+    <form th:action="@{${opinion.id != null ? '/admin/opinie/edytuj' : '/admin/opinie/dodaj'}}" method="post"
+          th:object="${opinion}">
+        <input type="hidden" th:field="*{id}"/>
+
+        <label for="author">Autor</label>
+        <input type="text" id="author" th:field="*{author}" class="form-control mb-4"/>
+
+        <label for="text">Treść (HTML)</label>
+        <textarea id="text" th:field="*{text}" class="form-control mb-4" rows="10"></textarea>
+
+        <label for="imageUrl">Link do zdjęcia</label>
+        <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control mb-4"/>
+
+        <label for="profileUrl">Link do LinkedIn</label>
+        <input type="text" id="profileUrl" th:field="*{profileUrl}" class="form-control mb-4"/>
+
+        <button type="submit" class="btn mb-4 orange darken-3">
+            <i class="fa fa-save pr-2" aria-hidden="true"></i>Zapisz
+        </button>
+
+    </form>
+
+</div>
+
+
+</body>
+</html>

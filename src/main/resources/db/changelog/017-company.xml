@@ -1,0 +1,46 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="textType" value="text" dbms="mysql, mariadb, postgresql"/>
+    <property name="textType" value="varchar(1000000)" dbms="h2"/>
+
+    <changeSet id="017-company" author="mkunert">
+
+        <createTable tableName="company">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="short_name" type="varchar(255)"/>
+            <column name="full_name" type="varchar(999)"/>
+            <column name="payment_data" type="varchar(999)"/>
+            <column name="representative" type="varchar(999)"/>
+            <column name="representative_signature" type="varchar(999)"/>
+        </createTable>
+
+        <addColumn tableName="training">
+            <column name="company_id" type="bigint">
+                <constraints
+                        foreignKeyName="fk_training_company_id"
+                        referencedColumnNames="id"
+                        referencedTableName="company"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="training">
+            <column name="deposit" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="signup">
+            <column name="deposit" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

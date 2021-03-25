@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-MF2V2RV');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <title>Bootcamp Java Online - Intensywne Szkolenie od Podstaw</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Bootcamp Java Online | JavaSart">
+
+    <meta property="og:image" content="https://bootcamp.javastart.pl/files/ogShareImage_bootcamp.png">
+    <meta property="og:image:secure_url" content="https://bootcamp.javastart.pl/files/ogShareImage_bootcamp.png">
+    <meta property="og:twitter:image" content="https://bootcamp.javastart.pl/files/ogShareImage_bootcamp.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="JavaStart">
+    <meta property="og:twitter:image:alt" content="JavaStart">
+
+    <meta property="article:tag" content="java">
+
+    <meta property="fb:app_id" content="383566599754673">
+    <meta property="fb:pages" content="122520454512235">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@javastart">
+    <meta name="twitter:creator" content="@javastart">
+    <meta name="twitter:creator" content="@javastart">
+    <meta name="twitter:domain" content="javastart.pl">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+
+    <link href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="/js/jquery-ui.multidatespicker.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet"/>
+    <link href="/favicon.ico" rel="shortcut icon"/>
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="/js/jquery-ui.multidatespicker.js"></script>
+    <script type="text/javascript" src="/js/jquery-datepicker-pl.js"></script>
+    <script type="text/javascript" src="/js/countdown.js"></script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MF2V2RV"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="content">
+    <div layout:fragment="content"></div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

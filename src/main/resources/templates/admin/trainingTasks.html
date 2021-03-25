@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<head>
+    <title>Zadania do sprawdzenia</title>
+</head>
+
+<body>
+
+<div layout:fragment="admin-content" class="container">
+
+    <h2>Zadania do sprawdzenia</h2>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Zadanie</th>
+            <th>Uczestnik</th>
+            <th>Data oddania</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="userTask: ${notChecked}" class="clickable-row" th:data-href="'/admin/lekcje/zadania/' + ${userTask.lessonTaskId} + '/ocena?userId=' + ${userTask.userId}">
+            <td th:text="${userTask.taskNumberAndName}"></td>
+            <td th:text="|${userTask.username}|"></td>
+            <td th:text="${#temporals.format(userTask.lastEntryDate, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div th:replace="~{fragments/scripts :: clickable-row}"></div>
+
+</div>
+
+
+</body>
+</html>
