@@ -17,3 +17,7 @@ profile: `dev` oraz `local`.
 **ABSOLUTNIE NIGDY** nie wrzucaj zmian bezpośrednio na branch `master`. W celu wrzucenia zmian utwórz nowy branch
 od `master`, wprowadź tam swoje zmiany, a następnie utwórz nowy Pull Request podlinkowując (wpisując np `#1`) w nim Issue, który został
  zaimplementowany. Mile widziane jest również kilka słów opisu.
+ 
+ ### Własne zadanie
+ 
+ Widzisz co można by poprawić, a nie ma takiego zadania? Stwórz nowy Issue i zaproponuj zmianę podając swoje argumenty i proponowaną liczbę Story Pointów. Jesteśmy chętni do dyskusji :)
