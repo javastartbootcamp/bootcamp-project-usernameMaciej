@@ -1,13 +1,13 @@
-# Projekt zespołowy bootcampu JavaStart
+# Projekt Bootcampu Junior Java Developer
 
-Kod źródłowy jest kopią strony bootcamp.javastart.pl, którą w niektórych miejscach z premedytacją popsuto. Twoim
+Kod źródłowy jest kopią pewnego historycznego statnu strony bootcamp.javastart.pl, którą w niektórych miejscach z premedytacją popsuto. Twoim
 zadaniem jest naprawienie istniejące funkcjonalności lub dodanie nowej.
+
+To zadanie maksymalnie przypomina właściwą pracę programisty. Zadania są rozpisane i czekają na poprawę lub implementację. To właśnie Twoim zadaniem jest ich realizacja.
 
 Zadania są oznaczone odpowiednią wartością: 1, 2, 3, 5, 8, 13 (zgodnie z
 wartościami [planowania w Scrumie](https://en.wikipedia.org/wiki/Planning_poker)). Im więcej punktów, tym zadanie jest
-trudniejsz / bardziej pracochłonne.
-
-Aktualna wersja brancha `master` budowana jest automatycznie i dostępna jest po adresem http://jjd20-4.javastart.pl/
+trudniejsze / bardziej pracochłonne.
 
 ### Uruchomienie projektu
 
